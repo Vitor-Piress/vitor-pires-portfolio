@@ -81,6 +81,11 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
   }, [galleryItems.length, isGalleryPaused])
 
   const currentGalleryItem = galleryItems[activeGalleryIndex] ?? galleryItems[0]
+  const isPortrait = Boolean(
+    currentGalleryItem?.orientation === 'portrait' ||
+    currentGalleryItem?.src?.includes('gmail') ||
+    currentGalleryItem?.id === 'email'
+  )
 
   const handlePrevGallery = () => {
     setActiveGalleryIndex((prev) => (prev - 1 + galleryItems.length) % galleryItems.length)
@@ -259,7 +264,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-4 py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
               >
-                <span>{t.projectDetail.accessSystem}</span>
+                <span>{project.liveUrl ? t.projectsSection.liveWebsite : t.projectDetail.accessSystem}</span>
                 <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
               </a>
             ) : (
@@ -446,9 +451,19 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                   </span>
                 </div>
 
-                {/* Demo Action Button */}
+                {/* Action Button: Live Official Website OR Live Demo OR Contact */}
                 <div className="shrink-0">
-                  {project.demoUrl ? (
+                  {project.liveUrl ? (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-[3px] bg-[var(--text-primary)] px-3.5 py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
+                    >
+                      <span>{t.projectsSection.liveWebsite}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
+                    </a>
+                  ) : project.demoUrl ? (
                     <a
                       href={project.demoUrl}
                       target="_blank"
@@ -471,6 +486,26 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                 </div>
               </div>
 
+              {/* Quick Screen Tabs (with hidden scrollbar) */}
+              {galleryItems.length > 1 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto border-b border-[var(--border-subtle)] px-4 py-2 bg-[var(--bg-primary)]/50 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                  {galleryItems.map((scr, idx) => (
+                    <button
+                      key={scr.id}
+                      type="button"
+                      onClick={() => setActiveGalleryIndex(idx)}
+                      className={`cursor-pointer shrink-0 rounded-[3px] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 ${
+                        idx === activeGalleryIndex
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold shadow-2xs'
+                          : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--border-subtle)]/40'
+                      }`}
+                    >
+                      {scr.label[language].split('&')[0].trim()}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Window Body: Real Screen Image with Inset Framing & Navigation Chevrons */}
               {galleryItems.length > 0 ? (
                 <div
@@ -478,8 +513,18 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                   onMouseLeave={() => setIsGalleryPaused(false)}
                   className="group/gallery relative w-full bg-[var(--bg-primary)] overflow-hidden select-none"
                 >
-                  <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full p-2.5 sm:p-4 flex items-center justify-center">
-                    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] shadow-2xs">
+                  <div
+                    className={`relative w-full p-2.5 sm:p-4 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isPortrait
+                        ? 'aspect-[16/14.5] sm:aspect-[16/13]'
+                        : 'aspect-[16/10] sm:aspect-[16/9]'
+                    }`}
+                  >
+                    <div
+                      className={`relative flex h-full w-full items-center justify-center overflow-hidden rounded-[3px] border border-[var(--border-subtle)] ${
+                        currentGalleryItem?.src?.includes('gmail') ? 'bg-white' : 'bg-[var(--bg-bento)]'
+                      } shadow-2xs`}
+                    >
                       <AnimatePresence mode="wait" initial={false}>
                         {currentGalleryItem && (
                           <motion.img
@@ -490,7 +535,9 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                             animate={{ opacity: 1, filter: 'blur(0px)' }}
                             exit={{ opacity: 0, filter: 'blur(4px)' }}
                             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                            className="h-full w-full object-contain object-top block"
+                            className={`h-full w-full object-contain ${
+                              isPortrait ? 'object-center' : 'object-top'
+                            } block`}
                             loading="lazy"
                           />
                         )}

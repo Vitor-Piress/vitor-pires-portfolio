@@ -110,6 +110,7 @@ export interface TranslationSchema {
     emailCopied: string;
     roleSignature: string;
     rights: string;
+    scrollToTop: string;
   };
   audioPlayer: {
     label: string;
@@ -295,6 +296,7 @@ export const translations: Record<Language, TranslationSchema> = {
       emailCopied: "E-mail copiado para a área de transferência",
       roleSignature: "VITOR PIRES — FULL-STACK DEVELOPER",
       rights: "© 2026 Vitor Pires. All rights reserved.",
+      scrollToTop: "Voltar ao topo",
     },
     audioPlayer: {
       label: "AMBIENT SOUNDTRACK",
@@ -485,6 +487,7 @@ export const translations: Record<Language, TranslationSchema> = {
       emailCopied: "Email copied to clipboard",
       roleSignature: "VITOR PIRES — FULL-STACK DEVELOPER",
       rights: "© 2026 Vitor Pires. All rights reserved.",
+      scrollToTop: "Back to top",
     },
     audioPlayer: {
       label: "AMBIENT SOUNDTRACK",

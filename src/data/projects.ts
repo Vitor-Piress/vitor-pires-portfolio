@@ -57,6 +57,7 @@ export interface ProjectGalleryItem {
   label: Localized;
   src: string;
   appPath?: string;
+  orientation?: "landscape" | "portrait";
 }
 
 export interface FeaturedProject {
@@ -202,6 +203,7 @@ export const featuredProjects: FeaturedProject[] = [
         },
         src: "/projects/condonot/condonot-gmail.webp",
         appPath: "/notificacao/email",
+        orientation: "portrait",
       },
     ],
     bento: [
@@ -393,8 +395,8 @@ export const featuredProjects: FeaturedProject[] = [
     tier: "featured",
     slug: "moradas-do-gabriel",
     name: "Moradas do Gabriel",
-    logo: null,
-    previewImage: null,
+    logo: "/projects/moradas-do-gabriel/moradas-logo.webp",
+    previewImage: "/projects/moradas-do-gabriel/moradas-lading-hero.webp",
     demoUrl: null,
     appDomain: "moradasdogabriel.com.br",
     headline: {
@@ -419,23 +421,91 @@ export const featuredProjects: FeaturedProject[] = [
       pt: "Aplicação mobile-first acessada pelo hóspede via QR Code, sem instalação. Todo o conteúdo — guia local, pontos no mapa, regras da casa e credenciais de Wi-Fi — é gerenciado em tempo real pela administração através de um painel protegido sobre Supabase.",
       en: "A mobile-first app accessed by guests via QR Code, no install required. All content — local guide, map points, house rules and Wi-Fi credentials — is managed in real time by the staff through a protected Supabase-backed dashboard.",
     },
-    liveUrl: null,
+    liveUrl: "https://moradasdogabriel.com.br",
     repoUrl: null,
+    gallery: [
+      {
+        id: "landing-hero",
+        label: {
+          pt: "Landing Page & Reserva Direta",
+          en: "Landing Page & Direct Booking",
+        },
+        src: "/projects/moradas-do-gabriel/moradas-lading-hero.webp",
+        appPath: "/",
+        orientation: "landscape",
+      },
+      {
+        id: "landing-sobre",
+        label: {
+          pt: "Apresentação & Estrutura da Pousada",
+          en: "Guesthouse Overview & Facilities",
+        },
+        src: "/projects/moradas-do-gabriel/moradas-lading-sobre.webp",
+        appPath: "/#sobre",
+        orientation: "landscape",
+      },
+      {
+        id: "guia-1",
+        label: {
+          pt: "Guia do Hóspede · Check-in & Wi-Fi",
+          en: "Guest Guide · Check-in & Wi-Fi",
+        },
+        src: "/projects/moradas-do-gabriel/moradas-guia-hospede-1.webp",
+        appPath: "/guia",
+        orientation: "portrait",
+      },
+      {
+        id: "guia-2",
+        label: {
+          pt: "Guia do Hóspede · Regras & Informações",
+          en: "Guest Guide · Rules & Info",
+        },
+        src: "/projects/moradas-do-gabriel/moradas-guia-hospede-2.webp",
+        appPath: "/guia/regras",
+        orientation: "portrait",
+      },
+      {
+        id: "guia-3",
+        label: {
+          pt: "Guia do Hóspede · Mapa & Recomendações",
+          en: "Guest Guide · Map & Local Tips",
+        },
+        src: "/projects/moradas-do-gabriel/moradas-guia-hospede-3.webp",
+        appPath: "/guia/local",
+        orientation: "portrait",
+      },
+      {
+        id: "linktree",
+        label: {
+          pt: "Hub Rápido de Atendimento & Links",
+          en: "Quick Support & Links Hub",
+        },
+        src: "/projects/moradas-do-gabriel/moradas-linktree.webp",
+        appPath: "/links",
+        orientation: "portrait",
+      },
+    ],
     bento: [
       {
         id: "main",
         span: "wide",
         screens: [
           {
-            id: "home",
-            label: { pt: "Portal do Hóspede", en: "Guest Portal" },
-            src: null,
+            id: "landing-hero",
+            label: {
+              pt: "Landing Page & Reserva Direta",
+              en: "Landing Page & Direct Booking",
+            },
+            src: "/projects/moradas-do-gabriel/moradas-lading-hero.webp",
             device: "desktop",
           },
           {
-            id: "admin",
-            label: { pt: "Painel Administrativo", en: "Admin Dashboard" },
-            src: null,
+            id: "landing-sobre",
+            label: {
+              pt: "Apresentação & Estrutura da Pousada",
+              en: "Guesthouse Overview & Facilities",
+            },
+            src: "/projects/moradas-do-gabriel/moradas-lading-sobre.webp",
             device: "desktop",
           },
         ],
@@ -445,15 +515,21 @@ export const featuredProjects: FeaturedProject[] = [
         span: "tall",
         screens: [
           {
-            id: "mobile-home",
-            label: { pt: "Início Mobile", en: "Mobile Home" },
-            src: null,
+            id: "guia-1",
+            label: {
+              pt: "Guia do Hóspede · Check-in & Wi-Fi",
+              en: "Guest Guide · Check-in & Wi-Fi",
+            },
+            src: "/projects/moradas-do-gabriel/moradas-guia-hospede-1.webp",
             device: "mobile",
           },
           {
-            id: "mobile-wifi",
-            label: { pt: "Conexão Wi-Fi", en: "Wi-Fi Access" },
-            src: null,
+            id: "linktree",
+            label: {
+              pt: "Hub Rápido de Atendimento & Links",
+              en: "Quick Support & Links Hub",
+            },
+            src: "/projects/moradas-do-gabriel/moradas-linktree.webp",
             device: "mobile",
           },
         ],
@@ -463,16 +539,13 @@ export const featuredProjects: FeaturedProject[] = [
         span: "square",
         screens: [
           {
-            id: "guide",
-            label: { pt: "Guia Local", en: "Local Guide" },
-            src: null,
-            device: "desktop",
-          },
-          {
-            id: "map",
-            label: { pt: "Mapa Interativo", en: "Interactive Map" },
-            src: null,
-            device: "desktop",
+            id: "guia-2",
+            label: {
+              pt: "Guia do Hóspede · Regras da Casa",
+              en: "Guest Guide · House Rules",
+            },
+            src: "/projects/moradas-do-gabriel/moradas-guia-hospede-2.webp",
+            device: "mobile",
           },
         ],
       },
@@ -481,16 +554,13 @@ export const featuredProjects: FeaturedProject[] = [
         span: "square",
         screens: [
           {
-            id: "content",
-            label: { pt: "Gestão de Conteúdo", en: "Content Management" },
-            src: null,
-            device: "desktop",
-          },
-          {
-            id: "rules",
-            label: { pt: "Regras da Casa", en: "House Rules" },
-            src: null,
-            device: "desktop",
+            id: "guia-3",
+            label: {
+              pt: "Guia do Hóspede · Mapa & Dicas Locais",
+              en: "Guest Guide · Map & Local Tips",
+            },
+            src: "/projects/moradas-do-gabriel/moradas-guia-hospede-3.webp",
+            device: "mobile",
           },
         ],
       },
@@ -793,7 +863,7 @@ export const secondaryProjects: SecondaryProject[] = [
   {
     tier: "secondary",
     slug: "chatbot-condominio-a3",
-    name: "Chatbot Condomínio (A3)",
+    name: "Chatbot Condomínio",
     image: null,
     summary: {
       pt: "Assistente inteligente em Python com Groq LLM API e modelos Llama para respostas imediatas sobre regimento e condomínio.",
@@ -806,7 +876,7 @@ export const secondaryProjects: SecondaryProject[] = [
   {
     tier: "secondary",
     slug: "kac",
-    name: "KAC — Kanban de Administração Condominial",
+    name: "Kanban de Administração Condominial",
     image: null,
     summary: {
       pt: "Sistema de gestão visual de demandas e manutenções condominiais em formato Kanban.",

@@ -10,6 +10,7 @@ import {
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
 import { MiniAudioPlayer } from './components/layout/MiniAudioPlayer'
+import { ScrollToTopButton } from './components/layout/ScrollToTopButton'
 import { Home } from './pages/Home'
 import { ProjectDetail } from './pages/ProjectDetail'
 import { DesignLab } from './pages/DesignLab'
@@ -30,6 +31,7 @@ function RootLayout() {
       <ScrollRestoration getKey={(location) => location.pathname} />
       <Outlet />
       <MiniAudioPlayer />
+      <ScrollToTopButton />
     </>
   )
 }

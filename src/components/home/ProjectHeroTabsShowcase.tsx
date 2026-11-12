@@ -20,7 +20,9 @@ export function ProjectHeroTabsShowcase({
 
   const currentScreen = screens[activeIndex] ?? screens[0];
   const isPortrait = Boolean(
-    currentScreen?.src?.includes("gmail") || currentScreen?.id === "email",
+    currentScreen?.orientation === "portrait" ||
+    currentScreen?.src?.includes("gmail") ||
+    currentScreen?.id === "email",
   );
 
   // Auto-cycle pause on hover or when zoomed
@@ -175,7 +177,9 @@ export function ProjectHeroTabsShowcase({
                       ? "transform 0.12s ease-out"
                       : "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
-                  className="h-full w-full object-contain object-top block select-none pointer-events-none"
+                  className={`h-full w-full object-contain ${
+                    isPortrait ? "object-center" : "object-top"
+                  } block select-none pointer-events-none`}
                   loading="lazy"
                 />
               )}
