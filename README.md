@@ -11,12 +11,13 @@ Construído com React 19, TypeScript, Tailwind CSS v4, Vite 8 e Framer Motion.
 [![Vite](https://img.shields.io/badge/Vite-8.x-black?style=flat-square&logo=vite)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/License-MIT-black?style=flat-square)](LICENSE)
 
-[Visão Geral](#-visão-geral) • [Destaques de Design](#-design-system--experiência-do-usuário) • [Arquitetura](#-arquitetura-e-funcionalidades) • [Projetos](#-projetos-em-destaque) • [Setup Local](#-instalação-e-execução)
+[Visão Geral](#visao-geral) • [Design System](#design-system) • [Projetos](#projetos) • [Stack](#stack) • [Arquitetura](#arquitetura) • [Instalação](#instalacao)
 
 ---
 
 </div>
 
+<a id="visao-geral"></a>
 ## ✦ Visão Geral
 
 Este repositório contém o código-fonte do portfólio pessoal e vitrine de produtos SaaS de **Vitor Pires** ([@Vitor-Piress](https://github.com/Vitor-Piress)), Desenvolvedor Full-Stack e fundador de software B2B.
@@ -29,6 +30,7 @@ A interface foi projetada com base em princípios editoriais contemporâneos ins
 
 ---
 
+<a id="design-system"></a>
 ## ✦ Design System & Experiência do Usuário
 
 ### 1. Hero Stage com Abas & Altura Dinâmica
@@ -63,6 +65,7 @@ Componente fixo no rodapé (`MiniAudioPlayer`) com ondas sonoras monocromáticas
 
 ---
 
+<a id="projetos"></a>
 ## ✦ Projetos em Destaque
 
 | Projeto                | Categoria                     | Stack Principal                                           | Destaque Técnico                                                                                                  |
@@ -73,6 +76,7 @@ Componente fixo no rodapé (`MiniAudioPlayer`) com ondas sonoras monocromáticas
 
 ---
 
+<a id="stack"></a>
 ## ✦ Stack Tecnológica
 
 - **Framework:** [React 19](https://react.dev/) + [Vite 8](https://vitejs.dev/)
@@ -85,7 +89,8 @@ Componente fixo no rodapé (`MiniAudioPlayer`) com ondas sonoras monocromáticas
 
 ---
 
-## ✦ Estrutura de Diretórios
+<a id="arquitetura"></a>
+## ✦ Arquitetura & Estrutura de Diretórios
 
 ```bash
 meu-portfolio/
@@ -112,6 +117,7 @@ meu-portfolio/
 
 ---
 
+<a id="instalacao"></a>
 ## ✦ Instalação e Execução
 
 ### Pré-requisitos
@@ -156,6 +162,7 @@ npm run lint
 
 ---
 
+<a id="licenca"></a>
 ## ✦ Licença
 
 Distribuído sob a licença **MIT**. Consulte o arquivo `LICENSE` para mais informações.
