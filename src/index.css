@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Monochromatic Palette Tokens */
+  --color-bg-dark: #050505;
+  --color-bento-dark: #0D0D0D;
+  --color-bento-dark-hover: #111111;
+  --color-text-primary-dark: #FAFAFA;
+  --color-text-secondary-dark: #A1A1AA;
+  --color-text-muted-dark: #52525B;
+
+  --color-bg-light: #FAFAFA;
+  --color-bento-light: #F0F0F2;
+  --color-bento-light-card: #FFFFFF;
+  --color-text-primary-light: #09090B;
+  --color-text-secondary-light: #52525B;
+  --color-text-muted-light: #71717A;
+}
+
+@layer base {
+  :root {
+    --bg-primary: #FAFAFA;
+    --bg-bento: #F0F0F2;
+    --bg-bento-elevated: #FFFFFF;
+    --text-primary: #09090B;
+    --text-secondary: #52525B;
+    --text-muted: #71717A;
+    --border-subtle: rgba(9, 9, 11, 0.08);
+    color-scheme: light;
+  }
+
+  .dark {
+    --bg-primary: #050505;
+    --bg-bento: #0D0D0D;
+    --bg-bento-elevated: #111111;
+    --text-primary: #FAFAFA;
+    --text-secondary: #A1A1AA;
+    --text-muted: #52525B;
+    --border-subtle: rgba(250, 250, 250, 0.08);
+    color-scheme: dark;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.25s ease, color 0.25s ease;
+    overflow-x: clip;
+  }
+
+  #root {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Custom utility classes for consistent Bento Grid & Editorial typography */
+.font-editorial {
+  font-family: var(--font-serif);
+}
+
+.font-mono-meta {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bento-card {
+  background-color: var(--bg-bento);
+  border-radius: 2px;
+  transition: background-color 0.25s ease, filter 0.3s ease, opacity 0.3s ease;
+}
+
+.dark .bento-card:hover {
+  background-color: var(--bg-bento-elevated);
+}
+
+html:not(.dark) .bento-card {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}

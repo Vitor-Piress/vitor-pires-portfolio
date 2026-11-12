@@ -1,0 +1,497 @@
+export type Language = "pt" | "en";
+
+export interface TimelineItem {
+  period: string;
+  role: string;
+  organization: string;
+  description: string;
+  isCurrent?: boolean;
+}
+
+export interface StackItem {
+  name: string;
+  category: string;
+  level: number; // 1 to 5
+}
+
+export interface TestimonialItem {
+  id: string;
+  quote: string;
+  author: string;
+  role: string;
+  project: string;
+  metric: string;
+}
+
+export interface TranslationSchema {
+  nav: {
+    projects: string;
+    trajectory: string;
+    contact: string;
+    backToHome: string;
+    accessSystem: string;
+  };
+  hero: {
+    name: string;
+    headline: string;
+    subheadline: string;
+    description: string;
+    ctaContact: string;
+    ctaProjects: string;
+    availability: string;
+  };
+  projectsSection: {
+    featuredLabel: string;
+    secondaryLabel: string;
+    secondarySubtitle: string;
+    viewDetails: string;
+    liveWebsite: string;
+    repository: string;
+    meta: {
+      categoryClient: string;
+      role: string;
+      year: string;
+      stack: string;
+      details: string;
+    };
+  };
+  projectDetail: {
+    back: string;
+    accessSystem: string;
+    toc: {
+      overview: string;
+      flows: string;
+      architecture: string;
+      results: string;
+    };
+    sections: {
+      overviewTitle: string;
+      problemLabel: string;
+      solutionLabel: string;
+      flowsTitle: string;
+      flowsSubtitle: string;
+      architectureTitle: string;
+      architectureSubtitle: string;
+      featuresTitle: string;
+      resultsTitle: string;
+      clickToExpand: string;
+      closePreview: string;
+      demoAction: string;
+      demoOnRequest: string;
+    };
+    commercialCta: {
+      badge: string;
+      headline: string;
+      subtext: string;
+      licenseAction: string;
+      customAction: string;
+    };
+  };
+  editorial: {
+    experienceLabel: string;
+    educationLabel: string;
+    stackLabel: string;
+    goalsLabel: string;
+    experienceItems: TimelineItem[];
+    educationItems: TimelineItem[];
+    stackItems: StackItem[];
+    goalsTitle: string;
+    goalsParagraphs: string[];
+  };
+  credibility: {
+    label: string;
+    title: string;
+    items: TestimonialItem[];
+  };
+  footer: {
+    headline: string;
+    scheduleAction: string;
+    copyEmailAction: string;
+    emailCopied: string;
+    roleSignature: string;
+    rights: string;
+  };
+  audioPlayer: {
+    label: string;
+    playing: string;
+    paused: string;
+    mute: string;
+    unmute: string;
+  };
+}
+
+export const translations: Record<Language, TranslationSchema> = {
+  pt: {
+    nav: {
+      projects: "Projetos",
+      trajectory: "Trajetória",
+      contact: "Contato",
+      backToHome: "Voltar",
+      accessSystem: "Acessar Sistema",
+    },
+    hero: {
+      name: "VITOR PIRES",
+      headline: "Desenvolvedor Full-Stack & Criador de Produtos SaaS.",
+      subheadline:
+        "Arquitetura limpa, sistemas escaláveis e interfaces de alta precisão.",
+      description:
+        "Construo softwares reais, licenciados comercialmente e projetados para resolver dores operacionais complexas com estética refinada, performance e engenharia sólida de ponta a ponta.",
+      ctaContact: "Entrar em contato",
+      ctaProjects: "Ver projetos",
+      availability: "Disponível para novos projetos & licenciamento SaaS",
+    },
+    projectsSection: {
+      featuredLabel: "/ PROJETOS PRINCIPAIS & PRODUTOS SAAS",
+      secondaryLabel: "/ MÓDULOS TÉCNICOS & PROJETOS ESPECÍFICOS",
+      secondarySubtitle:
+        "Motores dedicados, integrações com IA e arquiteturas modulares desenvolvidas para operação crítica.",
+      viewDetails: "View Project Details",
+      liveWebsite: "Live Website",
+      repository: "GitHub Repo",
+      meta: {
+        categoryClient: "CATEGORY / CLIENT",
+        role: "ROLE",
+        year: "YEAR",
+        stack: "STACK",
+        details: "DETAILS",
+      },
+    },
+    projectDetail: {
+      back: "Voltar",
+      accessSystem: "Acessar Sistema",
+      toc: {
+        overview: "Visão Geral",
+        flows: "Fluxos do Sistema",
+        architecture: "Arquitetura Técnica",
+        results: "Resultados",
+      },
+      sections: {
+        overviewTitle: "Contexto & Proposta de Valor",
+        problemLabel: "DESAFIO OPERACIONAL",
+        solutionLabel: "SOLUÇÃO ARQUITETADA",
+        flowsTitle: "Fluxos do Sistema & Interfaces",
+        flowsSubtitle:
+          "Interface real da plataforma em operação. Projetada para produtividade, clareza visual e eliminação de processos manuais.",
+        architectureTitle: "Arquitetura Técnica & Engenharia",
+        architectureSubtitle:
+          "Decisões de infraestrutura, banco de dados, segurança e integrações.",
+        featuresTitle: "Módulos & Funcionalidades-Chave",
+        resultsTitle: "Impacto Real & Métricas de Produção",
+        clickToExpand: "Expandir tela",
+        closePreview: "Fechar visualização",
+        demoAction: "Visualizar Demonstração",
+        demoOnRequest: "Demonstração sob consulta",
+      },
+      commercialCta: {
+        badge: "LICENCIAMENTO & ENGENHARIA SOB MEDIDA",
+        headline:
+          "Interessado em licenciar este produto ou construir uma arquitetura similar?",
+        subtext:
+          "Disponível para demonstrações técnicas, implantação comercial ou desenvolvimento de novos sistemas Full-Stack.",
+        licenseAction: "Solicitar demonstração / WhatsApp",
+        customAction: "Enviar proposta por E-mail",
+      },
+    },
+    editorial: {
+      experienceLabel: "/ EXPERIÊNCIA PROFISSIONAL",
+      educationLabel: "/ EDUCAÇÃO",
+      stackLabel: "/ ARSENAL TÉCNICO (TECH STACK)",
+      goalsLabel: "/ OBJETIVOS & DIRECIONAMENTO",
+      experienceItems: [
+        {
+          period: "2025 — ATUAL",
+          role: "Desenvolvedor de Software Independente & SaaS Founder",
+          organization: "Produtos Autorais & Desenvolvimento Full-Stack",
+          description:
+            "Concepção, arquitetura e operação comercial de plataformas SaaS B2B (como o Condonot) e sistemas Full-Stack sob demanda. Responsável por todo o ciclo de engenharia: modelagem PostgreSQL/Supabase, APIs em Node.js/Fastify, interfaces React/TypeScript, automação financeira Pix e deploy em nuvem (Cloudflare).",
+          isCurrent: true,
+        },
+        {
+          period: "2024 — ATUAL (2+ ANOS)",
+          role: "Técnico Administrativo em Gestão Condominial",
+          organization: "Administração & Operações Condominiais",
+          description:
+            "Vivência prática intensiva nas rotinas financeiras, jurídicas e operacionais de condomínios. Essa experiência real de domínio fundamentou a criação de softwares precisos para resolver gargalos de cobrança, emissão de notificações de infração e atendimento a moradores.",
+          isCurrent: true,
+        },
+      ],
+      educationItems: [
+        {
+          period: "EM ANDAMENTO — 5º SEMESTRE",
+          role: "Bacharelado em Sistemas de Informação",
+          organization: "UNISUL — Universidade do Sul de Santa Catarina",
+          description:
+            "Foco em engenharia de software, arquitetura de sistemas distribuídos, estrutura de dados, bancos de dados relacionais e gestão de projetos tecnológicos.",
+          isCurrent: true,
+        },
+        {
+          period: "CONCLUÍDO",
+          role: "Técnico em Desenvolvimento de Sistemas",
+          organization: "Formação Técnica Profissionalizante",
+          description:
+            "Base sólida em lógica de programação, orientação a objetos, modelagem de dados e desenvolvimento de aplicações desktop e web.",
+          isCurrent: false,
+        },
+      ],
+      stackItems: [
+        { name: "React", category: "Frontend", level: 5 },
+        { name: "TypeScript", category: "Language", level: 5 },
+        { name: "Vite", category: "Tooling", level: 5 },
+        { name: "Tailwind CSS", category: "Styling", level: 5 },
+        { name: "Node.js", category: "Backend", level: 5 },
+        { name: "Fastify", category: "API Framework", level: 3 },
+        { name: "Supabase", category: "BaaS / Auth / DB", level: 4 },
+        { name: "PostgreSQL", category: "Database", level: 5 },
+        { name: "Python", category: "AI & Automation", level: 4 },
+        { name: "Cloudflare", category: "Edge & Infra", level: 4 },
+        { name: "Linux Ubuntu", category: "Environment", level: 5 },
+        { name: "Git", category: "Version Control", level: 5 },
+      ],
+      goalsTitle:
+        "Engenharia orientada a produto: software que combina rigor técnico, velocidade operacional e estética intencional.",
+      goalsParagraphs: [
+        "Meu direcionamento profissional une duas frentes complementares: a expansão contínua dos meus produtos SaaS no mercado B2B e a atuação em projetos desafiadores de engenharia Full-Stack onde performance, confiabilidade e experiência de uso são inegociáveis.",
+        "Por ter vivenciado na prática a dor operacional antes de escrever a primeira linha de código dos meus sistemas, projeto cada tela e cada endpoint com foco no resultado real — eliminando retrabalho manual, automatizando fluxos financeiros e entregando interfaces que transmitem autoridade imediata.",
+      ],
+    },
+    credibility: {
+      label: "/ CREDIBILIDADE & IMPACTO REAL",
+      title: "Sistemas validados em operação comercial e uso diário.",
+      items: [
+        {
+          id: "condonot-validation",
+          quote:
+            "O Condonot substituiu controles manuais em planilhas e editores de texto por um fluxo único: da identificação da infração à geração do PDF formal e envio rastreado por e-mail em segundos.",
+          author: "Operação Comercial Licenciada",
+          role: "Administração Condominial B2B",
+          project: "Condonot SaaS",
+          metric: "-85% no tempo de emissão e cobrança",
+        },
+        {
+          id: "moradas-validation",
+          quote:
+            "Hóspedes passaram a acessar painéis digitais, trazendo maior facilidade, modernidade e profissionalismo para o negócio, enquanto a administração gerencia tudo em tempo real pelo painel.",
+          author: "Gestão de Hospedagem",
+          role: "Operação Hoteleira & Pousada",
+          project: "Moradas do Gabriel",
+          metric: "100% digitalização do atendimento ao hóspede",
+        },
+        {
+          id: "dailycheckout-validation",
+          quote:
+            "O sistema simplificou completamente a nossa rotina de caixa. Hoje fazemos qualquer lançamento em poucos segundos e temos controle e rastreabilidade total de cada centavo, tudo de forma clara e imediata.",
+          author: "Arquitetura Full-Stack em Produção",
+          role: "Controle de Processos Operacionais",
+          project: "Dailycheckout",
+          metric: "Rastreadibilidade TOTAL do caixa da Barbearia",
+        },
+      ],
+    },
+    footer: {
+      headline:
+        "Tem um novo projeto ou desafio em mente? Estou pronto para conversar.",
+      scheduleAction: "Agendar uma conversa / WhatsApp",
+      copyEmailAction: "Enviar uma mensagem (Copiar E-mail)",
+      emailCopied: "E-mail copiado para a área de transferência",
+      roleSignature: "VITOR PIRES — FULL-STACK DEVELOPER",
+      rights: "© 2026 Vitor Pires. All rights reserved.",
+    },
+    audioPlayer: {
+      label: "AMBIENT SOUNDTRACK",
+      playing: "PLAYING",
+      paused: "PAUSED",
+      mute: "MUTE",
+      unmute: "UNMUTE",
+    },
+  },
+  en: {
+    nav: {
+      projects: "Projects",
+      trajectory: "Trajectory",
+      contact: "Contact",
+      backToHome: "Back",
+      accessSystem: "Live System",
+    },
+    hero: {
+      name: "VITOR PIRES",
+      headline: "Full-Stack Developer & SaaS Product Creator.",
+      subheadline:
+        "Clean architecture, scalable systems, and high-precision interfaces.",
+      description:
+        "I build real-world, commercially licensed software designed to solve complex operational pain points with refined aesthetics, high performance, and end-to-end engineering rigor.",
+      ctaContact: "Get in touch",
+      ctaProjects: "View projects",
+      availability: "Available for new projects & SaaS licensing",
+    },
+    projectsSection: {
+      featuredLabel: "/ FEATURED PROJECTS & SAAS PRODUCTS",
+      secondaryLabel: "/ TECHNICAL MODULES & SPECIALIZED SYSTEMS",
+      secondarySubtitle:
+        "Dedicated engines, AI integrations, and modular architectures built for mission-critical operations.",
+      viewDetails: "View Project Details",
+      liveWebsite: "Live Website",
+      repository: "GitHub Repo",
+      meta: {
+        categoryClient: "CATEGORY / CLIENT",
+        role: "ROLE",
+        year: "YEAR",
+        stack: "STACK",
+        details: "DETAILS",
+      },
+    },
+    projectDetail: {
+      back: "Back",
+      accessSystem: "Live System",
+      toc: {
+        overview: "Overview",
+        flows: "System Flows",
+        architecture: "Technical Architecture",
+        results: "Results",
+      },
+      sections: {
+        overviewTitle: "Context & Value Proposition",
+        problemLabel: "OPERATIONAL CHALLENGE",
+        solutionLabel: "ARCHITECTED SOLUTION",
+        flowsTitle: "System Flows & Interfaces",
+        flowsSubtitle:
+          "Real production interface. Designed for operational clarity, speed, and zero manual friction.",
+        architectureTitle: "Technical Architecture & Engineering",
+        architectureSubtitle:
+          "Infrastructure decisions, database modeling, security, and integrations.",
+        featuresTitle: "Core Modules & Key Capabilities",
+        resultsTitle: "Real-World Impact & Production Metrics",
+        clickToExpand: "Expand screen",
+        closePreview: "Close preview",
+        demoAction: "Live Demo",
+        demoOnRequest: "Demo on request",
+      },
+      commercialCta: {
+        badge: "LICENSING & BESPOKE ENGINEERING",
+        headline:
+          "Interested in licensing this product or building a similar architecture?",
+        subtext:
+          "Available for technical walkthroughs, commercial deployment, or full-stack engineering engagements.",
+        licenseAction: "Book a walkthrough / WhatsApp",
+        customAction: "Send proposal via Email",
+      },
+    },
+    editorial: {
+      experienceLabel: "/ PROFESSIONAL EXPERIENCE",
+      educationLabel: "/ EDUCATION",
+      stackLabel: "/ TECHNICAL ARSENAL (STACK)",
+      goalsLabel: "/ GOALS & DIRECTION",
+      experienceItems: [
+        {
+          period: "2024 — PRESENT",
+          role: "Independent Software Developer & SaaS Founder",
+          organization: "Proprietary SaaS Products & Full-Stack Engineering",
+          description:
+            "Conception, architecture, and commercial operation of B2B SaaS platforms (such as Condonot) and custom Full-Stack systems. Responsible for the entire engineering lifecycle: PostgreSQL/Supabase modeling, Node.js/Fastify APIs, React/TypeScript interfaces, automated Pix billing, and Cloudflare deployment.",
+          isCurrent: true,
+        },
+        {
+          period: "2022 — 2024 (2+ YEARS)",
+          role: "Condominium Management Administrative Technician",
+          organization: "Property Administration & Operations",
+          description:
+            "Hands-on domain experience across financial, legal, and operational workflows in condominium management. This direct field background shaped the architecture of high-precision software that eliminates billing bottlenecks, formalizes infraction notices, and streamlines resident support.",
+          isCurrent: false,
+        },
+      ],
+      educationItems: [
+        {
+          period: "IN PROGRESS — 5TH SEMESTER",
+          role: "B.S. in Information Systems",
+          organization: "UNISUL — University of Southern Santa Catarina",
+          description:
+            "Focused on software engineering, distributed systems architecture, data structures, relational databases, and technology project management.",
+          isCurrent: true,
+        },
+        {
+          period: "INTENSIVE TRACK",
+          role: "Full-Stack Engineering Program (Carreira Tech)",
+          organization: "SCTEC — Santa Catarina Technology",
+          description:
+            "Practical specialization in modern Full-Stack web development, RESTful APIs, database design, and production-grade software practices.",
+          isCurrent: false,
+        },
+        {
+          period: "COMPLETED",
+          role: "Systems Development Technician",
+          organization: "Technical Vocational Education",
+          description:
+            "Strong foundation in programming logic, object-oriented design, data modeling, and full-cycle application development.",
+          isCurrent: false,
+        },
+      ],
+      stackItems: [
+        { name: "React", category: "Frontend", level: 5 },
+        { name: "TypeScript", category: "Language", level: 5 },
+        { name: "Vite", category: "Tooling", level: 5 },
+        { name: "Tailwind CSS", category: "Styling", level: 5 },
+        { name: "Node.js", category: "Backend", level: 5 },
+        { name: "Fastify", category: "API Framework", level: 4 },
+        { name: "Supabase", category: "BaaS / Auth / DB", level: 5 },
+        { name: "PostgreSQL", category: "Database", level: 5 },
+        { name: "Python", category: "AI & Automation", level: 4 },
+        { name: "Cloudflare", category: "Edge & Infra", level: 4 },
+        { name: "Linux Ubuntu", category: "Environment", level: 5 },
+        { name: "Git", category: "Version Control", level: 5 },
+      ],
+      goalsTitle:
+        "Product-driven engineering: software that combines technical rigor, operational speed, and intentional aesthetics.",
+      goalsParagraphs: [
+        "My professional focus bridges two complementary tracks: scaling my proprietary B2B SaaS products in the market and contributing to high-impact Full-Stack engineering challenges where performance, reliability, and user experience are non-negotiable.",
+        "Having experienced operational friction firsthand before writing the first line of code for my platforms, I architect every interface and endpoint around measurable outcomes—eliminating manual rework, automating financial pipelines, and crafting interfaces that convey immediate authority.",
+      ],
+    },
+    credibility: {
+      label: "/ CREDIBILITY & REAL-WORLD IMPACT",
+      title: "Systems validated in commercial production and daily operations.",
+      items: [
+        {
+          id: "condonot-validation",
+          quote:
+            "Condonot replaced fragmented spreadsheets and manual word processors with a single unified pipeline: from infraction logging to formal PDF generation, Pix BR Code payload, and tracked email delivery in seconds.",
+          author: "Licensed Commercial Operation",
+          role: "B2B Condominium Administration",
+          project: "Condonot SaaS",
+          metric: "-85% time spent on notices & billing",
+        },
+        {
+          id: "moradas-validation",
+          quote:
+            "Guests now access instant Wi-Fi onboarding, curated local guides, and house rules directly from their phones, while property managers update every module in real time via the admin dashboard.",
+          author: "Hospitality Management",
+          role: "Boutique Guesthouse Operations",
+          project: "Moradas do Gabriel",
+          metric: "100% digitalized guest onboarding",
+        },
+        {
+          id: "dailycheckout-validation",
+          quote:
+            "Decoupling the reactive frontend from the dedicated Fastify + PostgreSQL API brought complete auditability to daily checkout routines and multi-shift task verification.",
+          author: "Production Full-Stack Architecture",
+          role: "Operational Process Control",
+          project: "Dailycheckout",
+          metric: "Zero record loss across shift handovers",
+        },
+      ],
+    },
+    footer: {
+      headline: "Have a new project or challenge in mind? I'm ready to talk.",
+      scheduleAction: "Schedule a call / WhatsApp",
+      copyEmailAction: "Send a message (Copy Email)",
+      emailCopied: "Email copied to clipboard",
+      roleSignature: "VITOR PIRES — FULL-STACK DEVELOPER",
+      rights: "© 2026 Vitor Pires. All rights reserved.",
+    },
+    audioPlayer: {
+      label: "AMBIENT SOUNDTRACK",
+      playing: "PLAYING",
+      paused: "PAUSED",
+      mute: "MUTE",
+      unmute: "UNMUTE",
+    },
+  },
+};
