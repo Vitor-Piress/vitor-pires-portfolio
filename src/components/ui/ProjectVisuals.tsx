@@ -17,16 +17,23 @@ export function ProjectLogo({ slug, name, logo, size = 'md' }: ProjectLogoProps)
   const textSize = size === 'sm' ? 'text-sm' : 'text-base'
 
   if (logo) {
+    // Circular self-contained badges (e.g. Dailycheckout SVG) render natively without a white square halo
+    const isNativeCircle = slug === 'dailycheckout' || logo.endsWith('.svg')
+
     return (
       <div className="inline-flex items-center gap-2.5 select-none">
         <span
-          className={`${iconBox} inline-flex items-center justify-center rounded-[4px] bg-white p-0.5 shadow-sm overflow-hidden shrink-0`}
+          className={`${iconBox} inline-flex items-center justify-center overflow-hidden shrink-0 ${
+            isNativeCircle
+              ? 'rounded-full ring-1 ring-[var(--border-subtle)]'
+              : 'rounded-[4px] bg-white p-0.5 shadow-sm'
+          }`}
           aria-hidden="true"
         >
           <img
             src={logo}
             alt={name}
-            className="h-full w-full object-contain"
+            className={`h-full w-full ${isNativeCircle ? 'object-cover' : 'object-contain'}`}
           />
         </span>
         <span className={`${textSize} font-medium tracking-tight text-[var(--text-primary)]`}>

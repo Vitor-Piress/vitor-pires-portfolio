@@ -651,7 +651,7 @@ export const featuredProjects: FeaturedProject[] = [
     tier: "featured",
     slug: "dailycheckout",
     name: "Dailycheckout",
-    logo: null,
+    logo: "/projects/dailycheckout/dailycheckout-logo.svg",
     previewImage: null,
     demoUrl: null,
     appDomain: "dailycheckout.app",

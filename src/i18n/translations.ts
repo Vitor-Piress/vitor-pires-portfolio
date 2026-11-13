@@ -11,7 +11,6 @@ export interface TimelineItem {
 export interface StackItem {
   name: string;
   category: string;
-  level: number; // 1 to 5
 }
 
 export interface TestimonialItem {
@@ -120,6 +119,21 @@ export interface TranslationSchema {
     unmute: string;
   };
 }
+
+const SHARED_STACK_ITEMS: StackItem[] = [
+  { name: "React", category: "Frontend" },
+  { name: "TypeScript", category: "Language" },
+  { name: "Vite", category: "Tooling" },
+  { name: "Tailwind CSS", category: "Styling" },
+  { name: "Node.js", category: "Backend" },
+  { name: "Fastify", category: "API Framework" },
+  { name: "Supabase", category: "BaaS / Auth / DB" },
+  { name: "PostgreSQL", category: "Database" },
+  { name: "Python", category: "AI & Automation" },
+  { name: "Cloudflare", category: "Edge & Infra" },
+  { name: "Linux Ubuntu", category: "Environment" },
+  { name: "Git", category: "Version Control" },
+];
 
 export const translations: Record<Language, TranslationSchema> = {
   pt: {
@@ -234,20 +248,7 @@ export const translations: Record<Language, TranslationSchema> = {
           isCurrent: false,
         },
       ],
-      stackItems: [
-        { name: "React", category: "Frontend", level: 5 },
-        { name: "TypeScript", category: "Language", level: 5 },
-        { name: "Vite", category: "Tooling", level: 5 },
-        { name: "Tailwind CSS", category: "Styling", level: 5 },
-        { name: "Node.js", category: "Backend", level: 5 },
-        { name: "Fastify", category: "API Framework", level: 3 },
-        { name: "Supabase", category: "BaaS / Auth / DB", level: 4 },
-        { name: "PostgreSQL", category: "Database", level: 5 },
-        { name: "Python", category: "AI & Automation", level: 4 },
-        { name: "Cloudflare", category: "Edge & Infra", level: 4 },
-        { name: "Linux Ubuntu", category: "Environment", level: 5 },
-        { name: "Git", category: "Version Control", level: 5 },
-      ],
+      stackItems: SHARED_STACK_ITEMS,
       goalsTitle:
         "Engenharia orientada a produto: software que combina rigor técnico, velocidade operacional e estética intencional.",
       goalsParagraphs: [
@@ -426,20 +427,7 @@ export const translations: Record<Language, TranslationSchema> = {
           isCurrent: false,
         },
       ],
-      stackItems: [
-        { name: "React", category: "Frontend", level: 5 },
-        { name: "TypeScript", category: "Language", level: 5 },
-        { name: "Vite", category: "Tooling", level: 5 },
-        { name: "Tailwind CSS", category: "Styling", level: 5 },
-        { name: "Node.js", category: "Backend", level: 5 },
-        { name: "Fastify", category: "API Framework", level: 4 },
-        { name: "Supabase", category: "BaaS / Auth / DB", level: 5 },
-        { name: "PostgreSQL", category: "Database", level: 5 },
-        { name: "Python", category: "AI & Automation", level: 4 },
-        { name: "Cloudflare", category: "Edge & Infra", level: 4 },
-        { name: "Linux Ubuntu", category: "Environment", level: 5 },
-        { name: "Git", category: "Version Control", level: 5 },
-      ],
+      stackItems: SHARED_STACK_ITEMS,
       goalsTitle:
         "Product-driven engineering: software that combines technical rigor, operational speed, and intentional aesthetics.",
       goalsParagraphs: [

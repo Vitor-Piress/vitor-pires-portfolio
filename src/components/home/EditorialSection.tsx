@@ -42,27 +42,17 @@ export function EditorialSection() {
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {t.editorial.stackItems.map((item, idx) => (
             <BlurReveal key={item.name} delay={(idx % 4) * 0.05}>
-              <div className="bento-card flex flex-col justify-between p-4 sm:p-5 h-full">
+              <div className="bento-card flex flex-col justify-between p-4 sm:p-5 h-full border border-transparent hover:border-[var(--border-subtle)] transition-colors">
                 <div className="flex items-start justify-between gap-2">
                   <span className="text-sm sm:text-[15px] font-medium text-[var(--text-primary)]">
                     {item.name}
                   </span>
-                  {/* Minimalist 5-dot proficiency indicator */}
-                  <div
-                    className="flex items-center gap-1 pt-1.5"
-                    aria-label={`Proficiency ${item.level} of 5`}
+                  <span
+                    aria-hidden="true"
+                    className="font-mono text-[10px] text-[var(--text-muted)] opacity-55 tabular-nums pt-0.5"
                   >
-                    {Array.from({ length: 5 }).map((_, dotIdx) => (
-                      <span
-                        key={dotIdx}
-                        className={`h-1 w-1 rounded-full ${
-                          dotIdx < item.level
-                            ? 'bg-[var(--text-primary)] opacity-85'
-                            : 'bg-[var(--text-muted)] opacity-25'
-                        }`}
-                      />
-                    ))}
-                  </div>
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
                 </div>
                 <span className="mt-4 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                   {item.category}

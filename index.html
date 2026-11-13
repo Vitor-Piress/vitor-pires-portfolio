@@ -9,6 +9,105 @@
       name="description"
       content="Portfólio autoral e vitrine de produtos SaaS de Vitor Pires — Desenvolvedor Full-Stack focado em sistemas reais, escaláveis e de alta precisão estética."
     />
+    <meta name="author" content="Vitor Pires" />
+    <meta name="theme-color" content="#050505" />
+
+    <!-- Open Graph / Social Cards (WhatsApp, LinkedIn, Discord) -->
+    <!-- Nota: após deploy em domínio definitivo, atualize og:image e twitter:image para URL absoluta (ex: https://seudominio.com/og-cover.png) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="Vitor Pires" />
+    <meta
+      property="og:title"
+      content="Vitor Pires — Full-Stack Developer & SaaS Founder"
+    />
+    <meta
+      property="og:description"
+      content="Arquitetura limpa, sistemas escaláveis e produtos SaaS em produção comercial: Condonot, Moradas do Gabriel e Dailycheckout."
+    />
+    <meta property="og:image" content="/og-cover.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Vitor Pires — Full-Stack Developer & SaaS Founder Portfolio"
+    />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Vitor Pires — Full-Stack Developer & SaaS Founder"
+    />
+    <meta
+      name="twitter:description"
+      content="Arquitetura limpa, sistemas escaláveis e produtos SaaS em produção comercial."
+    />
+    <meta name="twitter:image" content="/og-cover.png" />
+
+    <!-- Schema.org Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "#vitor-pires",
+            "name": "Vitor Pires",
+            "jobTitle": "Full-Stack Developer & SaaS Founder",
+            "description": "Desenvolvedor Full-Stack focado em plataformas SaaS B2B, APIs escaláveis e interfaces digitais de alta precisão.",
+            "email": "mailto:vitorspires25@gmail.com",
+            "sameAs": [
+              "https://github.com/Vitor-Piress",
+              "https://www.linkedin.com/in/vitor-pires-74017a269/"
+            ],
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "UNISUL — Universidade do Sul de Santa Catarina"
+            },
+            "knowsAbout": [
+              "React",
+              "TypeScript",
+              "Node.js",
+              "Fastify",
+              "PostgreSQL",
+              "Supabase",
+              "Tailwind CSS",
+              "Python",
+              "Cloudflare",
+              "SaaS Architecture"
+            ]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Condonot",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "description": "Plataforma SaaS B2B para administração condominial, notificações formais e automação financeira.",
+            "creator": { "@id": "#vitor-pires" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Moradas do Gabriel",
+            "url": "https://moradasdogabriel.com.br",
+            "applicationCategory": "TravelApplication",
+            "operatingSystem": "Web",
+            "description": "Portal digital para hóspedes e sistema de gestão de hospedagem.",
+            "creator": { "@id": "#vitor-pires" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Dailycheckout",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "description": "Aplicação Full-Stack para controle operacional, rotinas de checkout e rastreabilidade financeira.",
+            "creator": { "@id": "#vitor-pires" }
+          }
+        ]
+      }
+    </script>
     <!-- Google Fonts: Instrument Serif, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

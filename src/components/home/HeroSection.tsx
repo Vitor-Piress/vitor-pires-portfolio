@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
@@ -16,20 +17,29 @@ export function HeroSection() {
   return (
     <section className="relative mx-auto w-full max-w-6xl px-6 pt-32 pb-24 sm:pt-40 sm:pb-32 md:px-10">
       <div className="max-w-3xl">
-        {/* Top Metadata + Availability */}
+        {/* Top Metadata + Availability + Live Presence */}
         <motion.div
           initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
           animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 inline-flex items-center gap-2.5"
+          className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2"
         >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--text-primary)] opacity-40" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--text-primary)]" />
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
-            {t.hero.availability}
-          </span>
+          <div className="inline-flex items-center gap-2.5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--text-primary)] opacity-40" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--text-primary)]" />
+            </span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
+              {t.hero.availability}
+            </span>
+          </div>
+
+          <span
+            aria-hidden="true"
+            className="hidden sm:inline-block h-3 w-px bg-[var(--border-subtle)]"
+          />
+
+          <LivePresenceTime />
         </motion.div>
 
         {/* Author Name — Breeder-inspired handoff to top-left Header on scroll */}
@@ -129,5 +139,48 @@ export function HeroSection() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function formatBrazilLocalTime(): string {
+  return new Intl.DateTimeFormat("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).format(new Date());
+}
+
+/**
+ * Isolated live local clock (America/Sao_Paulo) so 1s ticks never re-render HeroSection.
+ */
+function LivePresenceTime() {
+  const [localTime, setLocalTime] = useState<string>(() =>
+    formatBrazilLocalTime(),
+  );
+
+  useEffect(() => {
+    const timerId = window.setInterval(() => {
+      setLocalTime(formatBrazilLocalTime());
+    }, 1000);
+
+    return () => window.clearInterval(timerId);
+  }, []);
+
+  return (
+    <div
+      className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-muted)] tabular-nums"
+      title="Horário local — Santa Catarina, Brasil (America/Sao_Paulo)"
+    >
+      <span>SC, BR</span>
+      <span aria-hidden="true" className="opacity-40">
+        ·
+      </span>
+      <time dateTime={localTime} className="text-[var(--text-secondary)]">
+        {localTime}
+      </time>
+      <span className="opacity-65">GMT-3</span>
+    </div>
   );
 }
