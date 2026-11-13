@@ -5,15 +5,18 @@ import {
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
+  Columns2,
   ExternalLink,
   Layers,
   LayoutGrid,
   LayoutPanelTop,
   Maximize,
   Moon,
+  PanelTop,
   SlidersHorizontal,
   Sparkles,
   Sun,
+  Type,
   Check,
   ZoomIn,
   ZoomOut,
@@ -24,6 +27,15 @@ import { useTheme } from "../context/ThemeContext";
 import { ProjectLogo } from "../components/ui/ProjectVisuals";
 import { ProjectBentoShowcase } from "../components/home/ProjectBentoShowcase";
 import { EditorialBentoShowcase } from "../components/home/EditorialBentoShowcase";
+import { HeroSection } from "../components/home/HeroSection";
+import {
+  HeroCompactSplitPrototype,
+  HeroGridEditorialPrototype,
+} from "../components/lab/HeroPrototypes";
+
+type LabScope = "hero" | "projects";
+
+type HeroVariantId = "typographic-balance" | "grid-7-5" | "compact-split";
 
 type VariantId =
   | "editorial-bento"
@@ -34,6 +46,41 @@ type VariantId =
   | "bento";
 
 type ProjectFilter = "all" | "condonot" | "moradas-do-gabriel" | "dailycheckout";
+
+interface HeroVariantOption {
+  id: HeroVariantId;
+  label: string;
+  subtitle: string;
+  icon: typeof LayoutGrid;
+  tag: string;
+}
+
+const HERO_VARIANTS: HeroVariantOption[] = [
+  {
+    id: "typographic-balance",
+    label: "Opção 3 · Escala & Base Alinhada",
+    subtitle:
+      "Subtítulo itálico um degrau abaixo do título principal, meta curta no topo, links à direita dos botões e animações originais",
+    icon: Type,
+    tag: "Ativo na Home",
+  },
+  {
+    id: "grid-7-5",
+    label: "Opção 1 · Grid Editorial 7+5",
+    subtitle:
+      "Espelha as 12 colunas dos projetos: narrativa/botões na esquerda (7 cols) + ficha de status, horário e links à direita (5 cols)",
+    icon: Columns2,
+    tag: "Alternativa",
+  },
+  {
+    id: "compact-split",
+    label: "Opção 2 · Meta Dividida",
+    subtitle:
+      "1 coluna clássica mais compacta, separando disponibilidade (esq.) e relógio (dir.) no topo + assinatura de links na base",
+    icon: PanelTop,
+    tag: "Alternativa",
+  },
+];
 
 interface VariantOption {
   id: VariantId;
@@ -99,11 +146,16 @@ const PROJECT_FILTERS: { id: ProjectFilter; label: string }[] = [
 ];
 
 export function DesignLab() {
+  const [labScope, setLabScope] = useState<LabScope>("hero");
+  const [heroVariant, setHeroVariant] = useState<HeroVariantId>(
+    "typographic-balance",
+  );
+  const [showTransitionPreview, setShowTransitionPreview] = useState(true);
   const [activeVariant, setActiveVariant] =
     useState<VariantId>("editorial-bento");
   const [projectFilter, setProjectFilter] = useState<ProjectFilter>("all");
   const [alternatingRhythm, setAlternatingRhythm] = useState(true);
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
 
   const visibleProjects =
@@ -140,22 +192,27 @@ export function DesignLab() {
             </div>
           </div>
 
-          {/* Right Controls: Project Switcher + Lang + Theme */}
+          {/* Right Controls: Scope Toggle + Project Switcher + Lang + Theme */}
           <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
-            {/* Project Filter Pills */}
+            {/* Lab Section Scope Switcher: Hero vs Projects */}
             <div
               role="group"
-              aria-label="Selecionar projeto no Lab"
+              aria-label="Seção em prototipação"
               className="inline-flex items-center gap-1 rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 p-0.5"
             >
-              {PROJECT_FILTERS.map((item) => {
-                const isActive = projectFilter === item.id;
+              {(
+                [
+                  { id: "hero", label: "Hero Section (3 opções)" },
+                  { id: "projects", label: "Projetos" },
+                ] as const
+              ).map((item) => {
+                const isActive = labScope === item.id;
                 return (
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setProjectFilter(item.id)}
-                    className={`cursor-pointer rounded-[2px] px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                    onClick={() => setLabScope(item.id)}
+                    className={`cursor-pointer rounded-[2px] px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
                       isActive
                         ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
                         : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
@@ -166,6 +223,33 @@ export function DesignLab() {
                 );
               })}
             </div>
+
+            {/* Project Filter Pills (only when inspecting projects) */}
+            {labScope === "projects" && (
+              <div
+                role="group"
+                aria-label="Selecionar projeto no Lab"
+                className="inline-flex items-center gap-1 rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 p-0.5"
+              >
+                {PROJECT_FILTERS.map((item) => {
+                  const isActive = projectFilter === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setProjectFilter(item.id)}
+                      className={`cursor-pointer rounded-[2px] px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                        isActive
+                          ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
+                          : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
             {/* PT / EN Switcher */}
             <div className="inline-flex items-center gap-1 font-mono text-[11px]">
@@ -213,35 +297,65 @@ export function DesignLab() {
         {/* Variant Switcher Pills */}
         <div className="mx-auto max-w-7xl overflow-x-auto px-4 pb-3 sm:px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-center gap-2 min-w-max">
-            {VARIANTS.map((variant) => {
-              const Icon = variant.icon;
-              const isSelected = activeVariant === variant.id;
-              return (
-                <button
-                  key={variant.id}
-                  type="button"
-                  onClick={() => setActiveVariant(variant.id)}
-                  className={`cursor-pointer inline-flex items-center gap-2 rounded-[4px] border px-3 py-1.5 text-xs font-mono transition-all duration-200 ${
-                    isSelected
-                      ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm"
-                      : "border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]"
-                  }`}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  <span className="font-medium">{variant.label}</span>
-                  {isSelected && <Check className="h-3 w-3 ml-0.5" />}
-                  <span
-                    className={`ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full ${
-                      isSelected
-                        ? "bg-[var(--bg-primary)] text-[var(--text-primary)]"
-                        : "bg-[var(--bg-primary)] text-[var(--text-muted)]"
-                    }`}
-                  >
-                    {variant.tag}
-                  </span>
-                </button>
-              );
-            })}
+            {labScope === "hero"
+              ? HERO_VARIANTS.map((variant) => {
+                  const Icon = variant.icon;
+                  const isSelected = heroVariant === variant.id;
+                  return (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      onClick={() => setHeroVariant(variant.id)}
+                      className={`cursor-pointer inline-flex items-center gap-2 rounded-[4px] border px-3 py-1.5 text-xs font-mono transition-all duration-200 ${
+                        isSelected
+                          ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm"
+                          : "border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]"
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      <span className="font-medium">{variant.label}</span>
+                      {isSelected && <Check className="h-3 w-3 ml-0.5" />}
+                      <span
+                        className={`ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full ${
+                          isSelected
+                            ? "bg-[var(--bg-primary)] text-[var(--text-primary)]"
+                            : "bg-[var(--bg-primary)] text-[var(--text-muted)]"
+                        }`}
+                      >
+                        {variant.tag}
+                      </span>
+                    </button>
+                  );
+                })
+              : VARIANTS.map((variant) => {
+                  const Icon = variant.icon;
+                  const isSelected = activeVariant === variant.id;
+                  return (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      onClick={() => setActiveVariant(variant.id)}
+                      className={`cursor-pointer inline-flex items-center gap-2 rounded-[4px] border px-3 py-1.5 text-xs font-mono transition-all duration-200 ${
+                        isSelected
+                          ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm"
+                          : "border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]"
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      <span className="font-medium">{variant.label}</span>
+                      {isSelected && <Check className="h-3 w-3 ml-0.5" />}
+                      <span
+                        className={`ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full ${
+                          isSelected
+                            ? "bg-[var(--bg-primary)] text-[var(--text-primary)]"
+                            : "bg-[var(--bg-primary)] text-[var(--text-muted)]"
+                        }`}
+                      >
+                        {variant.tag}
+                      </span>
+                    </button>
+                  );
+                })}
           </div>
         </div>
       </header>
@@ -249,66 +363,126 @@ export function DesignLab() {
       {/* Explanatory Banner */}
       <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-bento)]/40 px-4 py-3 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
-          <p className="text-xs text-[var(--text-secondary)]">
-            <span className="font-semibold text-[var(--text-primary)]">
-              {VARIANTS.find((v) => v.id === activeVariant)?.label}:
-            </span>{" "}
-            {VARIANTS.find((v) => v.id === activeVariant)?.subtitle}
-          </p>
+          {labScope === "hero" ? (
+            <>
+              <p className="text-xs text-[var(--text-secondary)]">
+                <span className="font-semibold text-[var(--text-primary)]">
+                  {HERO_VARIANTS.find((v) => v.id === heroVariant)?.label}:
+                </span>{" "}
+                {HERO_VARIANTS.find((v) => v.id === heroVariant)?.subtitle}
+              </p>
 
-          {activeVariant === "editorial-bento" ? (
-            <button
-              type="button"
-              onClick={() => setAlternatingRhythm((prev) => !prev)}
-              className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              <span>
-                Ritmo Bento:{" "}
-                <strong className="text-[var(--text-primary)]">
-                  {alternatingRhythm ? "Alternado (8+4 / 4+8)" : "Uniforme (8+4)"}
-                </strong>
-              </span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setShowTransitionPreview((prev) => !prev)}
+                className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                <span>
+                  Contexto abaixo:{" "}
+                  <strong className="text-[var(--text-primary)]">
+                    {showTransitionPreview ? "Hero + Projetos" : "Só Hero"}
+                  </strong>
+                </span>
+              </button>
+            </>
           ) : (
-            <span className="text-[10px] font-mono text-[var(--text-muted)]">
-              Testando no layout real da página inicial
-            </span>
+            <>
+              <p className="text-xs text-[var(--text-secondary)]">
+                <span className="font-semibold text-[var(--text-primary)]">
+                  {VARIANTS.find((v) => v.id === activeVariant)?.label}:
+                </span>{" "}
+                {VARIANTS.find((v) => v.id === activeVariant)?.subtitle}
+              </p>
+
+              {activeVariant === "editorial-bento" ? (
+                <button
+                  type="button"
+                  onClick={() => setAlternatingRhythm((prev) => !prev)}
+                  className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                >
+                  <span>
+                    Ritmo Bento:{" "}
+                    <strong className="text-[var(--text-primary)]">
+                      {alternatingRhythm
+                        ? "Alternado (8+4 / 4+8)"
+                        : "Uniforme (8+4)"}
+                    </strong>
+                  </span>
+                </button>
+              ) : (
+                <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                  Testando no layout real da página inicial
+                </span>
+              )}
+            </>
           )}
         </div>
       </div>
 
       {/* Main Preview Stage */}
-      <main className="mx-auto max-w-6xl px-6 py-12 sm:py-16 md:px-10">
-        {activeVariant === "editorial-bento" ? (
-          <div className="flex flex-col gap-28 sm:gap-36">
-            {visibleProjects.map((proj) => {
-              const realIndex = featuredProjects.findIndex(
-                (p) => p.slug === proj.slug,
-              );
-              return (
-                <EditorialBentoShowcase
-                  key={`${proj.slug}-${alternatingRhythm}`}
-                  project={proj}
-                  index={realIndex >= 0 ? realIndex : 0}
-                  alternatingRhythm={alternatingRhythm}
-                />
-              );
-            })}
-          </div>
-        ) : activeVariant === "fullwidth" ? (
-          <div className="flex flex-col gap-24">
-            {visibleProjects.map((proj) => (
-              <VariantEditorialFullWidth
-                key={proj.slug}
-                project={proj}
-                language={language}
+      {labScope === "hero" ? (
+        <main className="pb-20">
+          {heroVariant === "typographic-balance" && (
+            <HeroSection compactTop projectsTargetId="lab-projects-preview" />
+          )}
+          {heroVariant === "grid-7-5" && <HeroGridEditorialPrototype />}
+          {heroVariant === "compact-split" && <HeroCompactSplitPrototype />}
+
+          {showTransitionPreview && (
+            <section
+              id="lab-projects-preview"
+              className="mx-auto w-full max-w-6xl scroll-mt-24 px-6 pt-12 pb-16 sm:pt-16 md:px-10 border-t border-dashed border-[var(--border-subtle)]/70"
+            >
+              <div className="mb-14 sm:mb-20 flex flex-wrap items-center justify-between gap-2">
+                <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
+                  {t.projectsSection.featuredLabel}
+                </span>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--text-muted)]">
+                  Preview da transição Hero → #projects
+                </span>
+              </div>
+
+              <EditorialBentoShowcase
+                project={featuredProjects[0]}
+                index={0}
               />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-28">
-            {(projectFilter === "all" ? visibleProjects : [singleProject]).map(
-              (proj) => (
+            </section>
+          )}
+        </main>
+      ) : (
+        <main className="mx-auto max-w-6xl px-6 py-12 sm:py-16 md:px-10">
+          {activeVariant === "editorial-bento" ? (
+            <div className="flex flex-col gap-28 sm:gap-36">
+              {visibleProjects.map((proj) => {
+                const realIndex = featuredProjects.findIndex(
+                  (p) => p.slug === proj.slug,
+                );
+                return (
+                  <EditorialBentoShowcase
+                    key={`${proj.slug}-${alternatingRhythm}`}
+                    project={proj}
+                    index={realIndex >= 0 ? realIndex : 0}
+                    alternatingRhythm={alternatingRhythm}
+                  />
+                );
+              })}
+            </div>
+          ) : activeVariant === "fullwidth" ? (
+            <div className="flex flex-col gap-24">
+              {visibleProjects.map((proj) => (
+                <VariantEditorialFullWidth
+                  key={proj.slug}
+                  project={proj}
+                  language={language}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-28">
+              {(projectFilter === "all"
+                ? visibleProjects
+                : [singleProject]
+              ).map((proj) => (
                 <article
                   key={proj.slug}
                   className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start"
@@ -405,7 +579,8 @@ export function DesignLab() {
             )}
           </div>
         )}
-      </main>
+        </main>
+      )}
     </div>
   );
 }

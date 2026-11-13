@@ -39,6 +39,7 @@ export interface TranslationSchema {
     ctaProjects: string;
     ctaCv: string;
     availability: string;
+    availabilityCompact: string;
   };
   projectsSection: {
     featuredLabel: string;
@@ -156,6 +157,7 @@ export const translations: Record<Language, TranslationSchema> = {
       ctaProjects: "Ver projetos",
       ctaCv: "Currículo",
       availability: "Disponível para novos projetos & licenciamento SaaS",
+      availabilityCompact: "Disponível para projetos & SaaS",
     },
     projectsSection: {
       featuredLabel: "/ PROJETOS PRINCIPAIS & PRODUTOS SAAS",
@@ -328,6 +330,7 @@ export const translations: Record<Language, TranslationSchema> = {
       ctaProjects: "View projects",
       ctaCv: "Resume",
       availability: "Available for new projects & SaaS licensing",
+      availabilityCompact: "Available for projects & SaaS",
     },
     projectsSection: {
       featuredLabel: "/ FEATURED PROJECTS & SAAS PRODUCTS",
