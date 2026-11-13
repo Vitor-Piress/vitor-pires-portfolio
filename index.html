@@ -11,10 +11,15 @@
     />
     <meta name="author" content="Vitor Pires" />
     <meta name="theme-color" content="#050505" />
+    <link rel="canonical" href="https://vitor-pires-portfolio.pages.dev/" />
 
     <!-- Open Graph / Social Cards (WhatsApp, LinkedIn, Discord) -->
-    <!-- Nota: após deploy em domínio definitivo, atualize og:image e twitter:image para URL absoluta (ex: https://seudominio.com/og-cover.png) -->
+    <!-- Ao migrar para o domínio oficial, substitua "https://vitor-pires-portfolio.pages.dev" abaixo -->
     <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://vitor-pires-portfolio.pages.dev/"
+    />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="Vitor Pires" />
@@ -26,7 +31,14 @@
       property="og:description"
       content="Arquitetura limpa, sistemas escaláveis e produtos SaaS em produção comercial: Condonot, Moradas do Gabriel e Dailycheckout."
     />
-    <meta property="og:image" content="/og-cover.png" />
+    <meta
+      property="og:image"
+      content="https://vitor-pires-portfolio.pages.dev/og-cover.png"
+    />
+    <meta
+      property="og:image:secure_url"
+      content="https://vitor-pires-portfolio.pages.dev/og-cover.png"
+    />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -45,7 +57,14 @@
       name="twitter:description"
       content="Arquitetura limpa, sistemas escaláveis e produtos SaaS em produção comercial."
     />
-    <meta name="twitter:image" content="/og-cover.png" />
+    <meta
+      name="twitter:image"
+      content="https://vitor-pires-portfolio.pages.dev/og-cover.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Vitor Pires — Full-Stack Developer & SaaS Founder Portfolio"
+    />
 
     <!-- Schema.org Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -54,8 +73,10 @@
         "@graph": [
           {
             "@type": "Person",
-            "@id": "#vitor-pires",
+            "@id": "https://vitor-pires-portfolio.pages.dev/#vitor-pires",
             "name": "Vitor Pires",
+            "url": "https://vitor-pires-portfolio.pages.dev",
+            "image": "https://vitor-pires-portfolio.pages.dev/og-cover.png",
             "jobTitle": "Full-Stack Developer & SaaS Founder",
             "description": "Desenvolvedor Full-Stack focado em plataformas SaaS B2B, APIs escaláveis e interfaces digitais de alta precisão.",
             "email": "mailto:vitorspires25@gmail.com",
@@ -86,7 +107,9 @@
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Web",
             "description": "Plataforma SaaS B2B para administração condominial, notificações formais e automação financeira.",
-            "creator": { "@id": "#vitor-pires" }
+            "creator": {
+              "@id": "https://vitor-pires-portfolio.pages.dev/#vitor-pires"
+            }
           },
           {
             "@type": "SoftwareApplication",
@@ -95,15 +118,19 @@
             "applicationCategory": "TravelApplication",
             "operatingSystem": "Web",
             "description": "Portal digital para hóspedes e sistema de gestão de hospedagem.",
-            "creator": { "@id": "#vitor-pires" }
+            "creator": {
+              "@id": "https://vitor-pires-portfolio.pages.dev/#vitor-pires"
+            }
           },
           {
             "@type": "SoftwareApplication",
             "name": "Dailycheckout",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Web",
-            "description": "Aplicação Full-Stack para controle operacional, rotinas de checkout e rastreabilidade financeira.",
-            "creator": { "@id": "#vitor-pires" }
+            "description": "Aplicação Full-Stack de PDV, fechamento de caixa diário, rateio de comissões e controle financeiro.",
+            "creator": {
+              "@id": "https://vitor-pires-portfolio.pages.dev/#vitor-pires"
+            }
           }
         ]
       }
