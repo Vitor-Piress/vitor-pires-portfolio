@@ -162,9 +162,9 @@ export const translations: Record<Language, TranslationSchema> = {
       secondaryLabel: "/ MÓDULOS TÉCNICOS & PROJETOS ESPECÍFICOS",
       secondarySubtitle:
         "Motores dedicados, integrações com IA e arquiteturas modulares desenvolvidas para operação crítica.",
-      viewDetails: "View Project Details",
-      liveWebsite: "Live Website",
-      repository: "GitHub Repo",
+      viewDetails: "Ver detalhes do projeto",
+      liveWebsite: "Acessar site",
+      repository: "Repositório GitHub",
       meta: {
         categoryClient: "CATEGORY / CLIENT",
         role: "ROLE",
