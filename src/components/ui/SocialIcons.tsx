@@ -1,4 +1,6 @@
 import type { SVGProps } from 'react'
+import { FileText } from 'lucide-react'
+import { PROFILE_LINKS } from '../../data/profile'
 
 export function GithubIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -34,5 +36,41 @@ export function LinkedinIcon(props: SVGProps<SVGSVGElement>) {
       <rect width="4" height="12" x="2" y="9" />
       <circle cx="4" cy="4" r="2" />
     </svg>
+  )
+}
+
+interface ProfileQuickLinksProps {
+  cvLabel: string
+  className?: string
+}
+
+/** Shared monochromatic links for GitHub, LinkedIn, and CV used across Hero and Footer. */
+export function ProfileQuickLinks({
+  cvLabel,
+  className = 'gap-5 text-xs tracking-wider',
+}: ProfileQuickLinksProps) {
+  const links = [
+    { href: PROFILE_LINKS.github, label: 'GitHub', Icon: GithubIcon },
+    { href: PROFILE_LINKS.linkedin, label: 'LinkedIn', Icon: LinkedinIcon },
+    { href: PROFILE_LINKS.cv, label: cvLabel, Icon: FileText },
+  ]
+
+  return (
+    <div
+      className={`flex flex-wrap items-center font-mono uppercase text-[var(--text-secondary)] ${className}`}
+    >
+      {links.map(({ href, label, Icon }) => (
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 hover:text-[var(--text-primary)] transition-colors"
+        >
+          <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={1.75} />
+          <span>{label}</span>
+        </a>
+      ))}
+    </div>
   )
 }

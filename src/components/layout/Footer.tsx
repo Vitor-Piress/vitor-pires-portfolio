@@ -3,6 +3,7 @@ import { ArrowUpRight, Check, Copy } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 import { PROFILE_LINKS } from '../../data/profile'
 import { BlurReveal } from '../ui/BlurReveal'
+import { ProfileQuickLinks } from '../ui/SocialIcons'
 
 export function Footer() {
   const { t } = useLanguage()
@@ -68,32 +69,10 @@ export function Footer() {
           {t.footer.roleSignature}
         </div>
 
-        <div className="flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--text-secondary)]">
-          <a
-            href={PROFILE_LINKS.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[var(--text-primary)] transition-colors"
-          >
-            GitHub
-          </a>
-          <a
-            href={PROFILE_LINKS.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[var(--text-primary)] transition-colors"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={PROFILE_LINKS.cv}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[var(--text-primary)] transition-colors"
-          >
-            CV
-          </a>
-        </div>
+        <ProfileQuickLinks
+          cvLabel="CV"
+          className="justify-center gap-5 sm:gap-6 text-[11px] tracking-[0.12em]"
+        />
 
         <div className="font-mono text-[10px] sm:text-[11px] tracking-wider text-[var(--text-muted)]">
           {t.footer.rights}

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, FileText } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
-import { PROFILE_LINKS } from "../../data/profile";
 import { scrollToElement } from "../../utils/scroll";
-import { GithubIcon, LinkedinIcon } from "../ui/SocialIcons";
+import { ProfileQuickLinks } from "../ui/SocialIcons";
 
 export function HeroSection() {
   const { t } = useLanguage();
@@ -90,62 +89,38 @@ export function HeroSection() {
           initial={{ opacity: 0, filter: "blur(10px)", y: 16 }}
           animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           transition={{ duration: 0.7, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 flex flex-wrap items-center gap-4 sm:gap-6"
+          className="mt-10 flex flex-col items-start gap-6"
         >
-          {/* Primary Pill: White on Black in dark mode / Black on White in light mode */}
-          <button
-            type="button"
-            onClick={() => scrollToElement("contact", 78)}
-            className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[var(--text-primary)] px-6 py-2.5 text-sm font-medium text-[var(--bg-primary)] transition-opacity hover:opacity-85"
-          >
-            <span>{t.hero.ctaContact}</span>
-            <ArrowUpRight className="h-4 w-4" strokeWidth={1.8} />
-          </button>
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            {/* Primary Pill: White on Black in dark mode / Black on White in light mode */}
+            <button
+              type="button"
+              onClick={() => scrollToElement("contact", 78)}
+              className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[var(--text-primary)] px-6 py-2.5 text-sm font-medium text-[var(--bg-primary)] transition-opacity hover:opacity-85"
+            >
+              <span>{t.hero.ctaContact}</span>
+              <ArrowUpRight className="h-4 w-4" strokeWidth={1.8} />
+            </button>
 
-          {/* Secondary Action: Clean subtle pill */}
-          <button
-            type="button"
-            onClick={() => scrollToElement("projects", 78)}
-            className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[var(--bg-bento)] px-6 py-2.5 text-sm font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-bento-elevated)]"
-          >
-            <span>{t.hero.ctaProjects}</span>
-            <ArrowDownRight
-              className="h-4 w-4 text-[var(--text-secondary)]"
-              strokeWidth={1.8}
-            />
-          </button>
+            {/* Secondary Action: Clean subtle pill */}
+            <button
+              type="button"
+              onClick={() => scrollToElement("projects", 78)}
+              className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[var(--bg-bento)] px-6 py-2.5 text-sm font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-bento-elevated)]"
+            >
+              <span>{t.hero.ctaProjects}</span>
+              <ArrowDownRight
+                className="h-4 w-4 text-[var(--text-secondary)]"
+                strokeWidth={1.8}
+              />
+            </button>
+          </div>
 
           {/* Quick Social & CV Links */}
-
-          <div className="flex flex-wrap items-center gap-4 pl-1 sm:pl-3">
-            <a
-              href={PROFILE_LINKS.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              <GithubIcon className="h-3.5 w-3.5" />
-              <span>GitHub</span>
-            </a>
-            <a
-              href={PROFILE_LINKS.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              <LinkedinIcon className="h-3.5 w-3.5" />
-              <span>LinkedIn</span>
-            </a>
-            <a
-              href={PROFILE_LINKS.cv}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              <FileText className="h-3.5 w-3.5" strokeWidth={1.75} />
-              <span>{t.hero.ctaCv}</span>
-            </a>
-          </div>
+          <ProfileQuickLinks
+            cvLabel={t.hero.ctaCv}
+            className="gap-5 text-xs tracking-wider"
+          />
         </motion.div>
       </div>
     </section>
