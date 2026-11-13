@@ -8,19 +8,32 @@ import {
   ExternalLink,
   Layers,
   LayoutGrid,
+  LayoutPanelTop,
   Maximize,
+  Moon,
   SlidersHorizontal,
   Sparkles,
+  Sun,
   Check,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
 import { featuredProjects } from "../data/projects";
 import { useLanguage } from "../context/LanguageContext";
+import { useTheme } from "../context/ThemeContext";
 import { ProjectLogo } from "../components/ui/ProjectVisuals";
 import { ProjectBentoShowcase } from "../components/home/ProjectBentoShowcase";
+import { EditorialBentoShowcase } from "../components/home/EditorialBentoShowcase";
 
-type VariantId = "tabs" | "stacked" | "slider" | "fullwidth" | "bento";
+type VariantId =
+  | "editorial-bento"
+  | "tabs"
+  | "stacked"
+  | "slider"
+  | "fullwidth"
+  | "bento";
+
+type ProjectFilter = "all" | "condonot" | "moradas-do-gabriel" | "dailycheckout";
 
 interface VariantOption {
   id: VariantId;
@@ -32,12 +45,20 @@ interface VariantOption {
 
 const VARIANTS: VariantOption[] = [
   {
+    id: "editorial-bento",
+    label: "Editorial 7+5 + Bento 8+4",
+    subtitle:
+      "Texto respirando no topo (7+5) e Bento Híbrido abaixo (8 cols Desktop + 4 cols Mobile/Arquitetura) com ritmo alternado",
+    icon: LayoutPanelTop,
+    tag: "Ativo na Home",
+  },
+  {
     id: "tabs",
     label: "Hero Stage com Tabs",
     subtitle:
       "Uma janela cinematográfica limpa com abas de contexto para cada tela",
     icon: SlidersHorizontal,
-    tag: "Recomendada",
+    tag: "Anterior na Home",
   },
   {
     id: "stacked",
@@ -63,24 +84,40 @@ const VARIANTS: VariantOption[] = [
   },
   {
     id: "bento",
-    label: "Bento Grid Atual",
-    subtitle: "O layout Bento ajustado em proporção para comparação direta",
+    label: "Bento Grid Anterior",
+    subtitle: "O layout Bento anterior espremido em 7 cols para comparação direta",
     icon: LayoutGrid,
-    tag: "Versão Atual",
+    tag: "Legado",
   },
 ];
 
+const PROJECT_FILTERS: { id: ProjectFilter; label: string }[] = [
+  { id: "all", label: "Todos (3)" },
+  { id: "condonot", label: "Condonot" },
+  { id: "moradas-do-gabriel", label: "Moradas" },
+  { id: "dailycheckout", label: "Dailycheckout" },
+];
+
 export function DesignLab() {
-  const [activeVariant, setActiveVariant] = useState<VariantId>("tabs");
-  const { language } = useLanguage();
-  const project =
-    featuredProjects.find((p) => p.slug === "condonot") ?? featuredProjects[0];
+  const [activeVariant, setActiveVariant] =
+    useState<VariantId>("editorial-bento");
+  const [projectFilter, setProjectFilter] = useState<ProjectFilter>("all");
+  const [alternatingRhythm, setAlternatingRhythm] = useState(true);
+  const { language, setLanguage } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
+
+  const visibleProjects =
+    projectFilter === "all"
+      ? featuredProjects
+      : featuredProjects.filter((p) => p.slug === projectFilter);
+
+  const singleProject = visibleProjects[0] ?? featuredProjects[0];
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-200">
       {/* Sticky Top Control Header */}
       <header className="sticky top-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--bg-primary)]/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
             <Link
               to="/"
@@ -95,24 +132,86 @@ export function DesignLab() {
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1 rounded-full bg-[var(--text-primary)]/10 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-secondary)]">
                 <Sparkles className="h-3 w-3" />
-                Laboratório Visual
+                Design Lab
               </span>
-              <span className="text-xs font-medium text-[var(--text-primary)]">
-                Comparador de Ideias para a Home
+              <span className="hidden md:inline text-xs font-medium text-[var(--text-primary)]">
+                Prototipação de Projetos para a Home
               </span>
             </div>
           </div>
 
-          <div className="text-[11px] font-mono text-[var(--text-muted)]">
-            Projeto:{" "}
-            <span className="text-[var(--text-primary)] font-semibold">
-              {project.name}
-            </span>
+          {/* Right Controls: Project Switcher + Lang + Theme */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            {/* Project Filter Pills */}
+            <div
+              role="group"
+              aria-label="Selecionar projeto no Lab"
+              className="inline-flex items-center gap-1 rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 p-0.5"
+            >
+              {PROJECT_FILTERS.map((item) => {
+                const isActive = projectFilter === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setProjectFilter(item.id)}
+                    className={`cursor-pointer rounded-[2px] px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                      isActive
+                        ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
+                        : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* PT / EN Switcher */}
+            <div className="inline-flex items-center gap-1 font-mono text-[11px]">
+              <button
+                type="button"
+                onClick={() => setLanguage("pt")}
+                className={`cursor-pointer px-1 ${
+                  language === "pt"
+                    ? "text-[var(--text-primary)] font-semibold"
+                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                }`}
+              >
+                PT
+              </button>
+              <span className="text-[var(--text-muted)] opacity-40">/</span>
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`cursor-pointer px-1 ${
+                  language === "en"
+                    ? "text-[var(--text-primary)] font-semibold"
+                    : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                }`}
+              >
+                EN
+              </button>
+            </div>
+
+            {/* Dark / Light Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Alternar tema"
+              className="cursor-pointer inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-3.5 w-3.5" />
+              ) : (
+                <Moon className="h-3.5 w-3.5" />
+              )}
+            </button>
           </div>
         </div>
 
         {/* Variant Switcher Pills */}
-        <div className="mx-auto max-w-7xl overflow-x-auto px-4 pb-3 sm:px-6">
+        <div className="mx-auto max-w-7xl overflow-x-auto px-4 pb-3 sm:px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-center gap-2 min-w-max">
             {VARIANTS.map((variant) => {
               const Icon = variant.icon;
@@ -149,110 +248,162 @@ export function DesignLab() {
 
       {/* Explanatory Banner */}
       <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-bento)]/40 px-4 py-3 sm:px-6">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-[var(--text-secondary)]">
             <span className="font-semibold text-[var(--text-primary)]">
               {VARIANTS.find((v) => v.id === activeVariant)?.label}:
             </span>{" "}
             {VARIANTS.find((v) => v.id === activeVariant)?.subtitle}
           </p>
-          <span className="text-[10px] font-mono text-[var(--text-muted)]">
-            Testando no layout real da página inicial
-          </span>
+
+          {activeVariant === "editorial-bento" ? (
+            <button
+              type="button"
+              onClick={() => setAlternatingRhythm((prev) => !prev)}
+              className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              <span>
+                Ritmo Bento:{" "}
+                <strong className="text-[var(--text-primary)]">
+                  {alternatingRhythm ? "Alternado (8+4 / 4+8)" : "Uniforme (8+4)"}
+                </strong>
+              </span>
+            </button>
+          ) : (
+            <span className="text-[10px] font-mono text-[var(--text-muted)]">
+              Testando no layout real da página inicial
+            </span>
+          )}
         </div>
       </div>
 
       {/* Main Preview Stage */}
       <main className="mx-auto max-w-6xl px-6 py-12 sm:py-16 md:px-10">
-        {activeVariant === "fullwidth" ? (
-          <VariantEditorialFullWidth project={project} language={language} />
+        {activeVariant === "editorial-bento" ? (
+          <div className="flex flex-col gap-28 sm:gap-36">
+            {visibleProjects.map((proj) => {
+              const realIndex = featuredProjects.findIndex(
+                (p) => p.slug === proj.slug,
+              );
+              return (
+                <EditorialBentoShowcase
+                  key={`${proj.slug}-${alternatingRhythm}`}
+                  project={proj}
+                  index={realIndex >= 0 ? realIndex : 0}
+                  alternatingRhythm={alternatingRhythm}
+                />
+              );
+            })}
+          </div>
+        ) : activeVariant === "fullwidth" ? (
+          <div className="flex flex-col gap-24">
+            {visibleProjects.map((proj) => (
+              <VariantEditorialFullWidth
+                key={proj.slug}
+                project={proj}
+                language={language}
+              />
+            ))}
+          </div>
         ) : (
-          <article className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
-            {/* Left Column: Context & Metadata (Exact Home layout) */}
-            <div className="lg:col-span-5 flex flex-col">
-              <div className="mb-6">
-                <ProjectLogo
-                  slug={project.slug}
-                  name={project.name}
-                  logo={project.logo}
-                />
-              </div>
-
-              <h2 className="font-editorial text-3xl sm:text-[36px] leading-[1.14] tracking-[-0.01em] text-[var(--text-primary)]">
-                {project.headline[language]}
-              </h2>
-
-              <p className="mt-5 text-sm sm:text-[15px] leading-relaxed text-[var(--text-secondary)]">
-                {project.summary[language]}
-              </p>
-
-              <div className="mt-7 flex flex-wrap items-center gap-6">
-                <Link
-                  to={`/project/${project.slug}`}
-                  className="group inline-flex items-center gap-2 font-mono text-xs text-[var(--text-primary)]"
+          <div className="flex flex-col gap-28">
+            {(projectFilter === "all" ? visibleProjects : [singleProject]).map(
+              (proj) => (
+                <article
+                  key={proj.slug}
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start"
                 >
-                  <span className="underline decoration-[var(--border-subtle)] underline-offset-4 group-hover:decoration-[var(--text-primary)] transition-colors">
-                    View Project Details
-                  </span>
-                  <ExternalLink className="h-3 w-3" />
-                </Link>
-              </div>
+                  {/* Left Column: Context & Metadata (Legacy Home layout) */}
+                  <div className="lg:col-span-5 flex flex-col">
+                    <div className="mb-6">
+                      <ProjectLogo
+                        slug={proj.slug}
+                        name={proj.name}
+                        logo={proj.logo}
+                      />
+                    </div>
 
-              <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-7 border-t border-[var(--border-subtle)] pt-8">
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-                    Categoria
-                  </dt>
-                  <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
-                    {project.category[language]}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-                    Função
-                  </dt>
-                  <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
-                    {project.role[language]}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-                    Ano
-                  </dt>
-                  <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
-                    {project.year}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-                    Stack
-                  </dt>
-                  <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
-                    {project.stack.join(" · ")}
-                  </dd>
-                </div>
-              </dl>
-            </div>
+                    <h2 className="font-editorial text-3xl sm:text-[36px] leading-[1.14] tracking-[-0.01em] text-[var(--text-primary)]">
+                      {proj.headline[language]}
+                    </h2>
 
-            {/* Right Column: Active Prototype Variant */}
-            <div className="lg:col-span-7 w-full">
-              {activeVariant === "tabs" && (
-                <VariantHeroTabs project={project} language={language} />
-              )}
-              {activeVariant === "stacked" && (
-                <VariantStackedLayers project={project} language={language} />
-              )}
-              {activeVariant === "slider" && (
-                <VariantPeekSlider project={project} language={language} />
-              )}
-              {activeVariant === "bento" && (
-                <ProjectBentoShowcase
-                  projectSlug={project.slug}
-                  blocks={project.bento}
-                />
-              )}
-            </div>
-          </article>
+                    <p className="mt-5 text-sm sm:text-[15px] leading-relaxed text-[var(--text-secondary)]">
+                      {proj.summary[language]}
+                    </p>
+
+                    <div className="mt-7 flex flex-wrap items-center gap-6">
+                      <Link
+                        to={`/project/${proj.slug}`}
+                        className="group inline-flex items-center gap-2 font-mono text-xs text-[var(--text-primary)]"
+                      >
+                        <span className="underline decoration-[var(--border-subtle)] underline-offset-4 group-hover:decoration-[var(--text-primary)] transition-colors">
+                          View Project Details
+                        </span>
+                        <ExternalLink className="h-3 w-3" />
+                      </Link>
+                    </div>
+
+                    <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-7 border-t border-[var(--border-subtle)] pt-8">
+                      <div>
+                        <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+                          Categoria
+                        </dt>
+                        <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
+                          {proj.category[language]}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+                          Função
+                        </dt>
+                        <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
+                          {proj.role[language]}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+                          Ano
+                        </dt>
+                        <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
+                          {proj.year}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+                          Stack
+                        </dt>
+                        <dd className="mt-1.5 text-xs text-[var(--text-primary)]">
+                          {proj.stack.join(" · ")}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  {/* Right Column: Active Prototype Variant */}
+                  <div className="lg:col-span-7 w-full">
+                    {activeVariant === "tabs" && (
+                      <VariantHeroTabs project={proj} language={language} />
+                    )}
+                    {activeVariant === "stacked" && (
+                      <VariantStackedLayers
+                        project={proj}
+                        language={language}
+                      />
+                    )}
+                    {activeVariant === "slider" && (
+                      <VariantPeekSlider project={proj} language={language} />
+                    )}
+                    {activeVariant === "bento" && (
+                      <ProjectBentoShowcase
+                        projectSlug={proj.slug}
+                        blocks={proj.bento}
+                      />
+                    )}
+                  </div>
+                </article>
+              ),
+            )}
+          </div>
         )}
       </main>
     </div>
@@ -322,6 +473,15 @@ function VariantHeroTabs({
     setIsZoomed((prev) => !prev);
   };
 
+  if (screens.length === 0) {
+    return (
+      <ProjectBentoShowcase
+        projectSlug={project.slug}
+        blocks={project.bento}
+      />
+    );
+  }
+
   return (
     <div
       onMouseEnter={() => setIsPaused(true)}
@@ -390,7 +550,8 @@ function VariantHeroTabs({
             <span className="h-2 w-2 rounded-full bg-[var(--border-subtle)]" />
           </div>
           <span className="truncate px-2 text-[10px] opacity-75">
-            https://app.condonot.com.br{currentScreen?.appPath}
+            https://{project.appDomain ?? `${project.slug}.app`}
+            {currentScreen?.appPath}
           </span>
           <div className="flex items-center gap-2">
             <span className="text-[9px] opacity-50 font-mono">
@@ -590,6 +751,15 @@ function VariantPeekSlider({
     setIndex((prev) => (prev < screens.length - 1 ? prev + 1 : 0));
   };
 
+  if (screens.length === 0) {
+    return (
+      <ProjectBentoShowcase
+        projectSlug={project.slug}
+        blocks={project.bento}
+      />
+    );
+  }
+
   return (
     <div className="bento-card overflow-hidden p-4 sm:p-5">
       <div className="mb-3 flex items-center justify-between font-mono text-[10px] text-[var(--text-muted)]">
@@ -712,58 +882,66 @@ function VariantEditorialFullWidth({
       </div>
 
       {/* Full-Width Panoramic Showcase */}
-      <div className="bento-card overflow-hidden p-4 sm:p-6 shadow-xl">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            {screens.map((scr, idx) => (
-              <button
-                key={scr.id}
-                type="button"
-                onClick={() => setActiveTab(idx)}
-                className={`cursor-pointer rounded-[3px] px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200 ${
-                  idx === activeTab
-                    ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
-                    : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--border-subtle)]/50"
-                }`}
-              >
-                {scr.label[language].split("&")[0].trim()}
-              </button>
-            ))}
+      {screens.length === 0 ? (
+        <ProjectBentoShowcase
+          projectSlug={project.slug}
+          blocks={project.bento}
+        />
+      ) : (
+        <div className="bento-card overflow-hidden p-4 sm:p-6 shadow-xl">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2 overflow-x-auto">
+              {screens.map((scr, idx) => (
+                <button
+                  key={scr.id}
+                  type="button"
+                  onClick={() => setActiveTab(idx)}
+                  className={`cursor-pointer shrink-0 rounded-[3px] px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200 ${
+                    idx === activeTab
+                      ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
+                      : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--border-subtle)]/50"
+                  }`}
+                >
+                  {scr.label[language].split("&")[0].trim()}
+                </button>
+              ))}
+            </div>
+
+            <span className="font-mono text-xs text-[var(--text-muted)]">
+              https://{project.appDomain ?? `${project.slug}.app`}
+              {activeScreen?.appPath}
+            </span>
           </div>
 
-          <span className="font-mono text-xs text-[var(--text-muted)]">
-            https://app.condonot.com.br{activeScreen?.appPath}
-          </span>
-        </div>
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] p-3 sm:p-5">
+            <AnimatePresence mode="wait">
+              {activeScreen?.src && (
+                <motion.img
+                  key={activeScreen.id}
+                  src={activeScreen.src}
+                  alt={activeScreen.label[language]}
+                  initial={{ opacity: 0, scale: 0.995 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.995 }}
+                  transition={{ duration: 0.35 }}
+                  className="h-full w-full object-contain object-top block"
+                />
+              )}
+            </AnimatePresence>
+          </div>
 
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] p-3 sm:p-5">
-          <AnimatePresence mode="wait">
-            {activeScreen?.src && (
-              <motion.img
-                key={activeScreen.id}
-                src={activeScreen.src}
-                alt={activeScreen.label[language]}
-                initial={{ opacity: 0, scale: 0.995 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.995 }}
-                transition={{ duration: 0.35 }}
-                className="h-full w-full object-contain object-top block"
-              />
-            )}
-          </AnimatePresence>
+          <div className="mt-4 flex items-center justify-between font-mono text-xs text-[var(--text-secondary)]">
+            <span>{activeScreen?.label[language]}</span>
+            <Link
+              to={`/project/${project.slug}`}
+              className="inline-flex items-center gap-1.5 underline underline-offset-4 text-[var(--text-primary)] hover:opacity-80"
+            >
+              <span>Ver Arquitetura Técnica & Estudo de Caso</span>
+              <ExternalLink className="h-3.5 w-3.5" />
+            </Link>
+          </div>
         </div>
-
-        <div className="mt-4 flex items-center justify-between font-mono text-xs text-[var(--text-secondary)]">
-          <span>{activeScreen?.label[language]}</span>
-          <Link
-            to={`/project/${project.slug}`}
-            className="inline-flex items-center gap-1.5 underline underline-offset-4 text-[var(--text-primary)] hover:opacity-80"
-          >
-            <span>Ver Arquitetura Técnica & Estudo de Caso</span>
-            <ExternalLink className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

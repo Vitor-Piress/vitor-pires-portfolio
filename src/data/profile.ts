@@ -4,4 +4,5 @@ export const PROFILE_LINKS = {
   email: "vitorspires25@gmail.com",
   whatsapp:
     "https://wa.me/5548?text=Ol%C3%A1%20Vitor%2C%20vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto.",
+  cv: "/cv/Curriculo_Vitor_Pires_Junior.pdf",
 } as const;

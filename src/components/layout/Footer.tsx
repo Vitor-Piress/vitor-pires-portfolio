@@ -85,6 +85,14 @@ export function Footer() {
           >
             LinkedIn
           </a>
+          <a
+            href={PROFILE_LINKS.cv}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[var(--text-primary)] transition-colors"
+          >
+            CV
+          </a>
         </div>
 
         <div className="font-mono text-[10px] sm:text-[11px] tracking-wider text-[var(--text-muted)]">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, FileText } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 import { PROFILE_LINKS } from "../../data/profile";
 import { scrollToElement } from "../../utils/scroll";
@@ -115,8 +115,9 @@ export function HeroSection() {
             />
           </button>
 
-          {/* Quick Social Links */}
-          <div className="flex items-center gap-4 pl-1 sm:pl-3">
+          {/* Quick Social & CV Links */}
+
+          <div className="flex flex-wrap items-center gap-4 pl-1 sm:pl-3">
             <a
               href={PROFILE_LINKS.github}
               target="_blank"
@@ -134,6 +135,15 @@ export function HeroSection() {
             >
               <LinkedinIcon className="h-3.5 w-3.5" />
               <span>LinkedIn</span>
+            </a>
+            <a
+              href={PROFILE_LINKS.cv}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              <FileText className="h-3.5 w-3.5" strokeWidth={1.75} />
+              <span>{t.hero.ctaCv}</span>
             </a>
           </div>
         </motion.div>

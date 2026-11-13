@@ -37,6 +37,7 @@ export interface TranslationSchema {
     description: string;
     ctaContact: string;
     ctaProjects: string;
+    ctaCv: string;
     availability: string;
   };
   projectsSection: {
@@ -153,6 +154,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "Construo softwares reais, licenciados comercialmente e projetados para resolver dores operacionais complexas com estética refinada, performance e engenharia sólida de ponta a ponta.",
       ctaContact: "Entrar em contato",
       ctaProjects: "Ver projetos",
+      ctaCv: "Currículo",
       availability: "Disponível para novos projetos & licenciamento SaaS",
     },
     projectsSection: {
@@ -324,6 +326,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "I build real-world, commercially licensed software designed to solve complex operational pain points with refined aesthetics, high performance, and end-to-end engineering rigor.",
       ctaContact: "Get in touch",
       ctaProjects: "View projects",
+      ctaCv: "Resume",
       availability: "Available for new projects & SaaS licensing",
     },
     projectsSection: {

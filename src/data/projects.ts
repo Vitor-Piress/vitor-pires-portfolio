@@ -147,7 +147,7 @@ export const featuredProjects: FeaturedProject[] = [
       pt: "Arquitetura multi-tenant sobre Supabase (PostgreSQL + Row Level Security) com deploy na borda via Cloudflare. Unifica em um único fluxo o que antes exigia planilhas, editores de texto e controles manuais: da identificação da infração ao PDF formal, payload Pix e entrega por e-mail em segundos.",
       en: "Multi-tenant architecture on Supabase (PostgreSQL + Row Level Security) deployed at the edge via Cloudflare. It merges into a single pipeline what used to require spreadsheets, word processors and manual tracking: from infraction logging to a formal PDF, Pix payload and email delivery in seconds.",
     },
-    liveUrl: null,
+    liveUrl: "https://condonot.com.br/demo",
     repoUrl: null,
     gallery: [
       {
@@ -652,20 +652,141 @@ export const featuredProjects: FeaturedProject[] = [
     slug: "dailycheckout",
     name: "Dailycheckout",
     logo: "/projects/dailycheckout/dailycheckout-logo.svg",
-    previewImage: null,
+    previewImage:
+      "/projects/dailycheckout/dailycheckout-desktop-management.png",
     demoUrl: null,
     appDomain: "dailycheckout.app",
+    gallery: [
+      {
+        id: "desktop-management",
+        label: {
+          pt: "Acompanhamento · Gestão",
+          en: "Daily Tracking · Management",
+        },
+        src: "/projects/dailycheckout/dailycheckout-desktop-management.png",
+        appPath: "/gestao",
+        orientation: "landscape",
+      },
+      {
+        id: "desktop-expenses",
+        label: {
+          pt: "Controle Financeiro · Despesas",
+          en: "Financial Control · Expenses",
+        },
+        src: "/projects/dailycheckout/dailycheckout-desktop-management-2.png",
+        appPath: "/gestao/despesas",
+        orientation: "landscape",
+      },
+      {
+        id: "desktop-reports",
+        label: {
+          pt: "Análise Financeira · Comissões & Lucro",
+          en: "Financial Analysis · Commissions & Profit",
+        },
+        src: "/projects/dailycheckout/dailycheckout-desktop-management-3.png",
+        appPath: "/gestao/relatorios",
+        orientation: "landscape",
+      },
+      {
+        id: "mobile-home",
+        label: {
+          pt: "Operação · Catálogo de Serviços",
+          en: "Operations · Service Catalog",
+        },
+        src: "/projects/dailycheckout/dailycheckout-home.png",
+        appPath: "/operacao",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-payment",
+        label: {
+          pt: "Registrar Atendimento · Pagamento",
+          en: "Log Service · Payment Method",
+        },
+        src: "/projects/dailycheckout/dailycheckout-home-2.png",
+        appPath: "/operacao/atendimento",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-tip",
+        label: { pt: "Registro de Gorjeta", en: "Tip Recording" },
+        src: "/projects/dailycheckout/dailycheckout-home-3.png",
+        appPath: "/operacao/gorjeta",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-management",
+        label: {
+          pt: "Gestão · Resumo do Dia",
+          en: "Management · Daily Summary",
+        },
+        src: "/projects/dailycheckout/dailycheckout-management.png",
+        appPath: "/gestao",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-breakdown",
+        label: {
+          pt: "Resumo por Serviço & Pagamento",
+          en: "Service & Payment Breakdown",
+        },
+        src: "/projects/dailycheckout/dailycheckout-management-2.png",
+        appPath: "/gestao/resumo",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-closing",
+        label: {
+          pt: "Apuração Financeira · Fechamento",
+          en: "Daily Closing · Split Settlement",
+        },
+        src: "/projects/dailycheckout/dailycheckout-management-3.png",
+        appPath: "/gestao/fechamento",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-expenses",
+        label: { pt: "Controle de Despesas", en: "Expense Tracking" },
+        src: "/projects/dailycheckout/dailycheckout-management-4.png",
+        appPath: "/gestao/despesas",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-expense-form",
+        label: { pt: "Lançamento de Despesa", en: "New Expense Entry" },
+        src: "/projects/dailycheckout/dailycheckout-management-5.png",
+        appPath: "/gestao/despesas/nova",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-periodic",
+        label: { pt: "Relatório Periódico", en: "Periodic P&L Report" },
+        src: "/projects/dailycheckout/dailycheckout-management-6.png",
+        appPath: "/gestao/relatorios",
+        orientation: "portrait",
+      },
+      {
+        id: "mobile-composition",
+        label: {
+          pt: "Composição Fixas & Comissões",
+          en: "Fixed Costs & Commission Split",
+        },
+        src: "/projects/dailycheckout/dailycheckout-management-7.png",
+        appPath: "/gestao/composicao",
+        orientation: "portrait",
+      },
+    ],
     headline: {
-      pt: "Dailycheckout é uma aplicação Full-Stack para controle operacional e rotinas diárias de checkout.",
-      en: "Dailycheckout is a Full-Stack application for operational control and daily checkout routines.",
+      pt: "Dailycheckout é uma aplicação Full-Stack de PDV, fechamento de caixa e gestão financeira para barbearias.",
+      en: "Dailycheckout is a Full-Stack POS, daily cash closing and financial management app for barbershops.",
     },
     summary: {
-      pt: "Front-end reativo e API própria dedicada para controlar rotinas de checkout, tarefas diárias e fluxos operacionais com rastreabilidade completa.",
-      en: "A reactive frontend and a dedicated in-house API to manage checkout routines, daily tasks and operational workflows with full traceability.",
+      pt: "Registro ágil de atendimentos e gorjetas na bancada via mobile e painel de gestão completo com apuração automática de comissões (50%), despesas e lucro líquido.",
+      en: "Fast mobile service & tip logging at the chair paired with a management console for automated commission splits (50%), expenses and net profit.",
     },
     category: {
-      pt: "Aplicação Full-Stack / Operações",
-      en: "Full-Stack Application / Operations",
+      pt: "Aplicação Full-Stack / PDV & Gestão Financeira",
+      en: "Full-Stack App / POS & Financial Ops",
     },
     role: {
       pt: "Engenheiro Full-Stack",
@@ -674,8 +795,8 @@ export const featuredProjects: FeaturedProject[] = [
     year: "2026",
     stack: ["React", "Tailwind CSS", "Node.js", "Fastify", "PostgreSQL"],
     details: {
-      pt: "Separação clara entre cliente e servidor: front-end em React consumindo uma API REST própria em Node.js + Fastify, com persistência em PostgreSQL. Cada checkout, tarefa e troca de turno fica registrado com autor e horário, garantindo auditoria das rotinas diárias.",
-      en: "Clear client/server separation: a React frontend consuming a custom REST API built with Node.js + Fastify, persisted in PostgreSQL. Every checkout, task and shift handover is recorded with author and timestamp, ensuring auditable daily routines.",
+      pt: "Front-end em React consumindo uma API REST própria em Node.js + Fastify, com persistência relacional em PostgreSQL. Separa a operação rápida no celular (lançamento em 2 toques por serviço, forma de pagamento e gorjeta) da gestão gerencial no desktop com fechamento de caixa diário, rateio de operadores, despesas fixas/variáveis e relatório imprimível.",
+      en: "A React frontend powered by a custom Node.js + Fastify REST API with PostgreSQL persistence. Separates fast mobile floor operations (2-tap service, payment method and tip logging) from desktop management featuring daily cash closing, operator commission splits, fixed/variable expenses and printable periodic reports.",
     },
     liveUrl: null,
     repoUrl: GITHUB,
@@ -686,14 +807,20 @@ export const featuredProjects: FeaturedProject[] = [
         screens: [
           {
             id: "dashboard",
-            label: { pt: "Painel do Dia", en: "Daily Dashboard" },
-            src: null,
+            label: {
+              pt: "Acompanhamento · Gestão",
+              en: "Daily Tracking · Management",
+            },
+            src: "/projects/dailycheckout/dailycheckout-desktop-management.png",
             device: "desktop",
           },
           {
-            id: "history",
-            label: { pt: "Histórico & Auditoria", en: "History & Audit" },
-            src: null,
+            id: "reports",
+            label: {
+              pt: "Análise Financeira & Comissões",
+              en: "Financial Analysis & Commissions",
+            },
+            src: "/projects/dailycheckout/dailycheckout-desktop-management-3.png",
             device: "desktop",
           },
         ],
@@ -703,15 +830,15 @@ export const featuredProjects: FeaturedProject[] = [
         span: "tall",
         screens: [
           {
-            id: "mobile-checklist",
-            label: { pt: "Checklist Mobile", en: "Mobile Checklist" },
-            src: null,
+            id: "mobile-pos",
+            label: { pt: "Operação Diária (PDV)", en: "Daily POS Operations" },
+            src: "/projects/dailycheckout/dailycheckout-home.png",
             device: "mobile",
           },
           {
-            id: "mobile-checkout",
-            label: { pt: "Checkout", en: "Checkout" },
-            src: null,
+            id: "mobile-closing",
+            label: { pt: "Fechamento do Dia", en: "Daily Cash Closing" },
+            src: "/projects/dailycheckout/dailycheckout-management-3.png",
             device: "mobile",
           },
         ],
@@ -721,16 +848,16 @@ export const featuredProjects: FeaturedProject[] = [
         span: "square",
         screens: [
           {
-            id: "tasks",
-            label: { pt: "Tarefas Diárias", en: "Daily Tasks" },
-            src: null,
+            id: "expenses",
+            label: { pt: "Controle de Despesas", en: "Expense Control" },
+            src: "/projects/dailycheckout/dailycheckout-desktop-management-2.png",
             device: "desktop",
           },
           {
-            id: "shift",
-            label: { pt: "Troca de Turno", en: "Shift Handover" },
-            src: null,
-            device: "desktop",
+            id: "payment",
+            label: { pt: "Pagamentos & Gorjetas", en: "Payments & Tips" },
+            src: "/projects/dailycheckout/dailycheckout-home-2.png",
+            device: "mobile",
           },
         ],
       },
@@ -739,61 +866,70 @@ export const featuredProjects: FeaturedProject[] = [
         span: "square",
         screens: [
           {
-            id: "api",
-            label: { pt: "API Fastify", en: "Fastify API" },
-            src: null,
-            device: "desktop",
+            id: "periodic-report",
+            label: { pt: "Relatório Periódico", en: "Periodic P&L Report" },
+            src: "/projects/dailycheckout/dailycheckout-management-6.png",
+            device: "mobile",
           },
           {
-            id: "reports",
-            label: { pt: "Relatórios", en: "Reports" },
-            src: null,
-            device: "desktop",
+            id: "composition",
+            label: { pt: "Composição das Despesas", en: "Expense Composition" },
+            src: "/projects/dailycheckout/dailycheckout-management-7.png",
+            device: "mobile",
           },
         ],
       },
     ],
     overview: {
       problem: {
-        pt: "Rotinas operacionais diárias controladas em papel ou mensagens se perdem em trocas de turno, sem histórico confiável de quem fez o quê e quando.",
-        en: "Daily operational routines tracked on paper or chat messages get lost during shift handovers, with no reliable record of who did what and when.",
+        pt: "Fechamentos de caixa em caderno ou planilhas misturam receita bruta, gorjetas em formas distintas e comissões por barbeiro, gerando divergências no fim do expediente e zero visibilidade do lucro real.",
+        en: "Paper notebooks or ad-hoc spreadsheets mix gross revenue, multi-method tips and barber commissions, creating end-of-day discrepancies and zero visibility into true net profit.",
       },
       solution: {
-        pt: "Uma aplicação Full-Stack com API dedicada que padroniza checklists, registra cada checkout e mantém um histórico auditável de todas as operações.",
-        en: "A Full-Stack application with a dedicated API that standardizes checklists, records every checkout and keeps an auditable history of all operations.",
+        pt: "Um PDV mobile ultrarrápido conectado a uma API REST dedicada que separa receita de serviços, gorjetas, repasse de operadores (50%) e despesas fixas, entregando apuração diária e relatório periódico pronto para impressão.",
+        en: "A fast mobile POS backed by a dedicated REST API that separates service revenue, tips, 50% operator payouts and fixed bills—delivering instant daily closings and print-ready periodic P&L reports.",
       },
     },
     features: [
       {
         id: "checkout",
-        title: { pt: "Rotinas de Checkout", en: "Checkout Routines" },
+        title: { pt: "Registro Rápido na Bancada", en: "Fast Chairside POS" },
         description: {
-          pt: "Fluxo guiado de encerramento diário com validação de cada etapa.",
-          en: "Guided daily closing flow with validation of every step.",
+          pt: "Catálogo visual de serviços com seleção de forma de pagamento (Dinheiro, Pix, Crédito, Débito) e gorjeta integrada.",
+          en: "Visual service catalog with multi-method payment capture (Cash, Pix, Credit, Debit) and optional split-method tip logging.",
         },
       },
       {
         id: "tasks",
-        title: { pt: "Gestão de Tarefas Diárias", en: "Daily Task Management" },
+        title: {
+          pt: "Fechamento & Repasse 50%",
+          en: "Closing & 50% Split Settlement",
+        },
         description: {
-          pt: "Checklists recorrentes atribuídos por turno e responsável.",
-          en: "Recurring checklists assigned by shift and owner.",
+          pt: "Apuração automática separando serviços próprios do administrador, participação da casa, comissão dos operadores e gorjetas.",
+          en: "Automated daily settlement distinguishing admin services, house share, operator 50% commissions and pass-through tips.",
         },
       },
       {
         id: "audit",
-        title: { pt: "Histórico & Auditoria", en: "History & Audit" },
+        title: {
+          pt: "Despesas Fixas & Análise Mensal",
+          en: "Expenses & Monthly P&L",
+        },
         description: {
-          pt: "Registro de autor, data e hora de cada ação para rastreabilidade total.",
-          en: "Author, date and time recorded for every action for full traceability.",
+          pt: "Controle de contas fixas por vencimento, composição entre custos fixos e variáveis, lucro líquido e exportação para impressão.",
+          en: "Due-date tracking for fixed bills, fixed vs. variable cost composition, net profit calculation and print-ready periodic reports.",
         },
       },
       {
         id: "api",
-        title: { pt: "API Própria Dedicada", en: "Dedicated In-House API" },
+        title: {
+          pt: "API Própria em Fastify",
+          en: "Dedicated Fastify REST API",
+        },
         description: {
-          pt: "Endpoints REST em Fastify com validação de schemas e alta performance.",
-          en: "Fastify REST endpoints with schema validation and high performance.",
+          pt: "Endpoints tipados em Node.js + Fastify garantindo cálculo consistente de caixa e auditoria por usuário no PostgreSQL.",
+          en: "Typed Node.js + Fastify endpoints guaranteeing consistent cash calculations and per-operator audit trails in PostgreSQL.",
         },
       },
     ],
@@ -802,40 +938,46 @@ export const featuredProjects: FeaturedProject[] = [
         layer: { pt: "Front-end", en: "Frontend" },
         technologies: ["React", "Tailwind CSS"],
         description: {
-          pt: "Interface reativa e responsiva para uso em desktop e celular durante a operação.",
-          en: "Reactive, responsive interface for desktop and mobile use during operations.",
+          pt: "Experiência mobile-first para registro instantâneo na barbearia e visão analítica expandida no desktop de gestão.",
+          en: "Mobile-first experience for instant floor capture paired with an expanded desktop management dashboard.",
         },
       },
       {
         layer: { pt: "Back-end / API", en: "Backend / API" },
         technologies: ["Node.js", "Fastify"],
         description: {
-          pt: "API REST dedicada com rotas tipadas, validação de entrada e tratamento centralizado de erros.",
-          en: "Dedicated REST API with typed routes, input validation and centralized error handling.",
+          pt: "API REST dedicada para regras de comissionamento, fechamento diário, consolidação por método e consolidação mensal.",
+          en: "Dedicated REST API handling commission rules, daily closing locks, payment-method aggregation and monthly P&L.",
         },
       },
       {
         layer: { pt: "Banco de Dados", en: "Database" },
         technologies: ["PostgreSQL"],
         description: {
-          pt: "Modelagem relacional com integridade referencial para histórico e auditoria.",
-          en: "Relational modeling with referential integrity for history and auditing.",
+          pt: "Modelagem relacional preservando histórico de atendimentos, gorjetas, operadores e lançamentos de despesas.",
+          en: "Relational schema preserving full history of services, tips, operators and categorized expense entries.",
         },
       },
     ],
     results: [
       {
-        metric: { pt: "Zero perda de registros", en: "Zero record loss" },
+        metric: {
+          pt: "Rastreabilidade total do caixa",
+          en: "100% cash traceability",
+        },
         description: {
-          pt: "Todas as rotinas preservadas entre trocas de turno.",
-          en: "Every routine preserved across shift handovers.",
+          pt: "Em produção na Barbearia Dom Domênico com histórico auditável por barbeiro, serviço e forma de pagamento.",
+          en: "Running in production at Barbearia Dom Domênico with full per-barber, service and payment-method auditability.",
         },
       },
       {
-        metric: { pt: "Arquitetura desacoplada", en: "Decoupled architecture" },
+        metric: {
+          pt: "Fechamento & DRE instantâneos",
+          en: "Instant closing & P&L",
+        },
         description: {
-          pt: "Front-end e API independentes, prontos para escalar ou receber novos clientes (ex: app mobile).",
-          en: "Independent frontend and API, ready to scale or support new clients (e.g. a mobile app).",
+          pt: "Cálculo automático de comissões de 50%, repasse de gorjetas e lucro líquido mensal em tempo real.",
+          en: "Real-time calculation of 50% operator commissions, tip payouts and monthly net profit.",
         },
       },
     ],
