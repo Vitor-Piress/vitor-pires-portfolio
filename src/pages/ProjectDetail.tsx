@@ -30,6 +30,7 @@ import { useTheme } from '../context/ThemeContext'
 import { BlurReveal } from '../components/ui/BlurReveal'
 import { ProjectLogo, ScreenVisual } from '../components/ui/ProjectVisuals'
 import { ResponsiveProjectArchitecture } from '../components/project/ProjectArchitectureFlow'
+import { FooterBottomBar } from '../components/layout/Footer'
 import { scrollToElement, scrollToTopSmooth } from '../utils/scroll'
 
 type SectionId = 'overview' | 'flows' | 'architecture' | 'results'
@@ -804,35 +805,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
           </div>
         </BlurReveal>
 
-        {/* Extreme Bottom Bar */}
-        <div className="mt-32 sm:mt-44 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
-            {t.footer.roleSignature}
-          </div>
-
-          <div className="flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--text-secondary)]">
-            <a
-              href={PROFILE_LINKS.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--text-primary)] transition-colors"
-            >
-              GitHub
-            </a>
-            <a
-              href={PROFILE_LINKS.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--text-primary)] transition-colors"
-            >
-              LinkedIn
-            </a>
-          </div>
-
-          <div className="font-mono text-[10px] sm:text-[11px] tracking-wider text-[var(--text-muted)]">
-            {t.footer.rights}
-          </div>
-        </div>
+        <FooterBottomBar />
       </footer>
     </div>
   )

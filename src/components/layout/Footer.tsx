@@ -63,21 +63,29 @@ export function Footer() {
         </div>
       </BlurReveal>
 
-      {/* Extreme Bottom Bar: Left Signature | Center Socials | Right Copyright */}
-      <div className="mt-32 sm:mt-44 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-        <div className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
-          {t.footer.roleSignature}
-        </div>
-
-        <ProfileQuickLinks
-          cvLabel="CV"
-          className="justify-center gap-5 sm:gap-6 text-[11px] tracking-[0.12em]"
-        />
-
-        <div className="font-mono text-[10px] sm:text-[11px] tracking-wider text-[var(--text-muted)]">
-          {t.footer.rights}
-        </div>
-      </div>
+      <FooterBottomBar />
     </footer>
+  )
+}
+
+/** Shared bottom signature, quick links (GitHub, LinkedIn, CV), and copyright bar. */
+export function FooterBottomBar() {
+  const { t } = useLanguage()
+
+  return (
+    <div className="mt-32 sm:mt-44 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
+        {t.footer.roleSignature}
+      </div>
+
+      <ProfileQuickLinks
+        cvLabel="CV"
+        className="justify-center gap-5 sm:gap-6 text-[11px] tracking-[0.12em]"
+      />
+
+      <div className="font-mono text-[10px] sm:text-[11px] tracking-wider text-[var(--text-muted)]">
+        {t.footer.rights}
+      </div>
+    </div>
   )
 }
