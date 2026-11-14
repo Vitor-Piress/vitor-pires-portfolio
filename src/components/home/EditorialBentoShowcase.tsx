@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
@@ -19,6 +19,11 @@ import type {
 } from "../../data/projects";
 import type { Language } from "../../i18n/translations";
 import { useLanguage } from "../../context/LanguageContext";
+import {
+  getSavedCompanionMode,
+  saveCompanionMode,
+  useProjectLinkClickHandler,
+} from "../../utils/returnNavigation";
 import { ProjectLogo, ScreenVisual } from "../ui/ProjectVisuals";
 import { CompactArchitecturePipeline } from "../project/ProjectArchitectureFlow";
 import {
@@ -49,6 +54,11 @@ export function EditorialBentoShowcase({
   staggerDirection,
 }: EditorialBentoShowcaseProps) {
   const { language, t } = useLanguage();
+  const { pathname } = useLocation();
+  const getProjectClick = useProjectLinkClickHandler(() => ({
+    sectionId: pathname === "/" ? "projects" : undefined,
+    activeProjectSlug: project.slug,
+  }));
   const isMobileFirst = Boolean(project.mobileFirst);
   const isCompanionFirstDesktop =
     isMobileFirst || (alternatingRhythm && index % 2 === 1);
@@ -132,6 +142,7 @@ export function EditorialBentoShowcase({
           <div className="mt-6 flex flex-wrap items-center gap-6">
             <Link
               to={`/project/${project.slug}`}
+              onClick={getProjectClick(`/project/${project.slug}`)}
               className="group inline-flex items-center gap-2 text-sm font-medium text-[var(--text-primary)] underline underline-offset-4 decoration-[var(--border-subtle)] hover:decoration-[var(--text-primary)] transition-colors"
             >
               <span>{t.projectsSection.viewDetails}</span>
@@ -170,6 +181,7 @@ export function EditorialBentoShowcase({
             ) : (
               <Link
                 to={`/project/${project.slug}`}
+                onClick={getProjectClick(`/project/${project.slug}`)}
                 className="group inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
               >
                 <span>{t.projectsSection.liveWebsite}</span>
@@ -569,10 +581,16 @@ function CompanionPanelCard({
   const hasRealPortrait = portraitScreens.length > 0;
 
   const [mode, setMode] = useState<CompanionMode>(
-    hasRealPortrait ? "portrait" : "architecture",
+    () =>
+      getSavedCompanionMode(project.slug) ??
+      (hasRealPortrait ? "portrait" : "architecture"),
   );
   const [portraitIndex, setPortraitIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    saveCompanionMode(project.slug, mode);
+  }, [project.slug, mode]);
 
   const portraitCount = hasRealPortrait
     ? portraitScreens.length
@@ -804,8 +822,14 @@ function CompanionArchitectureView({
   project: FeaturedProject;
   language: Language;
 }) {
+  const { pathname } = useLocation();
+  const getProjectClick = useProjectLinkClickHandler(() => ({
+    sectionId: pathname === "/" ? "projects" : undefined,
+    activeProjectSlug: project.slug,
+  }));
   const nodes = getOrderedArchitectureNodes(project);
   const { selectedId, selectLayer } = useDirectionalLayer(nodes);
+  const architectureUrl = `/project/${project.slug}#architecture`;
 
   return (
     <CompactArchitecturePipeline
@@ -815,7 +839,8 @@ function CompanionArchitectureView({
       language={language}
       headerAction={
         <Link
-          to={`/project/${project.slug}#architecture`}
+          to={architectureUrl}
+          onClick={getProjectClick(architectureUrl)}
           className="inline-flex items-center gap-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
         >
           <span>{language === "pt" ? "Ver completo" : "Full spec"}</span>

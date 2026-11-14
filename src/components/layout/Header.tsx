@@ -15,8 +15,17 @@ export function Header() {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { scrollY } = useScroll();
-  const [showBrandInHeader, setShowBrandInHeader] = useState(false);
+  const [showBrandInHeader, setShowBrandInHeader] = useState(
+    () => typeof window !== "undefined" && window.scrollY > 130,
+  );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const rafId = window.requestAnimationFrame(() => {
+      setShowBrandInHeader(window.scrollY > 130);
+    });
+    return () => window.cancelAnimationFrame(rafId);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const shouldShow = latest > 130;

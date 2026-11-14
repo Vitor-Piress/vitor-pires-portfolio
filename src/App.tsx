@@ -6,6 +6,7 @@ import {
   RouterProvider,
   ScrollRestoration,
   useLocation,
+  useNavigationType,
 } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
@@ -14,23 +15,36 @@ import { ScrollToTopButton } from './components/layout/ScrollToTopButton'
 import { Home } from './pages/Home'
 import { ProjectDetail } from './pages/ProjectDetail'
 import { DesignLab } from './pages/DesignLab'
+import {
+  isRestoreTokenConsumed,
+  type ProjectNavigationState,
+} from './utils/returnNavigation'
 
 function RootLayout() {
-  const { pathname, hash } = useLocation()
+  const { pathname, hash, key, state } = useLocation()
+  const navigationType = useNavigationType()
 
-  // Guarantee instantaneous jump to top between Home and /project/:slug
-  // even with `scroll-behavior: smooth` active on `html` for in-page anchors.
+  // Guarantee instantaneous jump to top on forward navigation without a hash,
+  // while preserving browser POP restoration and explicit return-point restores.
   useLayoutEffect(() => {
+    const navState = state as ProjectNavigationState | null
+    const hasPendingRestore = Boolean(
+      navState?.restoreOrigin &&
+        !isRestoreTokenConsumed(navState.restoreOrigin.restoreToken),
+    )
+
+    if (navigationType === 'POP' || hasPendingRestore) {
+      return
+    }
+
     if (!hash) {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     }
-  }, [pathname, hash])
+  }, [pathname, hash, key, navigationType, state])
 
   return (
     <>
-      <ScrollRestoration
-        getKey={(location) => (location.hash ? location.key : location.pathname)}
-      />
+      <ScrollRestoration />
       <Outlet />
       <MiniAudioPlayer />
       <ScrollToTopButton />

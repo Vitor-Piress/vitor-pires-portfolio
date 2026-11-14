@@ -33,6 +33,10 @@ import { useTheme } from "../context/ThemeContext";
 import { ProjectLogo } from "../components/ui/ProjectVisuals";
 import { ProjectBentoShowcase } from "../components/home/ProjectBentoShowcase";
 import { EditorialBentoShowcase } from "../components/home/EditorialBentoShowcase";
+import {
+  useProjectLinkClickHandler,
+  useRestoreReturnScroll,
+} from "../utils/returnNavigation";
 import { HeroSection } from "../components/home/HeroSection";
 import {
   HeroCompactSplitPrototype,
@@ -301,6 +305,8 @@ const PROJECT_FILTERS: { id: ProjectFilter; label: string }[] = [
 ];
 
 export function DesignLab() {
+  useRestoreReturnScroll();
+  const getLabProjectClick = useProjectLinkClickHandler(() => ({}));
   const [labScope, setLabScope] = useState<LabScope>("architecture");
   const [architectureVariant, setArchitectureVariant] =
     useState<ArchitectureVariantId>("final-hybrid");
@@ -686,6 +692,7 @@ export function DesignLab() {
                     <div className="mt-7 flex flex-wrap items-center gap-6">
                       <Link
                         to={`/project/${proj.slug}`}
+                        onClick={getLabProjectClick(`/project/${proj.slug}`)}
                         className="group inline-flex items-center gap-2 font-mono text-xs text-[var(--text-primary)]"
                       >
                         <span className="underline decoration-[var(--border-subtle)] underline-offset-4 group-hover:decoration-[var(--text-primary)] transition-colors">
@@ -1199,6 +1206,7 @@ function VariantEditorialFullWidth({
   project: (typeof featuredProjects)[0];
   language: "pt" | "en";
 }) {
+  const getLabProjectClick = useProjectLinkClickHandler(() => ({}));
   const [activeTab, setActiveTab] = useState(0);
   const screens = project.gallery ?? [];
   const activeScreen = screens[activeTab] ?? screens[0];
@@ -1287,6 +1295,7 @@ function VariantEditorialFullWidth({
             <span>{activeScreen?.label[language]}</span>
             <Link
               to={`/project/${project.slug}`}
+              onClick={getLabProjectClick(`/project/${project.slug}`)}
               className="inline-flex items-center gap-1.5 underline underline-offset-4 text-[var(--text-primary)] hover:opacity-80"
             >
               <span>Ver Arquitetura Técnica & Estudo de Caso</span>

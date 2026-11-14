@@ -2,11 +2,15 @@ import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
 import type { TimelineItem } from '../../i18n/translations'
 import { useLanguage } from '../../context/LanguageContext'
+import { useProjectLinkClickHandler } from '../../utils/returnNavigation'
 import { BlurReveal } from '../ui/BlurReveal'
 import { TechStackColumns } from './TechStackColumns'
 
 export function EditorialSection() {
   const { t } = useLanguage()
+  const getCredibilityProjectClick = useProjectLinkClickHandler(() => ({
+    sectionId: 'credibility',
+  }))
 
   return (
     <section
@@ -61,7 +65,7 @@ export function EditorialSection() {
       </BlurReveal>
 
       {/* 4. Credibility & Real-World Production Impact (SPEC §4.6) */}
-      <div className="mt-28 sm:mt-36">
+      <div id="credibility" className="mt-28 sm:mt-36 scroll-mt-24">
         <BlurReveal className="max-w-2xl">
           <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
             {t.credibility.label}
@@ -91,6 +95,9 @@ export function EditorialSection() {
                 <div className="mt-8 pt-2">
                   <Link
                     to={`/project/${item.projectSlug}`}
+                    onClick={getCredibilityProjectClick(
+                      `/project/${item.projectSlug}`,
+                    )}
                     className="group inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-primary)] underline underline-offset-4 decoration-[var(--border-subtle)] hover:decoration-[var(--text-primary)] transition-colors"
                   >
                     <span>{item.project}</span>

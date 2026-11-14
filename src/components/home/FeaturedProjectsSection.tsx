@@ -1,8 +1,14 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { featuredProjects } from '../../data/projects'
 import { useLanguage } from '../../context/LanguageContext'
+import {
+  readActiveProjectSlug,
+  saveActiveProjectSlug,
+  type ProjectNavigationState,
+} from '../../utils/returnNavigation'
 import { BlurReveal } from '../ui/BlurReveal'
 import { ProjectMark } from '../ui/ProjectVisuals'
 import { EditorialBentoShowcase } from './EditorialBentoShowcase'
@@ -33,14 +39,28 @@ const SLIDE_VARIANTS = {
 
 export function FeaturedProjectsSection() {
   const { language, t } = useLanguage()
+  const location = useLocation()
+  const navState = location.state as ProjectNavigationState | null
+  const restoreProjectSlug = navState?.restoreOrigin?.activeProjectSlug
+
   const [{ step, direction }, setCarouselState] = useState<{
     step: number
     direction: 1 | -1
-  }>({ step: 0, direction: 1 })
+  }>(() => {
+    const targetSlug = restoreProjectSlug ?? readActiveProjectSlug()
+    const idx = targetSlug
+      ? featuredProjects.findIndex((p) => p.slug === targetSlug)
+      : -1
+    return { step: idx >= 0 ? idx : 0, direction: 1 }
+  })
 
   const count = featuredProjects.length
   const activeIndex = wrapIndex(step, count)
   const activeProject = featuredProjects[activeIndex]
+
+  useEffect(() => {
+    saveActiveProjectSlug(activeProject.slug)
+  }, [activeProject.slug])
 
   const goPrev = useCallback(() => {
     setCarouselState((prev) => ({ step: prev.step - 1, direction: -1 }))

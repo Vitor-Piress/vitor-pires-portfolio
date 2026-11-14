@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { type MouseEvent, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Link,
   Navigate,
   useLocation,
+  useNavigate,
   useNavigationType,
   useParams,
 } from 'react-router-dom'
@@ -32,6 +33,13 @@ import { ProjectLogo, ScreenVisual } from '../components/ui/ProjectVisuals'
 import { ResponsiveProjectArchitecture } from '../components/project/ProjectArchitectureFlow'
 import { FooterBottomBar } from '../components/layout/Footer'
 import { scrollToElement, scrollToTopSmooth } from '../utils/scroll'
+import {
+  clearReturnOrigin,
+  generateRestoreToken,
+  isModifiedNavigationClick,
+  readReturnOrigin,
+  type ProjectNavigationState,
+} from '../utils/returnNavigation'
 
 type SectionId = 'overview' | 'flows' | 'architecture' | 'results'
 
@@ -51,8 +59,29 @@ export function ProjectDetail() {
 function ProjectDetailContent({ project }: { project: FeaturedProject }) {
   const { language, setLanguage, t } = useLanguage()
   const { theme, toggleTheme } = useTheme()
-  const { hash } = useLocation()
+  const { hash, state } = useLocation()
+  const navigate = useNavigate()
   const navigationType = useNavigationType()
+
+  const navState = state as ProjectNavigationState | null
+  const returnOrigin = navState?.returnOrigin ?? readReturnOrigin()
+
+  const handleBackClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!returnOrigin || isModifiedNavigationClick(e)) {
+      return
+    }
+
+    e.preventDefault()
+    clearReturnOrigin()
+    const restoreOrigin = {
+      ...returnOrigin,
+      restoreToken: generateRestoreToken(),
+    }
+    navigate(returnOrigin.returnPath, {
+      preventScrollReset: true,
+      state: { restoreOrigin } satisfies ProjectNavigationState,
+    })
+  }
 
   const [activeSection, setActiveSection] = useState<SectionId>('overview')
   const [copiedEmail, setCopiedEmail] = useState(false)
@@ -224,7 +253,8 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
       <header className="sticky top-0 z-40 bg-[var(--bg-primary)]/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6 md:px-10">
           <Link
-            to="/"
+            to={returnOrigin?.returnPath ?? '/'}
+            onClick={handleBackClick}
             className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <ArrowLeft
@@ -737,6 +767,11 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
             </span>
             <Link
               to={`/project/${nextProject.slug}`}
+              state={
+                returnOrigin
+                  ? ({ returnOrigin } satisfies ProjectNavigationState)
+                  : undefined
+              }
               className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
               <span>{nextProject.name}</span>
