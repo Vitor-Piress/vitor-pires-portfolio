@@ -28,7 +28,9 @@ function RootLayout() {
 
   return (
     <>
-      <ScrollRestoration getKey={(location) => location.pathname} />
+      <ScrollRestoration
+        getKey={(location) => (location.hash ? location.key : location.pathname)}
+      />
       <Outlet />
       <MiniAudioPlayer />
       <ScrollToTopButton />

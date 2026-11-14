@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigationType,
+  useParams,
+} from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -23,6 +29,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { useTheme } from '../context/ThemeContext'
 import { BlurReveal } from '../components/ui/BlurReveal'
 import { ProjectLogo, ScreenVisual } from '../components/ui/ProjectVisuals'
+import { ResponsiveProjectArchitecture } from '../components/project/ProjectArchitectureFlow'
 import { scrollToElement, scrollToTopSmooth } from '../utils/scroll'
 
 type SectionId = 'overview' | 'flows' | 'architecture' | 'results'
@@ -43,6 +50,8 @@ export function ProjectDetail() {
 function ProjectDetailContent({ project }: { project: FeaturedProject }) {
   const { language, setLanguage, t } = useLanguage()
   const { theme, toggleTheme } = useTheme()
+  const { hash } = useLocation()
+  const navigationType = useNavigationType()
 
   const [activeSection, setActiveSection] = useState<SectionId>('overview')
   const [copiedEmail, setCopiedEmail] = useState(false)
@@ -94,6 +103,31 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
   const handleNextGallery = () => {
     setActiveGalleryIndex((prev) => (prev + 1) % galleryItems.length)
   }
+
+  // Ensure direct/hash navigations (e.g. /project/condonot#architecture)
+  // land cleanly below the sticky header & TOC instead of restoring stale scroll.
+  useEffect(() => {
+    if (!hash || navigationType === 'POP') return
+    const targetId = decodeURIComponent(hash.slice(1))
+    const el = document.getElementById(targetId)
+    if (!el) return
+
+    const rafId = window.requestAnimationFrame(() => {
+      const stickyOffset = window.innerWidth >= 640 ? 128 : 144
+      const targetTop = Math.max(
+        0,
+        el.getBoundingClientRect().top + window.scrollY - stickyOffset,
+      )
+      if (Math.abs(window.scrollY - targetTop) > 8) {
+        window.scrollTo({ top: targetTop, left: 0, behavior: 'instant' })
+      }
+      if (SECTION_IDS.includes(targetId as SectionId)) {
+        setActiveSection(targetId as SectionId)
+      }
+    })
+
+    return () => window.cancelAnimationFrame(rafId)
+  }, [hash, navigationType, project.slug])
 
   // Deterministic scroll-spy for the Quick Navigation TOC
   useEffect(() => {
@@ -321,7 +355,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* ================================================================ */}
         {/* SECTION 01: OVERVIEW                                             */}
         {/* ================================================================ */}
-        <section id="overview" className="scroll-mt-28">
+        <section id="overview" className="scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="max-w-4xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               01 / {t.projectDetail.toc.overview}
@@ -418,7 +452,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* ================================================================ */}
         {/* SECTION 02: FULL-WIDTH SYSTEM PREVIEW + CORE MODULES             */}
         {/* ================================================================ */}
-        <section id="flows" className="mt-28 sm:mt-36 scroll-mt-28">
+        <section id="flows" className="mt-28 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               02 / {t.projectDetail.toc.flows}
@@ -645,7 +679,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* ================================================================ */}
         {/* SECTION 03: TECHNICAL ARCHITECTURE                               */}
         {/* ================================================================ */}
-        <section id="architecture" className="mt-28 sm:mt-36 scroll-mt-28">
+        <section id="architecture" className="mt-28 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               03 / {t.projectDetail.toc.architecture}
@@ -658,46 +692,15 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
             </p>
           </BlurReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-            {project.architecture.map((item, idx) => (
-              <BlurReveal key={item.layer.en} delay={(idx % 2) * 0.08}>
-                <div className="bento-card flex h-full flex-col justify-between p-6 sm:p-7">
-                  <div>
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="font-mono-meta text-[10px] text-[var(--text-muted)]">
-                        LAYER 0{idx + 1}
-                      </span>
-                    </div>
-
-                    <h3 className="mt-2.5 font-editorial text-2xl sm:text-[26px] leading-snug text-[var(--text-primary)]">
-                      {item.layer[language]}
-                    </h3>
-
-                    <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)]">
-                      {item.description[language]}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 flex flex-wrap gap-2 pt-2">
-                    {item.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-[2px] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] text-[var(--text-primary)]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </BlurReveal>
-            ))}
-          </div>
+          <BlurReveal delay={0.08}>
+            <ResponsiveProjectArchitecture project={project} language={language} />
+          </BlurReveal>
         </section>
 
         {/* ================================================================ */}
         {/* SECTION 04: PRODUCTION RESULTS & NEXT PROJECT                    */}
         {/* ================================================================ */}
-        <section id="results" className="mt-28 sm:mt-36 scroll-mt-28">
+        <section id="results" className="mt-28 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               04 / {t.projectDetail.toc.results}

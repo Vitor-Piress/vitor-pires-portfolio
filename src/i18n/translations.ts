@@ -223,7 +223,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "Motores dedicados, integrações com IA e arquiteturas modulares desenvolvidas para operação crítica.",
       viewDetails: "Ver detalhes do projeto",
       liveWebsite: "Acessar site",
-      repository: "Repositório GitHub",
+      repository: "Acessar site",
       meta: {
         categoryClient: "CATEGORY / CLIENT",
         role: "ROLE",
@@ -345,7 +345,7 @@ export const translations: Record<Language, TranslationSchema> = {
           author: "Operação Comercial Licenciada",
           role: "Administração Condominial B2B",
           project: "Condonot SaaS",
-          metric: "-85% no tempo de emissão e cobrança",
+          metric: "-85% no tempo de emissão de notificações",
         },
         {
           id: "moradas-validation",
@@ -539,11 +539,11 @@ export const translations: Record<Language, TranslationSchema> = {
         {
           id: "condonot-validation",
           quote:
-            "Condonot replaced fragmented spreadsheets and manual word processors with a single unified pipeline: from infraction logging to formal PDF generation, Pix BR Code payload, and tracked email delivery in seconds.",
+            "Condonot replaced fragmented spreadsheets and manual word processors with a single unified pipeline: from infraction logging to formal PDF generation and tracked email delivery in seconds.",
           author: "Licensed Commercial Operation",
           role: "B2B Condominium Administration",
           project: "Condonot SaaS",
-          metric: "-85% time spent on notices & billing",
+          metric: "-85% time spent issuing formal notices",
         },
         {
           id: "moradas-validation",

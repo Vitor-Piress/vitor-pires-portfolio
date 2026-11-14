@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  Activity,
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
@@ -21,6 +22,7 @@ import {
   Sparkles,
   Sun,
   Type,
+  Workflow,
   Check,
   ZoomIn,
   ZoomOut,
@@ -44,8 +46,12 @@ import {
   ProjectCarouselPrototypeStage,
   type ProjectCarouselVariantId,
 } from "../components/lab/ProjectCarouselPrototypes";
+import {
+  ArchitectureFlowPrototypeStage,
+  type ArchitectureVariantId,
+} from "../components/lab/ArchitectureFlowPrototypes";
 
-type LabScope = "carousel" | "stack" | "hero" | "projects";
+type LabScope = "architecture" | "carousel" | "stack" | "hero" | "projects";
 
 type HeroVariantId = "typographic-balance" | "grid-7-5" | "compact-split";
 
@@ -58,6 +64,49 @@ type VariantId =
   | "bento";
 
 type ProjectFilter = "all" | "condonot" | "moradas-do-gabriel" | "dailycheckout";
+
+interface ArchitectureVariantOption {
+  id: ArchitectureVariantId;
+  label: string;
+  subtitle: string;
+  icon: typeof LayoutGrid;
+  tag: string;
+}
+
+const ARCHITECTURE_VARIANTS: ArchitectureVariantOption[] = [
+  {
+    id: "final-hybrid",
+    label: "Decisão Final · Ideia 1 (Desktop) + Ideia 3 (Compacto)",
+    subtitle:
+      "Em /project/:slug: somente Ideia 1 no Desktop (≥ 1024px) e somente Ideia 3 Compacto no Mobile (< 1024px); na Home (/): Ideia 3 Compacto no card de 4 cols",
+    icon: Sparkles,
+    tag: "Decisão Final",
+  },
+  {
+    id: "node-topology",
+    label: "Ideia 1 · Topologia de Nós + Pulso SVG",
+    subtitle:
+      "Nós interativos (Edge → Front-end → API/Auth → Banco) conectados por linhas ortogonais com pulso de pacotes e inspetor técnico",
+    icon: Workflow,
+    tag: "Desktop Base",
+  },
+  {
+    id: "request-trace",
+    label: "Ideia 2 · Simulador Request Trace",
+    subtitle:
+      "Simulador passo a passo (Play / Passo) que ilumina nós, conexões e payloads reais em fluxos como Neon Auth, Render API ou Resend + RLS",
+    icon: Activity,
+    tag: "Alternativa",
+  },
+  {
+    id: "dual-blueprint",
+    label: "Ideia 3 · Blueprint Duplo (4 + 8 cols)",
+    subtitle:
+      "Visualiza lado a lado o mini-pipeline sincronizado no Card da Home (4 cols) e a matriz de arquitetura expandida da página do projeto",
+    icon: Columns2,
+    tag: "Compacto Base",
+  },
+];
 
 interface CarouselVariantOption {
   id: ProjectCarouselVariantId;
@@ -252,7 +301,9 @@ const PROJECT_FILTERS: { id: ProjectFilter; label: string }[] = [
 ];
 
 export function DesignLab() {
-  const [labScope, setLabScope] = useState<LabScope>("carousel");
+  const [labScope, setLabScope] = useState<LabScope>("architecture");
+  const [architectureVariant, setArchitectureVariant] =
+    useState<ArchitectureVariantId>("final-hybrid");
   const [carouselVariant, setCarouselVariant] =
     useState<ProjectCarouselVariantId>("carousel-tabs");
   const [stackVariant, setStackVariant] = useState<StackVariantId>("columns-3");
@@ -275,6 +326,12 @@ export function DesignLab() {
   const singleProject = visibleProjects[0] ?? featuredProjects[0];
 
   const scopeVariantMap = {
+    architecture: {
+      options: ARCHITECTURE_VARIANTS,
+      selectedId: architectureVariant,
+      onSelect: (id: string) =>
+        setArchitectureVariant(id as ArchitectureVariantId),
+    },
     carousel: {
       options: CAROUSEL_VARIANTS,
       selectedId: carouselVariant,
@@ -344,6 +401,7 @@ export function DesignLab() {
             >
               {(
                 [
+                  { id: "architecture", label: "Arquitetura" },
                   { id: "carousel", label: "Carrossel Projetos" },
                   { id: "stack", label: "Tech Stack" },
                   { id: "hero", label: "Hero Section" },
@@ -514,16 +572,22 @@ export function DesignLab() {
             </button>
           ) : (
             <span className="text-[10px] font-mono text-[var(--text-muted)]">
-              {labScope === "stack"
-                ? "3 camadas × 4 tecnologias (PT/EN & Dark/Light)"
-                : "Testando no layout real da página inicial"}
+              {labScope === "architecture"
+                ? "Condonot · Moradas · Dailycheckout (Neon, Render & Cloudflare)"
+                : labScope === "stack"
+                  ? "3 camadas × 4 tecnologias (PT/EN & Dark/Light)"
+                  : "Testando no layout real da página inicial"}
             </span>
           )}
         </div>
       </div>
 
       {/* Main Preview Stage */}
-      {labScope === "carousel" ? (
+      {labScope === "architecture" ? (
+        <main className="pb-20">
+          <ArchitectureFlowPrototypeStage variant={architectureVariant} />
+        </main>
+      ) : labScope === "carousel" ? (
         <main className="pb-20">
           <ProjectCarouselPrototypeStage
             variant={carouselVariant}

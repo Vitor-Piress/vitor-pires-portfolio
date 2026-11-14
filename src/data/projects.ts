@@ -41,10 +41,36 @@ export interface ProjectFeature {
   description: Localized;
 }
 
+export type ArchitectureNodeRole =
+  | "edge"
+  | "frontend"
+  | "compute"
+  | "data"
+  | "integration";
+
 export interface ProjectArchitectureItem {
+  id?: string;
+  nodeRole?: ArchitectureNodeRole;
+  provider?: string;
+  protocol?: string;
+  securityNote?: Localized;
   layer: Localized;
   technologies: string[];
   description: Localized;
+}
+
+export interface ArchitectureFlowStep {
+  layerId: string;
+  action: Localized;
+  payload: string;
+  detail: Localized;
+}
+
+export interface ArchitectureFlowScenario {
+  id: string;
+  title: Localized;
+  trigger: Localized;
+  steps: ArchitectureFlowStep[];
 }
 
 export interface ProjectResult {
@@ -87,6 +113,7 @@ export interface FeaturedProject {
   };
   features: ProjectFeature[];
   architecture: ProjectArchitectureItem[];
+  architectureFlows?: ArchitectureFlowScenario[];
   results: ProjectResult[];
 }
 
@@ -121,7 +148,7 @@ export const featuredProjects: FeaturedProject[] = [
     appDomain: "app.condonot.com.br",
     headline: {
       pt: "Condonot é uma plataforma para automatizar a gestão e fiscalização de notificações formais em condomínios.",
-      en: "Condonot is a SaaS platform that automates management and billing for condominiums.",
+      en: "Condonot is a SaaS platform that automates formal infraction notices and management for condominiums.",
     },
     summary: {
       pt: "Plataforma SaaS B2B licenciada comercialmente e em operação: gestão de unidades, notificações de infração formais, geração de PDFs e disparo de e-mails rastreados.",
@@ -145,8 +172,8 @@ export const featuredProjects: FeaturedProject[] = [
       "Resend",
     ],
     details: {
-      pt: "Arquitetura multi-tenant sobre Supabase (PostgreSQL + Row Level Security) com deploy na borda via Cloudflare. Unifica em um único fluxo o que antes exigia planilhas, editores de texto e controles manuais: da identificação da infração ao PDF formal, payload Pix e entrega por e-mail em segundos.",
-      en: "Multi-tenant architecture on Supabase (PostgreSQL + Row Level Security) deployed at the edge via Cloudflare. It merges into a single pipeline what used to require spreadsheets, word processors and manual tracking: from infraction logging to a formal PDF, Pix payload and email delivery in seconds.",
+      pt: "Arquitetura multi-tenant sobre Supabase (PostgreSQL + Row Level Security) com deploy na borda via Cloudflare. Unifica em um único fluxo o que antes exigia planilhas, editores de texto e controles manuais: da identificação da infração à geração do PDF formal e entrega rastreada por e-mail em segundos.",
+      en: "Multi-tenant architecture on Supabase (PostgreSQL + Row Level Security) deployed at the edge via Cloudflare. It merges into a single pipeline what used to require spreadsheets, word processors and manual tracking: from infraction logging to formal PDF generation and tracked email delivery in seconds.",
     },
     liveUrl: "https://condonot.com.br/demo",
     repoUrl: null,
@@ -333,6 +360,14 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     architecture: [
       {
+        id: "frontend",
+        nodeRole: "frontend",
+        provider: "React SPA",
+        protocol: "HTTPS · TypeScript",
+        securityNote: {
+          pt: "Componentes tipados de ponta a ponta & validação de formulários",
+          en: "End-to-end typed components & client-side form validation",
+        },
         layer: { pt: "Front-end", en: "Frontend" },
         technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
         description: {
@@ -341,6 +376,14 @@ export const featuredProjects: FeaturedProject[] = [
         },
       },
       {
+        id: "database",
+        nodeRole: "data",
+        provider: "Supabase",
+        protocol: "TLS · PostgREST / RLS",
+        securityNote: {
+          pt: "Isolamento multi-tenant via Row Level Security por administradora",
+          en: "Multi-tenant isolation enforced per administrator via RLS",
+        },
         layer: { pt: "Dados & Autenticação", en: "Data & Auth" },
         technologies: ["Supabase", "PostgreSQL", "Row Level Security"],
         description: {
@@ -349,6 +392,14 @@ export const featuredProjects: FeaturedProject[] = [
         },
       },
       {
+        id: "edge",
+        nodeRole: "edge",
+        provider: "Cloudflare",
+        protocol: "Edge CDN · TLS 1.3",
+        securityNote: {
+          pt: "Entrega global na borda com proxy HTTPS e proteção DNS",
+          en: "Global edge delivery with HTTPS proxy and DNS protection",
+        },
         layer: { pt: "Infraestrutura", en: "Infrastructure" },
         technologies: ["Cloudflare"],
         description: {
@@ -357,12 +408,132 @@ export const featuredProjects: FeaturedProject[] = [
         },
       },
       {
-        layer: { pt: "Integrações", en: "Integrations" },
-        technologies: ["Resend", "Pix BR Code"],
-        description: {
-          pt: "E-mails transacionais e geração de cobranças no padrão do Banco Central.",
-          en: "Transactional emails and charges generated following the Brazilian Central Bank standard.",
+        id: "integrations",
+        nodeRole: "integration",
+        provider: "Resend · PDF",
+        protocol: "REST API · Webhook",
+        securityNote: {
+          pt: "Anexo oficial em PDF & rastreamento do status de entrega via Resend",
+          en: "Official PDF notice attachment & email delivery tracking via Resend",
         },
+        layer: { pt: "Integrações & Documentos", en: "Integrations & Documents" },
+        technologies: ["Resend", "PDF Generation"],
+        description: {
+          pt: "Geração de documentos oficiais em PDF e disparo de e-mails transacionais com acompanhamento do status de entrega.",
+          en: "Official PDF document rendering and transactional emails with tracked delivery status.",
+        },
+      },
+    ],
+    architectureFlows: [
+      {
+        id: "infraction-notice",
+        title: {
+          pt: "01. Emissão de Notificação & PDF",
+          en: "01. Notice & PDF Dispatch",
+        },
+        trigger: {
+          pt: "Síndico/operador registra advertência ou multa com artigo do regimento",
+          en: "Manager issues a warning or fine tied to a bylaw article",
+        },
+        steps: [
+          {
+            layerId: "edge",
+            action: {
+              pt: "Roteamento seguro na borda",
+              en: "Secure edge routing",
+            },
+            payload: "TLS 1.3 → app.condonot.com.br/notificacoes",
+            detail: {
+              pt: "Cloudflare entrega o bundle estático cacheado globalmente e protege a sessão sob HTTPS.",
+              en: "Cloudflare serves the globally cached bundle and secures traffic under HTTPS.",
+            },
+          },
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Validação e geração do documento PDF",
+              en: "Form validation & PDF document generation",
+            },
+            payload: "{ unidadeId, artigoRegimento, numSequencial }",
+            detail: {
+              pt: "Interface React compila o modelo oficial padronizado com numeração sequencial e identidade do condomínio.",
+              en: "React UI compiles the standardized notice template with sequential numbering and condo branding.",
+            },
+          },
+          {
+            layerId: "database",
+            action: {
+              pt: "Gravação isolada por tenant (RLS)",
+              en: "Tenant-isolated database write (RLS)",
+            },
+            payload: "INSERT notices WHERE tenant_id = auth.uid()",
+            detail: {
+              pt: "Supabase valida as políticas Row Level Security para assegurar acesso exclusivo da administradora.",
+              en: "Supabase evaluates Row Level Security policies so only the owning administrator owns the record.",
+            },
+          },
+          {
+            layerId: "integrations",
+            action: {
+              pt: "Disparo transacional rastreado via Resend",
+              en: "Tracked transactional dispatch via Resend",
+            },
+            payload: "POST /emails · attachment: notificacao.pdf",
+            detail: {
+              pt: "Envia o e-mail formal ao morador com o PDF anexado e atualiza o status de entrega no histórico.",
+              en: "Delivers the formal notice email with PDF attached and tracks delivery events in audit history.",
+            },
+          },
+        ],
+      },
+      {
+        id: "tenant-audit",
+        title: {
+          pt: "02. Isolamento Multi-Tenant & Auditoria",
+          en: "02. Multi-Tenant Isolation & Audit",
+        },
+        trigger: {
+          pt: "Administradora consulta histórico por unidade e confirma recebimento de e-mails",
+          en: "Administrator reviews unit history & confirms email delivery logs",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Consulta filtrada de unidades e relatórios",
+              en: "Scoped unit & report query",
+            },
+            payload: "GET /relatorios?condoId=active_tenant",
+            detail: {
+              pt: "Painel em React solicita os registros e status de entrega filtrados pelo condomínio ativo.",
+              en: "React console requests notice records and delivery metrics scoped to the active condominium.",
+            },
+          },
+          {
+            layerId: "database",
+            action: {
+              pt: "Enforce de políticas RLS no PostgreSQL",
+              en: "PostgreSQL RLS policy enforcement",
+            },
+            payload: "SELECT notices, logs · RLS auth.uid() match",
+            detail: {
+              pt: "Supabase garante no nível do banco que dados de outras administradoras nunca cruzem a consulta.",
+              en: "Supabase enforces row-level tenant isolation directly in PostgreSQL.",
+            },
+          },
+          {
+            layerId: "integrations",
+            action: {
+              pt: "Retorno de eventos de entrega via Resend",
+              en: "Delivery telemetry via Resend",
+            },
+            payload: "webhook: email.delivered · notificacao_id",
+            detail: {
+              pt: "Os eventos de entrega e abertura ficam anexados à notificação para respaldo administrativo.",
+              en: "Delivery events remain attached to each notice for operational and legal traceability.",
+            },
+          },
+        ],
       },
     ],
     results: [
@@ -379,8 +550,8 @@ export const featuredProjects: FeaturedProject[] = [
       {
         metric: { pt: "-85% no tempo de emissão", en: "-85% issuing time" },
         description: {
-          pt: "Notificação, PDF, cobrança e envio em um único fluxo de segundos.",
-          en: "Notice, PDF, charge and delivery in a single flow that takes seconds.",
+          pt: "Notificação, PDF e disparo rastreado por e-mail em um único fluxo de segundos.",
+          en: "Notice, PDF and tracked email delivery in a single flow that takes seconds.",
         },
       },
       {
@@ -613,6 +784,14 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     architecture: [
       {
+        id: "frontend",
+        nodeRole: "frontend",
+        provider: "Mobile-First SPA",
+        protocol: "QR Entry · HTTPS",
+        securityNote: {
+          pt: "Acesso instantâneo sem instalação pelo navegador do celular",
+          en: "Zero-install instant guest access via mobile browser",
+        },
         layer: { pt: "Front-end", en: "Frontend" },
         technologies: ["React", "TypeScript", "Tailwind CSS"],
         description: {
@@ -621,12 +800,96 @@ export const featuredProjects: FeaturedProject[] = [
         },
       },
       {
+        id: "database",
+        nodeRole: "data",
+        provider: "Supabase",
+        protocol: "TLS · RLS Policies",
+        securityNote: {
+          pt: "Leitura pública para hóspedes + painel administrativo autenticado",
+          en: "Public read policies for guests + authenticated staff admin panel",
+        },
         layer: { pt: "Dados & Autenticação", en: "Data & Auth" },
         technologies: ["Supabase", "PostgreSQL"],
         description: {
           pt: "Conteúdo público para hóspedes e área administrativa protegida por autenticação e políticas de acesso.",
           en: "Public content for guests and an admin area protected by authentication and access policies.",
         },
+      },
+    ],
+    architectureFlows: [
+      {
+        id: "guest-qr-portal",
+        title: {
+          pt: "01. Acesso do Hóspede via QR Code",
+          en: "01. Guest Access via QR Code",
+        },
+        trigger: {
+          pt: "Hóspede escaneia o QR Code na suíte para consultar Wi-Fi, regras e mapa",
+          en: "Guest scans suite QR Code to view Wi-Fi, house rules & local map",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Abertura imediata da interface mobile-first",
+              en: "Instant load of mobile-first guest portal",
+            },
+            payload: "GET /guia · Viewport Mobile (Zero Install)",
+            detail: {
+              pt: "Renderiza atalhos de Wi-Fi em 1 toque, horários da pousada e pontos georreferenciados no navegador.",
+              en: "Renders one-tap Wi-Fi access, guesthouse rules and geo-referenced map pins right in mobile browser.",
+            },
+          },
+          {
+            layerId: "database",
+            action: {
+              pt: "Consulta pública controlada por políticas",
+              en: "Policy-scoped public read query",
+            },
+            payload: "SELECT guide_items, wifi_config (read-only)",
+            detail: {
+              pt: "Supabase retorna dados atualizados da hospedagem em tempo real mantendo tabelas administrativas protegidas.",
+              en: "Supabase serves real-time guesthouse info while keeping admin mutation endpoints locked down.",
+            },
+          },
+        ],
+      },
+      {
+        id: "admin-realtime-cms",
+        title: {
+          pt: "02. Atualização em Tempo Real no Painel",
+          en: "02. Real-Time Admin Update",
+        },
+        trigger: {
+          pt: "Equipe da pousada altera regras, recomendações locais ou senha de Wi-Fi",
+          en: "Guesthouse staff edits house rules, map tips or Wi-Fi credentials",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Edição autenticada no Painel Administrativo",
+              en: "Authenticated edit in Admin Dashboard",
+            },
+            payload: "PUT /admin/content · Session Token",
+            detail: {
+              pt: "Painel em React + TypeScript valida coordenadas, textos e categorias com prévia responsiva imediata.",
+              en: "Typed React dashboard validates map coordinates, copy and categories with immediate preview.",
+            },
+          },
+          {
+            layerId: "database",
+            action: {
+              pt: "Persistência protegida no Supabase Auth + PostgreSQL",
+              en: "Protected write via Supabase Auth + PostgreSQL",
+            },
+            payload: "UPDATE property_content · AUTH = staff_role",
+            detail: {
+              pt: "Política RLS autoriza gravação apenas para usuários autenticados, refletindo no portal dos hóspedes no mesmo instante.",
+              en: "RLS policy permits writes solely for authenticated staff, reflecting live across guest QR sessions.",
+            },
+          },
+        ],
       },
     ],
     results: [
@@ -938,28 +1201,210 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     architecture: [
       {
-        layer: { pt: "Front-end", en: "Frontend" },
-        technologies: ["React", "Tailwind CSS"],
+        id: "frontend",
+        nodeRole: "frontend",
+        provider: "Cloudflare",
+        protocol: "Edge CDN · SPA",
+        securityNote: {
+          pt: "PDV mobile na bancada & visão analítica desktop servidos na borda",
+          en: "Mobile chairside POS & desktop analytics served on Cloudflare edge",
+        },
+        layer: {
+          pt: "Front-end Mobile-First & Edge",
+          en: "Mobile-First Frontend & Edge",
+        },
+        technologies: ["React", "Tailwind CSS", "Cloudflare"],
         description: {
-          pt: "Experiência mobile-first para registro instantâneo na barbearia e visão analítica expandida no desktop de gestão.",
-          en: "Mobile-first experience for instant floor capture paired with an expanded desktop management dashboard.",
+          pt: "Experiência mobile-first para registro instantâneo na bancada e visão analítica expandida no desktop, entregues pela Cloudflare.",
+          en: "Mobile-first experience for instant floor capture paired with an expanded desktop management dashboard, delivered via Cloudflare.",
         },
       },
       {
-        layer: { pt: "Back-end / API", en: "Backend / API" },
-        technologies: ["Node.js", "Fastify"],
+        id: "api",
+        nodeRole: "compute",
+        provider: "Render",
+        protocol: "HTTPS · REST JSON",
+        securityNote: {
+          pt: "Regras de comissão (50%) e validação transacional isoladas no servidor",
+          en: "50% payout rules & payload validation enforced server-side",
+        },
+        layer: {
+          pt: "API & Regras de Negócio (Deploy Render)",
+          en: "API & Business Logic (Render Deploy)",
+        },
+        technologies: ["Node.js", "Fastify", "Render"],
         description: {
-          pt: "API REST dedicada para regras de comissionamento, fechamento diário, consolidação por método e consolidação mensal.",
-          en: "Dedicated REST API handling commission rules, daily closing locks, payment-method aggregation and monthly P&L.",
+          pt: "API REST dedicada hospedada no Render para regras de comissionamento (50%), fechamento diário, consolidação por método e DRE mensal.",
+          en: "Dedicated REST API deployed on Render handling 50% commission rules, daily closing locks, payment-method aggregation and monthly P&L.",
         },
       },
       {
-        layer: { pt: "Banco de Dados", en: "Database" },
-        technologies: ["PostgreSQL"],
-        description: {
-          pt: "Modelagem relacional preservando histórico de atendimentos, gorjetas, operadores e lançamentos de despesas.",
-          en: "Relational schema preserving full history of services, tips, operators and categorized expense entries.",
+        id: "database",
+        nodeRole: "data",
+        provider: "Neon",
+        protocol: "SSL · Serverless Pool",
+        securityNote: {
+          pt: "Sessões via Neon Auth + integridade relacional ACID no PostgreSQL",
+          en: "Neon Auth sessions + ACID relational integrity on PostgreSQL",
         },
+        layer: {
+          pt: "Autenticação & Persistência Serverless (Neon)",
+          en: "Auth & Serverless Persistence (Neon)",
+        },
+        technologies: ["Neon", "Neon Auth", "PostgreSQL"],
+        description: {
+          pt: "Autenticação integrada com Neon Auth e PostgreSQL serverless preservando histórico auditável de atendimentos, gorjetas, operadores e despesas.",
+          en: "Integrated Neon Auth and serverless PostgreSQL preserving an auditable history of services, tips, operators and expense entries.",
+        },
+      },
+    ],
+    architectureFlows: [
+      {
+        id: "neon-auth",
+        title: {
+          pt: "01. Autenticação (Neon Auth)",
+          en: "01. Authentication (Neon Auth)",
+        },
+        trigger: {
+          pt: "Barbeiro ou administrador abre o aplicativo na bancada ou escritório",
+          en: "Barber or shop manager opens the app at the chair or desk",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Captura credencial e inicia contexto do operador",
+              en: "Captures credentials & initializes operator session",
+            },
+            payload: "HTTPS · dailycheckout.app/operacao",
+            detail: {
+              pt: "SPA React hospedada na Cloudflare solicita autenticação sem recarregamento e adapta a UI ao perfil.",
+              en: "Cloudflare-hosted React SPA negotiates session seamlessly and switches between floor POS or admin view.",
+            },
+          },
+          {
+            layerId: "api",
+            action: {
+              pt: "Validação de token e escopo de permissões",
+              en: "Token validation & role scope guard",
+            },
+            payload: "Authorization: Bearer <neon_jwt> @ Render",
+            detail: {
+              pt: "Fastify no Render verifica a sessão antes de liberar rotas de lançamento de caixa ou relatórios.",
+              en: "Render-hosted Fastify validates the bearer session before exposing POS or P&L routes.",
+            },
+          },
+          {
+            layerId: "database",
+            action: {
+              pt: "Sessão e perfil persistidos no Neon",
+              en: "Session & operator profile verified in Neon",
+            },
+            payload: "Neon Auth + PostgreSQL (user_role, commission_rate)",
+            detail: {
+              pt: "Neon Auth confirma identidade e associa o usuário ao seu histórico real de atendimentos e taxas de comissão.",
+              en: "Neon Auth verifies identity and binds the operator to their commission rules and historical ledger.",
+            },
+          },
+        ],
+      },
+      {
+        id: "pos-closing",
+        title: {
+          pt: "02. Registro & Fechamento (Fastify @ Render)",
+          en: "02. POS Log & Closing (Fastify @ Render)",
+        },
+        trigger: {
+          pt: "Operador registra atendimento em 2 toques e executa o fechamento do dia",
+          en: "Operator logs a service in 2 taps and runs the daily register closing",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Lançamento mobile de serviço, pagamento e gorjeta",
+              en: "Mobile capture of service, payment method & tip",
+            },
+            payload: "{ service: 'Corte', method: 'PIX', tipCents: 1000 }",
+            detail: {
+              pt: "Fluxo pensado para agilidade na bancada: seleciona o catálogo visual, meio de pagamento e gorjeta opcional.",
+              en: "Chairside UX optimized for speed: pick visual service tile, payment method and optional pass-through tip.",
+            },
+          },
+          {
+            layerId: "api",
+            action: {
+              pt: "Cálculo de rateio 50% & consolidação no servidor",
+              en: "50% split calculation & server-side aggregation",
+            },
+            payload: "POST /api/closings · houseShare(50%) + tip(100%)",
+            detail: {
+              pt: "Fastify no Render separa serviços do admin, participação da casa, repasse dos operadores e gorjetas integrais.",
+              en: "Fastify API on Render splits admin own services, 50% shop/barber share and full pass-through tips.",
+            },
+          },
+          {
+            layerId: "database",
+            action: {
+              pt: "Transação ACID e trilha de auditoria no Neon Postgres",
+              en: "ACID transaction & audit trail in Neon Postgres",
+            },
+            payload: "BEGIN; INSERT entries; INSERT daily_closing; COMMIT;",
+            detail: {
+              pt: "PostgreSQL serverless na Neon grava o fechamento diário de forma atômica, impedindo divergências de centavos.",
+              en: "Serverless Neon PostgreSQL commits the daily closing atomically so totals stay 100% auditable.",
+            },
+          },
+        ],
+      },
+      {
+        id: "monthly-dre",
+        title: {
+          pt: "03. Despesas & DRE Mensal (Neon Postgres)",
+          en: "03. Expenses & Monthly P&L (Neon Postgres)",
+        },
+        trigger: {
+          pt: "Gestor consulta despesas fixas/variáveis e gera relatório periódico no desktop",
+          en: "Owner inspects fixed/variable bills and exports periodic desktop P&L",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Filtro de período e preparação para impressão",
+              en: "Date-range filtering & print-ready report view",
+            },
+            payload: "GET /gestao/relatorios?period=monthly",
+            detail: {
+              pt: "Painel desktop solicita composição entre custos fixos, repasses e receita líquida pronta para impressão.",
+              en: "Desktop console requests fixed vs. variable cost composition and net profit layout ready for print.",
+            },
+          },
+          {
+            layerId: "api",
+            action: {
+              pt: "Consolidação financeira por método e categoria",
+              en: "Method & expense-category aggregation",
+            },
+            payload: "GET /v1/reports/pnl · Cash | Pix | Credit | Debit",
+            detail: {
+              pt: "API no Render cruza receitas por meio de pagamento com contas fixas por vencimento e retorna DTO tipado.",
+              en: "Render API aggregates payment methods against scheduled fixed expenses into a clean summary payload.",
+            },
+          },
+          {
+            layerId: "database",
+            action: {
+              pt: "Consulta relacional agregada no Neon PostgreSQL",
+              en: "Aggregated relational query on Neon PostgreSQL",
+            },
+            payload: "SELECT SUM(...) GROUP BY method, category",
+            detail: {
+              pt: "Pooler serverless do Neon responde agregações sobre atendimentos, comissões e despesas com latência estável.",
+              en: "Neon serverless Postgres runs relational aggregations across bookings, commissions and bills cleanly.",
+            },
+          },
+        ],
       },
     ],
     results: [
@@ -998,8 +1443,8 @@ export const secondaryProjects: SecondaryProject[] = [
     name: "Motor de Cobranças",
     image: null,
     summary: {
-      pt: "Motor dedicado à geração de payloads Pix e automação financeira.",
-      en: "Dedicated engine for Pix payload generation and condominium financial automation.",
+      pt: "Motor dedicado à geração de payloads Pix e automação financeira para cobrança do licenciamento do Condonot.",
+      en: "Dedicated engine for Pix payload generation and automated SaaS licensing billing for Condonot.",
     },
     category: { pt: "Módulo Financeiro", en: "Financial Module" },
     stack: ["TypeScript", "Node.js", "Pix BR Code"],

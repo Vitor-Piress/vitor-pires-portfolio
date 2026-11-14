@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
   GitFork,
-  Layers,
   Monitor,
   Smartphone,
   ZoomIn,
@@ -22,11 +20,16 @@ import type {
 import type { Language } from "../../i18n/translations";
 import { useLanguage } from "../../context/LanguageContext";
 import { ProjectLogo, ScreenVisual } from "../ui/ProjectVisuals";
+import { CompactArchitecturePipeline } from "../project/ProjectArchitectureFlow";
+import {
+  getOrderedArchitectureNodes,
+  useDirectionalLayer,
+} from "../project/architectureFlow";
 
 interface EditorialBentoShowcaseProps {
   project: FeaturedProject;
   index: number;
-  /** Reverses the 8+4 Bento row on odd items (e.g. Moradas do Gabriel = 4+8). */
+  /** Reverses the 8+4 Bento row on odd items; mobile-first projects always lead with the 4-col mobile card. */
   alternatingRhythm?: boolean;
   /** Optional directional 2-layer staggered entrance (used by Carousel Tabs prototype). */
   staggerDirection?: 1 | -1;
@@ -35,7 +38,7 @@ interface EditorialBentoShowcaseProps {
 /**
  * Editorial Featured Project Showcase (`7+5` Narrative + `8+4` Hybrid Bento):
  * 1. Top Editorial Split (7 cols narrative/CTA + 5 cols 2x2 metadata & details).
- * 2. Bottom Full-Width Hybrid Bento (8 + 4 cols, alternating to 4 + 8 on odd projects):
+ * 2. Bottom Full-Width Hybrid Bento (8 + 4 cols; `mobileFirst` projects or odd alternating items place the 4-col companion first on lg+, and `mobileFirst` also leads with it on small screens):
  *    - 8 cols: Widescreen interactive browser stage with Pan & Zoom (or desktop wireframes).
  *    - 4 cols: Dual-mode companion [ Mobile / Screen | Interactive Architecture Flow ].
  */
@@ -46,7 +49,19 @@ export function EditorialBentoShowcase({
   staggerDirection,
 }: EditorialBentoShowcaseProps) {
   const { language, t } = useLanguage();
-  const isInverted = alternatingRhythm && index % 2 === 1;
+  const isMobileFirst = Boolean(project.mobileFirst);
+  const isCompanionFirstDesktop =
+    isMobileFirst || (alternatingRhythm && index % 2 === 1);
+  const widescreenOrderClass = isMobileFirst
+    ? "order-2"
+    : isCompanionFirstDesktop
+      ? "order-1 lg:order-2"
+      : "order-1";
+  const companionOrderClass = isMobileFirst
+    ? "order-1"
+    : isCompanionFirstDesktop
+      ? "order-2 lg:order-1"
+      : "order-2";
 
   const headerMotionProps = staggerDirection
     ? {
@@ -219,27 +234,19 @@ export function EditorialBentoShowcase({
       </motion.div>
 
       {/* =================================================================== */}
-      {/* LAYER 2: HYBRID BENTO SHOWCASE (8 cols + 4 cols, alternating order) */}
+      {/* LAYER 2: HYBRID BENTO SHOWCASE (8 cols + 4 cols, mobile-first leads)*/}
       {/* =================================================================== */}
       <motion.div
         {...bentoMotionProps}
         className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-stretch"
       >
-        {/* 8-col Widescreen Stage (first on mobile, alternates left/right on lg+) */}
-        <div
-          className={`lg:col-span-8 flex flex-col ${
-            isInverted ? "order-1 lg:order-2" : "order-1 lg:order-1"
-          }`}
-        >
+        {/* 8-col Widescreen Stage */}
+        <div className={`lg:col-span-8 flex flex-col ${widescreenOrderClass}`}>
           <WidescreenStageCard project={project} language={language} />
         </div>
 
         {/* 4-col Companion Vertical / Architecture Stage */}
-        <div
-          className={`lg:col-span-4 flex flex-col ${
-            isInverted ? "order-2 lg:order-1" : "order-2 lg:order-2"
-          }`}
-        >
+        <div className={`lg:col-span-4 flex flex-col ${companionOrderClass}`}>
           <CompanionPanelCard project={project} language={language} />
         </div>
       </motion.div>
@@ -744,7 +751,10 @@ function CompanionPanelCard({
               transition={{ duration: 0.25 }}
               className="flex h-full flex-1 w-full flex-col lg:absolute lg:inset-0"
             >
-              <ArchitectureFlowView project={project} language={language} />
+              <CompanionArchitectureView
+                project={project}
+                language={language}
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -784,27 +794,26 @@ function CompanionPanelCard({
 }
 
 /* -------------------------------------------------------------------------- */
-/* INTERACTIVE ARCHITECTURE TOPOLOGY PIPELINE                                 */
+/* INTERACTIVE ARCHITECTURE TOPOLOGY PIPELINE (IDEA 3 COMPACT RAIL)           */
 /* -------------------------------------------------------------------------- */
 
-function ArchitectureFlowView({
+function CompanionArchitectureView({
   project,
   language,
 }: {
   project: FeaturedProject;
   language: Language;
 }) {
-  const layers = project.architecture;
-  const [selectedIdx, setSelectedIdx] = useState(0);
+  const nodes = getOrderedArchitectureNodes(project);
+  const { selectedId, selectLayer } = useDirectionalLayer(nodes);
 
   return (
-    <div className="flex h-full flex-col justify-between p-3.5 sm:p-4 bg-[var(--bg-primary)]">
-      {/* Header strip */}
-      <div className="mb-2.5 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
-        <span className="inline-flex items-center gap-1.5">
-          <Layers className="h-3 w-3" strokeWidth={1.75} />
-          <span>System Pipeline</span>
-        </span>
+    <CompactArchitecturePipeline
+      nodes={nodes}
+      selectedId={selectedId}
+      onSelect={selectLayer}
+      language={language}
+      headerAction={
         <Link
           to={`/project/${project.slug}#architecture`}
           className="inline-flex items-center gap-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
@@ -812,90 +821,7 @@ function ArchitectureFlowView({
           <span>{language === "pt" ? "Ver completo" : "Full spec"}</span>
           <ArrowUpRight className="h-2.5 w-2.5" />
         </Link>
-      </div>
-
-      {/* Connected Interactive Vertical Pipeline */}
-      <div className="flex flex-1 min-h-0 flex-col justify-center overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        {layers.map((layer, idx) => {
-          const isSelected = idx === selectedIdx;
-          const isLast = idx === layers.length - 1;
-
-          return (
-            <div key={layer.layer.en} className="flex flex-col">
-              <button
-                type="button"
-                onClick={() => setSelectedIdx(idx)}
-                className={`cursor-pointer w-full text-left rounded-[3px] border px-3 py-2 transition-all duration-200 ${
-                  isSelected
-                    ? "border-[var(--text-primary)]/40 bg-[var(--bg-bento)] shadow-2xs opacity-100"
-                    : "border-[var(--border-subtle)] bg-transparent opacity-65 hover:opacity-95 hover:border-[var(--text-muted)]"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span
-                      className={`font-mono text-[9px] tabular-nums ${
-                        isSelected
-                          ? "text-[var(--text-primary)] font-semibold"
-                          : "text-[var(--text-muted)]"
-                      }`}
-                    >
-                      0{idx + 1}
-                    </span>
-                    <span className="truncate text-xs font-medium text-[var(--text-primary)]">
-                      {layer.layer[language]}
-                    </span>
-                  </div>
-
-                  {/* Compact indicator when collapsed */}
-                  {!isSelected && (
-                    <span className="truncate max-w-[115px] font-mono text-[9px] text-[var(--text-muted)]">
-                      {layer.technologies.slice(0, 2).join(" · ")}
-                    </span>
-                  )}
-                </div>
-
-                {/* Expanded Decision & Stack Detail */}
-                <AnimatePresence initial={false}>
-                  {isSelected && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="mt-1.5 text-[11px] leading-relaxed text-[var(--text-secondary)]">
-                        {layer.description[language]}
-                      </p>
-                      <div className="mt-2 flex flex-wrap gap-1.5">
-                        {layer.technologies.map((tech) => (
-                          <span
-                            key={tech}
-                            className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-primary)]"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
-
-              {/* Vertical Data Flow Connector between Nodes */}
-              {!isLast && (
-                <div
-                  aria-hidden="true"
-                  className="flex justify-center py-0.5 text-[var(--text-muted)] opacity-45"
-                >
-                  <ArrowDown className="h-2.5 w-2.5" strokeWidth={1.75} />
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+      }
+    />
   );
 }
