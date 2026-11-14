@@ -307,8 +307,8 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     overview: {
       problem: {
-        pt: "Administradoras de condomínio emitem notificações formais de forma manual: documentos montados em editores de texto, cálculos e registros em planilhas e e-mails enviados sem rastreabilidade. O resultado é retrabalho, erros e baixa taxa de assertividade.",
-        en: "Condominium management companies issue formal notices manually: documents assembled in text editors, calculations and records in spreadsheets, and emails sent without tracking. The result is rework, errors, and a low success rate.",
+        pt: "Administradoras de condomínio emitem notificações formais de forma manual: documentos montados em editores de texto, cálculos, registros em planilhas e e-mails enviados sem rastreabilidade. O resultado é retrabalho, erros e baixa taxa de assertividade.",
+        en: "Condominium management companies issue formal notices manually: documents assembled in text editors, calculations, records in spreadsheets and emails sent without tracking. The result is rework, errors, and a low success rate.",
       },
       solution: {
         pt: "Uma plataforma única que centraliza unidades e moradores, gera notificações formais em PDF com fundamentação no regimento e dispara e-mails transacionais com status de entrega — tudo com isolamento total de dados entre condomínios.",
@@ -416,7 +416,10 @@ export const featuredProjects: FeaturedProject[] = [
           pt: "Anexo oficial em PDF & rastreamento do status de entrega via Resend",
           en: "Official PDF notice attachment & email delivery tracking via Resend",
         },
-        layer: { pt: "Integrações & Documentos", en: "Integrations & Documents" },
+        layer: {
+          pt: "Integrações & Documentos",
+          en: "Integrations & Documents",
+        },
         technologies: ["Resend", "PDF Generation"],
         description: {
           pt: "Geração de documentos oficiais em PDF e disparo de e-mails transacionais com acompanhamento do status de entrega.",
