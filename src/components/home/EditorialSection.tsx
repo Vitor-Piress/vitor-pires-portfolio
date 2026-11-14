@@ -15,7 +15,7 @@ export function EditorialSection() {
   return (
     <section
       id="trajectory"
-      className="mx-auto w-full max-w-6xl scroll-mt-24 px-6 py-24 sm:py-32 md:px-10"
+      className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 py-24 sm:py-32 md:px-10"
     >
       {/* 1. Chronology: Professional Experience & Education */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
@@ -39,7 +39,7 @@ export function EditorialSection() {
       </div>
 
       {/* 2. Technical Arsenal (Stack) */}
-      <div id="tech" className="mt-28 sm:mt-36 scroll-mt-24">
+      <div id="tech" className="mt-28 sm:mt-36 scroll-mt-28">
         <BlurReveal>
           <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
             {t.editorial.stackLabel}
@@ -65,7 +65,7 @@ export function EditorialSection() {
       </BlurReveal>
 
       {/* 4. Credibility & Real-World Production Impact (SPEC §4.6) */}
-      <div id="credibility" className="mt-28 sm:mt-36 scroll-mt-24">
+      <div id="credibility" className="mt-28 sm:mt-36 scroll-mt-28">
         <BlurReveal className="max-w-2xl">
           <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
             {t.credibility.label}

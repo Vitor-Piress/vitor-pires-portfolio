@@ -10,6 +10,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 import { scrollToElement, scrollToTopSmooth } from "../../utils/scroll";
 import { ProfileQuickLinks } from "../ui/SocialIcons";
+import { WipBanner } from "./WipBanner";
 
 export function Header() {
   const { language, setLanguage, t } = useLanguage();
@@ -63,10 +64,10 @@ export function Header() {
   }, [mobileMenuOpen]);
 
   const navItems = [
-    { id: "projects", index: "01", label: t.nav.projects, offset: 78 },
-    { id: "trajectory", index: "02", label: t.nav.trajectory, offset: 78 },
-    { id: "tech", index: "03", label: t.nav.tech, offset: 78 },
-    { id: "contact", index: "04", label: t.nav.contact, offset: 78 },
+    { id: "projects", index: "01", label: t.nav.projects, offset: 106 },
+    { id: "trajectory", index: "02", label: t.nav.trajectory, offset: 106 },
+    { id: "tech", index: "03", label: t.nav.tech, offset: 106 },
+    { id: "contact", index: "04", label: t.nav.contact, offset: 106 },
   ] as const;
 
   const scrollToTop = () => {
@@ -85,14 +86,15 @@ export function Header() {
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
-          showBrandInHeader
-            ? "bg-[var(--bg-primary)]/80 backdrop-blur-md"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-10">
+      <header className="fixed inset-x-0 top-0 z-40">
+        <div
+          className={`transition-colors duration-300 ${
+            showBrandInHeader
+              ? "bg-[var(--bg-primary)]/80 backdrop-blur-md"
+              : "bg-transparent"
+          }`}
+        >
+          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-10">
           {/* Left: Dynamic VITOR PIRES wordmark (Breeder concept) */}
           <div className="flex min-w-[130px] items-center">
             <AnimatePresence initial={false}>
@@ -205,7 +207,9 @@ export function Header() {
               </button>
             </div>
           </nav>
+          </div>
         </div>
+        <WipBanner />
       </header>
 
       {/* Mobile Side Navigation Drawer (< 640px) — outside <header> so backdrop-blur doesn't clip fixed inset */}

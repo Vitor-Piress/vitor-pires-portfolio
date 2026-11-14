@@ -43,6 +43,10 @@ export interface TranslationSchema {
     backToHome: string;
     accessSystem: string;
   };
+  wipBanner: {
+    short: string;
+    full: string;
+  };
   hero: {
     name: string;
     headline: string;
@@ -205,6 +209,10 @@ export const translations: Record<Language, TranslationSchema> = {
       contact: "Contato",
       backToHome: "Voltar",
       accessSystem: "Acessar Sistema",
+    },
+    wipBanner: {
+      short: "Portfólio ainda em desenvolvimento",
+      full: "Portfólio ainda em desenvolvimento — visualização prévia em construção",
     },
     hero: {
       name: "VITOR PIRES",
@@ -399,6 +407,10 @@ export const translations: Record<Language, TranslationSchema> = {
       contact: "Contact",
       backToHome: "Back",
       accessSystem: "Live System",
+    },
+    wipBanner: {
+      short: "Portfolio still in development",
+      full: "Portfolio still in development — preview build in progress",
     },
     hero: {
       name: "VITOR PIRES",

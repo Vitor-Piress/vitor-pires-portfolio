@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react'
+import { lazy, Suspense, useLayoutEffect } from 'react'
 import {
   createBrowserRouter,
   Navigate,
@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
   useLocation,
   useNavigationType,
+  type RouteObject,
 } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
@@ -14,11 +15,36 @@ import { MiniAudioPlayer } from './components/layout/MiniAudioPlayer'
 import { ScrollToTopButton } from './components/layout/ScrollToTopButton'
 import { Home } from './pages/Home'
 import { ProjectDetail } from './pages/ProjectDetail'
-import { DesignLab } from './pages/DesignLab'
 import {
   isRestoreTokenConsumed,
   type ProjectNavigationState,
 } from './utils/returnNavigation'
+
+const DesignLab = import.meta.env.DEV
+  ? lazy(() =>
+      import('./pages/DesignLab').then((module) => ({
+        default: module.DesignLab,
+      })),
+    )
+  : null
+
+const devOnlyRoutes: RouteObject[] =
+  import.meta.env.DEV && DesignLab
+    ? [
+        {
+          path: '/lab',
+          element: (
+            <Suspense fallback={null}>
+              <DesignLab />
+            </Suspense>
+          ),
+        },
+        {
+          path: '/examples',
+          element: <Navigate to="/lab" replace />,
+        },
+      ]
+    : []
 
 function RootLayout() {
   const { pathname, hash, key, state } = useLocation()
@@ -64,14 +90,7 @@ const router = createBrowserRouter([
         path: '/project/:slug',
         element: <ProjectDetail />,
       },
-      {
-        path: '/lab',
-        element: <DesignLab />,
-      },
-      {
-        path: '/examples',
-        element: <Navigate to="/lab" replace />,
-      },
+      ...devOnlyRoutes,
       {
         path: '*',
         element: <Navigate to="/" replace />,

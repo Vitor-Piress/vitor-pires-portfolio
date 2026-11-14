@@ -25,7 +25,7 @@ export function HeroSection({
   return (
     <section
       className={`relative mx-auto w-full max-w-6xl px-6 md:px-10 ${
-        compactTop ? "pt-16 pb-14 sm:pt-22 sm:pb-20" : "pt-32 pb-16 sm:pt-40 sm:pb-24"
+        compactTop ? "pt-16 pb-14 sm:pt-22 sm:pb-20" : "pt-36 pb-16 sm:pt-44 sm:pb-24"
       }`}
     >
       {/* Top Metadata + Availability + Live Presence */}
@@ -106,7 +106,7 @@ export function HeroSection({
           {/* Primary Pill: White on Black in dark mode / Black on White in light mode */}
           <button
             type="button"
-            onClick={() => scrollToElement("contact", 78)}
+            onClick={() => scrollToElement("contact", 106)}
             className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[var(--text-primary)] px-6 py-2.5 text-sm font-medium text-[var(--bg-primary)] transition-opacity hover:opacity-85"
           >
             <span>{t.hero.ctaContact}</span>
@@ -116,7 +116,7 @@ export function HeroSection({
           {/* Secondary Action: Clean subtle pill */}
           <button
             type="button"
-            onClick={() => scrollToElement(projectsTargetId, 78)}
+            onClick={() => scrollToElement(projectsTargetId, 106)}
             className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[var(--bg-bento)] px-6 py-2.5 text-sm font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-bento-elevated)]"
           >
             <span>{t.hero.ctaProjects}</span>

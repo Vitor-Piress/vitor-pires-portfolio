@@ -32,6 +32,7 @@ import { BlurReveal } from '../components/ui/BlurReveal'
 import { ProjectLogo, ScreenVisual } from '../components/ui/ProjectVisuals'
 import { ResponsiveProjectArchitecture } from '../components/project/ProjectArchitectureFlow'
 import { FooterBottomBar } from '../components/layout/Footer'
+import { WipBanner } from '../components/layout/WipBanner'
 import { scrollToElement, scrollToTopSmooth } from '../utils/scroll'
 import {
   clearReturnOrigin,
@@ -143,7 +144,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
     if (!el) return
 
     const rafId = window.requestAnimationFrame(() => {
-      const stickyOffset = window.innerWidth >= 640 ? 128 : 144
+      const stickyOffset = window.innerWidth >= 640 ? 156 : 172
       const targetTop = Math.max(
         0,
         el.getBoundingClientRect().top + window.scrollY - stickyOffset,
@@ -177,7 +178,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         return
       }
 
-      const triggerOffset = 160
+      const triggerOffset = 188
       let current: SectionId = 'overview'
 
       for (const id of SECTION_IDS) {
@@ -216,7 +217,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
     if (id === 'overview') {
       scrollToTopSmooth(unlockScrollSpy)
     } else {
-      scrollToElement(id, 124, unlockScrollSpy)
+      scrollToElement(id, 152, unlockScrollSpy)
     }
   }
 
@@ -250,8 +251,9 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
   return (
     <div className="min-h-svh bg-[var(--bg-primary)] text-[var(--text-primary)]">
       {/* 1. Project Page Header: ← Back | Official Logo | PT/EN + Theme + Access System ↗ */}
-      <header className="sticky top-0 z-40 bg-[var(--bg-primary)]/85 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6 md:px-10">
+      <header className="sticky top-0 z-40">
+        <div className="bg-[var(--bg-primary)]/80 backdrop-blur-md">
+          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6 md:px-10">
           <Link
             to={returnOrigin?.returnPath ?? '/'}
             onClick={handleBackClick}
@@ -335,7 +337,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
             ) : (
               <button
                 type="button"
-                onClick={() => scrollToElement('commercial-cta', 96)}
+                onClick={() => scrollToElement('commercial-cta', 124)}
                 className="cursor-pointer inline-flex items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-4 py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
               >
                 <span>{t.projectDetail.accessSystem}</span>
@@ -343,7 +345,9 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
               </button>
             )}
           </div>
+          </div>
         </div>
+        <WipBanner />
       </header>
 
       <main className="mx-auto w-full max-w-6xl px-6 pt-8 pb-16 sm:pt-12 md:px-10">
@@ -359,7 +363,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* 2. Quick Navigation Index (Sticky Minimalist TOC) */}
         <nav
           aria-label="Project Sections"
-          className="sticky top-16 z-30 -mx-2 mb-12 sm:mb-16 flex flex-wrap items-center gap-x-6 gap-y-2.5 bg-[var(--bg-primary)]/85 px-2 py-3.5 backdrop-blur-md"
+          className="sticky top-[92px] z-30 -mx-2 mb-12 sm:mb-16 flex flex-wrap items-center gap-x-6 gap-y-2.5 bg-[var(--bg-primary)]/85 px-2 py-3.5 backdrop-blur-md"
         >
           {tocItems.map((item, idx) => {
             const isActive = activeSection === item.id
@@ -386,7 +390,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* ================================================================ */}
         {/* SECTION 01: OVERVIEW                                             */}
         {/* ================================================================ */}
-        <section id="overview" className="scroll-mt-36 sm:scroll-mt-32">
+        <section id="overview" className="scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="max-w-4xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               01 / {t.projectDetail.toc.overview}
@@ -483,7 +487,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* ================================================================ */}
         {/* SECTION 02: FULL-WIDTH SYSTEM PREVIEW + CORE MODULES             */}
         {/* ================================================================ */}
-        <section id="flows" className="mt-28 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
+        <section id="flows" className="mt-28 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               02 / {t.projectDetail.toc.flows}
@@ -541,7 +545,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => scrollToElement('commercial-cta', 96)}
+                      onClick={() => scrollToElement('commercial-cta', 124)}
                       className="cursor-pointer inline-flex items-center gap-1.5 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 py-1.5 text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-all"
                     >
                       <span>{t.projectDetail.sections.demoOnRequest}</span>
@@ -710,7 +714,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* ================================================================ */}
         {/* SECTION 03: TECHNICAL ARCHITECTURE                               */}
         {/* ================================================================ */}
-        <section id="architecture" className="mt-28 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
+        <section id="architecture" className="mt-28 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               03 / {t.projectDetail.toc.architecture}
@@ -731,7 +735,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* ================================================================ */}
         {/* SECTION 04: PRODUCTION RESULTS & NEXT PROJECT                    */}
         {/* ================================================================ */}
-        <section id="results" className="mt-28 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
+        <section id="results" className="mt-28 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               04 / {t.projectDetail.toc.results}
@@ -789,7 +793,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
       {/* ================================================================ */}
       <footer
         id="commercial-cta"
-        className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 pt-24 pb-24 sm:pt-36 sm:pb-28 md:px-10"
+        className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 pt-24 pb-24 sm:pt-36 sm:pb-28 md:px-10"
       >
         <BlurReveal className="mx-auto max-w-3xl text-center">
           <span className="font-mono-meta text-[10px] text-[var(--text-muted)]">
