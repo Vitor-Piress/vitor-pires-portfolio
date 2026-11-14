@@ -311,8 +311,8 @@ export const featuredProjects: FeaturedProject[] = [
         en: "Condominium management companies issue formal notices manually: documents assembled in text editors, calculations, records in spreadsheets and emails sent without tracking. The result is rework, errors, and a low success rate.",
       },
       solution: {
-        pt: "Uma plataforma única que centraliza unidades e moradores, gera notificações formais em PDF com fundamentação no regimento e dispara e-mails transacionais com status de entrega — tudo com isolamento total de dados entre condomínios.",
-        en: "A single platform that centralizes units and residents, generates formal PDF notices grounded in the bylaws, and dispatches transactional emails with delivery tracking — all with complete data isolation between condominiums.",
+        pt: "Uma plataforma única que centraliza unidades e moradores, gera notificações formais em PDF com fundamentação no regimento e dispara e-mails transacionais com status de entrega, tudo com isolamento total de dados entre condomínios.",
+        en: "A single platform that centralizes units and residents, generates formal PDF notices grounded in the bylaws, and dispatches transactional emails with delivery tracking, all with complete data isolation between condominiums.",
       },
     },
     features: [
