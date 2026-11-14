@@ -84,7 +84,9 @@ export function TechStackPrototypeStage({
         {variant === "grouped-bento" && (
           <GroupedBentoVariant groups={stackGroups} />
         )}
-        {variant === "current" && <CurrentFlatGridVariant items={stackItems} />}
+        {variant === "current" && (
+          <CurrentFlatGridVariant items={stackItems} />
+        )}
       </motion.div>
     </section>
   );
@@ -346,7 +348,11 @@ function StackComparisonRow({
 }
 
 /** Opção 1: 3 Colunas Arquiteturais (md:grid-cols-3) com prototipação de ícones */
-function ColumnsArchitecturalVariant({ groups }: { groups: StackGroup[] }) {
+function ColumnsArchitecturalVariant({
+  groups,
+}: {
+  groups: StackGroup[];
+}) {
   const [iconPreset, setIconPreset] =
     useState<StackIconPresetId>("cloud-pipeline");
   const [iconPlacement, setIconPlacement] =
@@ -445,7 +451,10 @@ function ColumnsArchitecturalVariant({ groups }: { groups: StackGroup[] }) {
             );
           })}
           <span className="ml-auto font-mono text-[10px] text-[var(--text-muted)] hidden sm:inline">
-            {STACK_ICON_PLACEMENTS.find((p) => p.id === iconPlacement)?.hint}
+            {
+              STACK_ICON_PLACEMENTS.find((p) => p.id === iconPlacement)
+                ?.hint
+            }
           </span>
         </div>
       </div>
@@ -529,9 +538,7 @@ function ColumnsArchitecturalVariant({ groups }: { groups: StackGroup[] }) {
                 key={option.id}
                 title={option.label}
                 metaRight={option.hint}
-                isSelected={
-                  iconPreset !== "none" && iconPlacement === option.id
-                }
+                isSelected={iconPreset !== "none" && iconPlacement === option.id}
                 onSelect={() => handleSelectPlacement(option.id)}
                 groups={groups}
                 icons={previewIcons}
@@ -546,7 +553,11 @@ function ColumnsArchitecturalVariant({ groups }: { groups: StackGroup[] }) {
 }
 
 /** Opção 2: Ficha Técnica Editorial (4 cols + 8 cols) */
-function EditorialRowsVariant({ groups }: { groups: StackGroup[] }) {
+function EditorialRowsVariant({
+  groups,
+}: {
+  groups: StackGroup[];
+}) {
   return (
     <div className="flex flex-col gap-12 sm:gap-14">
       {groups.map((group, idx) => (
@@ -584,7 +595,11 @@ function EditorialRowsVariant({ groups }: { groups: StackGroup[] }) {
 }
 
 /** Opção 3: Grade Agrupada (3 blocos de 4 cards Bento) */
-function GroupedBentoVariant({ groups }: { groups: StackGroup[] }) {
+function GroupedBentoVariant({
+  groups,
+}: {
+  groups: StackGroup[];
+}) {
   return (
     <div className="flex flex-col gap-10 sm:gap-12">
       {groups.map((group) => (

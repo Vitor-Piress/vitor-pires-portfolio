@@ -1,10 +1,10 @@
-import type { TimelineItem } from "../../i18n/translations";
-import { useLanguage } from "../../context/LanguageContext";
-import { BlurReveal } from "../ui/BlurReveal";
-import { TechStackColumns } from "./TechStackColumns";
+import type { TimelineItem } from '../../i18n/translations'
+import { useLanguage } from '../../context/LanguageContext'
+import { BlurReveal } from '../ui/BlurReveal'
+import { TechStackColumns } from './TechStackColumns'
 
 export function EditorialSection() {
-  const { t } = useLanguage();
+  const { t } = useLanguage()
 
   return (
     <section
@@ -100,27 +100,24 @@ export function EditorialSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 function TimelineList({ items }: { items: TimelineItem[] }) {
   return (
     <div className="relative space-y-10">
       {items.map((item, index) => {
-        const isLast = index === items.length - 1;
+        const isLast = index === items.length - 1
 
         return (
-          <div
-            key={`${item.role}-${item.period}`}
-            className="relative flex gap-5"
-          >
+          <div key={`${item.role}-${item.period}`} className="relative flex gap-5">
             {/* Circular Marker (● current / ○ past) + subtle vertical connector */}
             <div className="relative flex flex-col items-center pt-1">
               <span
                 aria-hidden="true"
                 className="font-mono text-xs leading-none text-[var(--text-primary)] select-none"
               >
-                {item.isCurrent ? "●" : "○"}
+                {item.isCurrent ? '●' : '○'}
               </span>
               {!isLast && (
                 <span
@@ -131,7 +128,7 @@ function TimelineList({ items }: { items: TimelineItem[] }) {
             </div>
 
             {/* Content */}
-            <div className={isLast ? "pb-0" : "pb-2"}>
+            <div className={isLast ? 'pb-0' : 'pb-2'}>
               <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {item.period}
               </span>
@@ -146,8 +143,8 @@ function TimelineList({ items }: { items: TimelineItem[] }) {
               </p>
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
+  )
 }

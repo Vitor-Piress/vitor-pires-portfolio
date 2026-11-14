@@ -51,11 +51,7 @@ type VariantId =
   | "fullwidth"
   | "bento";
 
-type ProjectFilter =
-  | "all"
-  | "condonot"
-  | "moradas-do-gabriel"
-  | "dailycheckout";
+type ProjectFilter = "all" | "condonot" | "moradas-do-gabriel" | "dailycheckout";
 
 interface StackVariantOption {
   id: StackVariantId;
@@ -185,8 +181,7 @@ const VARIANTS: VariantOption[] = [
   {
     id: "bento",
     label: "Bento Grid Anterior",
-    subtitle:
-      "O layout Bento anterior espremido em 7 cols para comparação direta",
+    subtitle: "O layout Bento anterior espremido em 7 cols para comparação direta",
     icon: LayoutGrid,
     tag: "Legado",
   },
@@ -504,7 +499,10 @@ export function DesignLab() {
                 </span>
               </div>
 
-              <EditorialBentoShowcase project={featuredProjects[0]} index={0} />
+              <EditorialBentoShowcase
+                project={featuredProjects[0]}
+                index={0}
+              />
             </section>
           )}
         </main>
@@ -634,9 +632,10 @@ export function DesignLab() {
                     )}
                   </div>
                 </article>
-              ))}
-            </div>
-          )}
+              ),
+            )}
+          </div>
+        )}
         </main>
       )}
     </div>
@@ -708,7 +707,10 @@ function VariantHeroTabs({
 
   if (screens.length === 0) {
     return (
-      <ProjectBentoShowcase projectSlug={project.slug} blocks={project.bento} />
+      <ProjectBentoShowcase
+        projectSlug={project.slug}
+        blocks={project.bento}
+      />
     );
   }
 
@@ -983,7 +985,10 @@ function VariantPeekSlider({
 
   if (screens.length === 0) {
     return (
-      <ProjectBentoShowcase projectSlug={project.slug} blocks={project.bento} />
+      <ProjectBentoShowcase
+        projectSlug={project.slug}
+        blocks={project.bento}
+      />
     );
   }
 
