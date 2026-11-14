@@ -969,8 +969,8 @@ export const featuredProjects: FeaturedProject[] = [
           en: "100% cash traceability",
         },
         description: {
-          pt: "Em produção na Barbearia Dom Domênico com histórico auditável por barbeiro, serviço e forma de pagamento.",
-          en: "Running in production at Barbearia Dom Domênico with full per-barber, service and payment-method auditability.",
+          pt: "Em produção na Barbearia Pires com histórico auditável por barbeiro, serviço e forma de pagamento.",
+          en: "Running in production at Barbearia Pires with full per-barber, service and payment-method auditability.",
         },
       },
       {
