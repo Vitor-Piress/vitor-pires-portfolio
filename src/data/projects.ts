@@ -186,6 +186,27 @@ export const featuredProjects: FeaturedProject[] = [
         },
         src: "/projects/condonot/condonot-home.webp",
         appPath: "/dashboard",
+        orientation: "landscape",
+      },
+      {
+        id: "inserir-notificacao",
+        label: {
+          pt: "Inserir Notificação & Parâmetros A4",
+          en: "New Notice & A4 Parameters",
+        },
+        src: "/projects/condonot/condonot-inserir-notificacao.png",
+        appPath: "/notificacoes/nova",
+        orientation: "landscape",
+      },
+      {
+        id: "inserir-notificacao-ia",
+        label: {
+          pt: "Refinar com IA & Ocupação A4",
+          en: "AI Refinement & A4 Page Budget",
+        },
+        src: "/projects/condonot/condonot-inserir-notificacao-IA-refinando-texto.png",
+        appPath: "/notificacoes/nova#refinar-ia",
+        orientation: "landscape",
       },
       {
         id: "unidades",
@@ -195,6 +216,7 @@ export const featuredProjects: FeaturedProject[] = [
         },
         src: "/projects/condonot/condonot-unidades.webp",
         appPath: "/unidades",
+        orientation: "landscape",
       },
       {
         id: "modelos",
@@ -204,6 +226,17 @@ export const featuredProjects: FeaturedProject[] = [
         },
         src: "/projects/condonot/condonot-modelos.webp",
         appPath: "/modelos",
+        orientation: "landscape",
+      },
+      {
+        id: "modelo-individual",
+        label: {
+          pt: "Modelo Individual & Leitura do Regimento",
+          en: "Individual Template & Bylaws Preview",
+        },
+        src: "/projects/condonot/condonot-modelos-notificacao-individual.png",
+        appPath: "/modelos/1",
+        orientation: "landscape",
       },
       {
         id: "relatorios",
@@ -213,6 +246,7 @@ export const featuredProjects: FeaturedProject[] = [
         },
         src: "/projects/condonot/condonot-relatorio.webp",
         appPath: "/relatorios",
+        orientation: "landscape",
       },
       {
         id: "condominios",
@@ -222,6 +256,7 @@ export const featuredProjects: FeaturedProject[] = [
         },
         src: "/projects/condonot/condonot-condominios.webp",
         appPath: "/configuracoes",
+        orientation: "landscape",
       },
       {
         id: "email",
@@ -275,7 +310,31 @@ export const featuredProjects: FeaturedProject[] = [
           {
             id: "notice-form",
             label: CONDONOT_FLOW_META.squareA.step0,
+            src: "/projects/condonot/condonot-inserir-notificacao.png",
+            device: "desktop",
+          },
+          {
+            id: "notice-form-ai",
+            label: {
+              pt: "Refinar com IA & Ocupação A4",
+              en: "AI Refinement & A4 Page Budget",
+            },
+            src: "/projects/condonot/condonot-inserir-notificacao-IA-refinando-texto.png",
+            device: "desktop",
+          },
+          {
+            id: "notice-templates",
+            label: CONDONOT_FLOW_META.squareB.step0,
             src: "/projects/condonot/condonot-modelos.webp",
+            device: "desktop",
+          },
+          {
+            id: "notice-template-detail",
+            label: {
+              pt: "Modelo Individual & Leitura do Regimento",
+              en: "Individual Template & Bylaws Preview",
+            },
+            src: "/projects/condonot/condonot-modelos-notificacao-individual.png",
             device: "desktop",
           },
         ],
