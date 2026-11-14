@@ -38,6 +38,7 @@ export interface TranslationSchema {
   nav: {
     projects: string;
     trajectory: string;
+    tech: string;
     contact: string;
     backToHome: string;
     accessSystem: string;
@@ -200,6 +201,7 @@ export const translations: Record<Language, TranslationSchema> = {
     nav: {
       projects: "Projetos",
       trajectory: "Trajetória",
+      tech: "Tech",
       contact: "Contato",
       backToHome: "Voltar",
       accessSystem: "Acessar Sistema",
@@ -393,6 +395,7 @@ export const translations: Record<Language, TranslationSchema> = {
     nav: {
       projects: "Projects",
       trajectory: "Trajectory",
+      tech: "Tech",
       contact: "Contact",
       backToHome: "Back",
       accessSystem: "Live System",

@@ -35,7 +35,7 @@ export function EditorialSection() {
       </div>
 
       {/* 2. Technical Arsenal (Stack) */}
-      <div className="mt-28 sm:mt-36">
+      <div id="tech" className="mt-28 sm:mt-36 scroll-mt-24">
         <BlurReveal>
           <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
             {t.editorial.stackLabel}
