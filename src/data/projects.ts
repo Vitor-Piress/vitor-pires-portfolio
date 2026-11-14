@@ -991,11 +991,11 @@ export const featuredProjects: FeaturedProject[] = [
 export const secondaryProjects: SecondaryProject[] = [
   {
     tier: "secondary",
-    slug: "motor-cobrancas-condonot",
-    name: "Motor de Cobranças Condonot",
+    slug: "motor-cobrancas",
+    name: "Motor de Cobranças",
     image: null,
     summary: {
-      pt: "Motor dedicado à geração de payloads Pix e automação financeira condominial.",
+      pt: "Motor dedicado à geração de payloads Pix e automação financeira.",
       en: "Dedicated engine for Pix payload generation and condominium financial automation.",
     },
     category: { pt: "Módulo Financeiro", en: "Financial Module" },

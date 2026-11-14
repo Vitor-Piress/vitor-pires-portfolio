@@ -96,7 +96,7 @@ Logo após os 3 destaques principais, um Bento Grid único de 3 blocos para apre
 
 - Cada bloco mostra uma imagem/referência técnica e o título. Ao passar o mouse (`:hover`), revela de forma nítida o resumo de 1 linha do projeto enquanto desfoca sutilmente os blocos vizinhos:
 
-1. **Motor de Cobranças Condonot:** Motor dedicado à geração de payloads Pix e automação financeira condominial.
+1. **Motor de Cobranças:** Motor dedicado à geração de payloads Pix e automação financeira.
 2. **Chatbot Condomínio:** Assistente inteligente em Python utilizando Groq LLM API e modelos Llama para respostas imediatas sobre regimento e condomínio.
 3. **KAC (Kanban de Administração Condominial):** Sistema e arquitetura de gestão visual de demandas e manutenções condominiais.
 
