@@ -28,6 +28,8 @@ interface EditorialBentoShowcaseProps {
   index: number;
   /** Reverses the 8+4 Bento row on odd items (e.g. Moradas do Gabriel = 4+8). */
   alternatingRhythm?: boolean;
+  /** Optional directional 2-layer staggered entrance (used by Carousel Tabs prototype). */
+  staggerDirection?: 1 | -1;
 }
 
 /**
@@ -41,16 +43,51 @@ export function EditorialBentoShowcase({
   project,
   index,
   alternatingRhythm = true,
+  staggerDirection,
 }: EditorialBentoShowcaseProps) {
   const { language, t } = useLanguage();
   const isInverted = alternatingRhythm && index % 2 === 1;
+
+  const headerMotionProps = staggerDirection
+    ? {
+        initial: {
+          opacity: 0,
+          x: staggerDirection * 20,
+          y: 6,
+          filter: "blur(8px)",
+        },
+        animate: { opacity: 1, x: 0, y: 0, filter: "blur(0px)" },
+        transition: { duration: 0.36, ease: [0.22, 1, 0.36, 1] as const },
+      }
+    : {};
+
+  const bentoMotionProps = staggerDirection
+    ? {
+        initial: {
+          opacity: 0,
+          x: staggerDirection * 28,
+          y: 14,
+          scale: 0.985,
+          filter: "blur(10px)",
+        },
+        animate: { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" },
+        transition: {
+          duration: 0.46,
+          delay: 0.065,
+          ease: [0.22, 1, 0.36, 1] as const,
+        },
+      }
+    : {};
 
   return (
     <article className="flex flex-col gap-9 sm:gap-11">
       {/* =================================================================== */}
       {/* LAYER 1: EDITORIAL HEADER SPLIT (7 cols Left + 5 cols Right)        */}
       {/* =================================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+      <motion.div
+        {...headerMotionProps}
+        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start"
+      >
         {/* Left (7 cols): Identity, Serif Headline, Summary, Primary Actions */}
         <div className="lg:col-span-7 flex flex-col">
           <div className="mb-5 flex items-center gap-3">
@@ -59,7 +96,7 @@ export function EditorialBentoShowcase({
               name={project.name}
               logo={project.logo}
             />
-            {isInverted && (
+            {project.mobileFirst && (
               <span className="hidden sm:inline-flex items-center rounded-[2px] border border-[var(--border-subtle)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {language === "pt"
                   ? "Experiência Mobile-First"
@@ -179,12 +216,15 @@ export function EditorialBentoShowcase({
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* =================================================================== */}
       {/* LAYER 2: HYBRID BENTO SHOWCASE (8 cols + 4 cols, alternating order) */}
       {/* =================================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-stretch">
+      <motion.div
+        {...bentoMotionProps}
+        className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-stretch"
+      >
         {/* 8-col Widescreen Stage (first on mobile, alternates left/right on lg+) */}
         <div
           className={`lg:col-span-8 flex flex-col ${
@@ -202,7 +242,7 @@ export function EditorialBentoShowcase({
         >
           <CompanionPanelCard project={project} language={language} />
         </div>
-      </div>
+      </motion.div>
     </article>
   );
 }

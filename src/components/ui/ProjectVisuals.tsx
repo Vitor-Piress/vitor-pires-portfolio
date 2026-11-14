@@ -1,6 +1,136 @@
 import type { ProjectScreen } from "../../data/projects";
 import type { Language } from "../../i18n/translations";
 
+interface ProjectMarkProps {
+  slug: string;
+  name: string;
+  logo: string | null;
+  size?: "xs" | "pill" | "sm" | "md";
+  inverted?: boolean;
+  shape?: "default" | "circle-ring";
+}
+
+const MARK_BOX_SIZE: Record<NonNullable<ProjectMarkProps["size"]>, string> = {
+  xs: "h-[18px] w-[18px]",
+  pill: "h-[22px] w-[22px]",
+  sm: "h-6 w-6",
+  md: "h-7 w-7",
+};
+
+/**
+ * Renders only the visual logo/mark of a project (official asset or geometric fallback).
+ */
+export function ProjectMark({
+  slug,
+  name,
+  logo,
+  size = "md",
+  inverted = false,
+  shape = "default",
+}: ProjectMarkProps) {
+  const iconBox = MARK_BOX_SIZE[size];
+  const isCircleRing = shape === "circle-ring";
+
+  if (logo) {
+    // Circular self-contained badges (e.g. Dailycheckout SVG) render natively without a white square halo
+    const isNativeCircle = slug === "dailycheckout" || logo.endsWith(".svg");
+
+    const frameClasses = isCircleRing
+      ? `rounded-full ${isNativeCircle ? "" : "bg-white"} shadow-xs ${
+          inverted
+            ? "ring-[1.5px] ring-[var(--bg-primary)]/30"
+            : "ring-1 ring-[var(--text-primary)]/20"
+        }`
+      : isNativeCircle
+        ? `rounded-full ring-1 ${inverted ? "ring-[var(--bg-primary)]/25" : "ring-[var(--border-subtle)]"}`
+        : "rounded-[4px] bg-white p-0.5 shadow-sm ring-1 ring-black/5";
+
+    const imageFitClasses = isNativeCircle
+      ? "object-cover"
+      : isCircleRing
+        ? "object-contain scale-[1.08]"
+        : "object-contain";
+
+    return (
+      <span
+        className={`${iconBox} inline-flex items-center justify-center overflow-hidden shrink-0 ${frameClasses}`}
+        aria-hidden="true"
+      >
+        <img
+          src={logo}
+          alt={name}
+          className={`h-full w-full ${imageFitClasses}`}
+        />
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={`${iconBox} inline-flex items-center justify-center shrink-0 ${
+        isCircleRing
+          ? `rounded-full ${
+              inverted
+                ? "ring-[1.5px] ring-[var(--bg-primary)]/30"
+                : "ring-1 ring-[var(--text-primary)]/20"
+            }`
+          : "rounded-[2px]"
+      } ${
+        inverted
+          ? "bg-[var(--bg-primary)] text-[var(--text-primary)]"
+          : "bg-[var(--text-primary)] text-[var(--bg-primary)]"
+      }`}
+      aria-hidden="true"
+    >
+      {slug === "condonot" && (
+        <svg
+          viewBox="0 0 20 20"
+          className="h-3.5 w-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        >
+          <rect x="3" y="3" width="6" height="14" />
+          <rect x="11" y="7" width="6" height="10" />
+          <line x1="5.5" y1="6.5" x2="6.5" y2="6.5" />
+          <line x1="5.5" y1="9.5" x2="6.5" y2="9.5" />
+        </svg>
+      )}
+      {slug === "moradas-do-gabriel" && (
+        <svg
+          viewBox="0 0 20 20"
+          className="h-3.5 w-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        >
+          <path d="M3 10.5L10 4l7 6.5" />
+          <path d="M5.5 9.5V16h9V9.5" />
+        </svg>
+      )}
+      {slug === "dailycheckout" && (
+        <svg
+          viewBox="0 0 20 20"
+          className="h-3.5 w-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        >
+          <rect x="3.5" y="3.5" width="13" height="13" />
+          <path d="M6.8 10.2l2.2 2.2 4.4-4.6" />
+        </svg>
+      )}
+      {slug !== "condonot" &&
+        slug !== "moradas-do-gabriel" &&
+        slug !== "dailycheckout" && (
+          <span className="font-mono text-[10px] font-semibold">
+            {name.slice(0, 2).toUpperCase()}
+          </span>
+        )}
+    </span>
+  );
+}
+
 interface ProjectLogoProps {
   slug: string;
   name: string;
@@ -18,90 +148,11 @@ export function ProjectLogo({
   logo,
   size = "md",
 }: ProjectLogoProps) {
-  const iconBox = size === "sm" ? "h-6 w-6" : "h-7 w-7";
   const textSize = size === "sm" ? "text-sm" : "text-base";
-
-  if (logo) {
-    // Circular self-contained badges (e.g. Dailycheckout SVG) render natively without a white square halo
-    const isNativeCircle = slug === "dailycheckout" || logo.endsWith(".svg");
-
-    return (
-      <div className="inline-flex items-center gap-2.5 select-none">
-        <span
-          className={`${iconBox} inline-flex items-center justify-center overflow-hidden shrink-0 ${
-            isNativeCircle
-              ? "rounded-full ring-1 ring-[var(--border-subtle)]"
-              : "rounded-[4px] bg-white p-0.5 shadow-sm"
-          }`}
-          aria-hidden="true"
-        >
-          <img
-            src={logo}
-            alt={name}
-            className={`h-full w-full ${isNativeCircle ? "object-cover" : "object-contain"}`}
-          />
-        </span>
-        <span
-          className={`${textSize} font-medium tracking-tight text-[var(--text-primary)]`}
-        >
-          {name}
-        </span>
-      </div>
-    );
-  }
 
   return (
     <div className="inline-flex items-center gap-2.5 select-none">
-      <span
-        className={`${iconBox} inline-flex items-center justify-center rounded-[2px] bg-[var(--text-primary)] text-[var(--bg-primary)]`}
-        aria-hidden="true"
-      >
-        {slug === "condonot" && (
-          <svg
-            viewBox="0 0 20 20"
-            className="h-3.5 w-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-          >
-            <rect x="3" y="3" width="6" height="14" />
-            <rect x="11" y="7" width="6" height="10" />
-            <line x1="5.5" y1="6.5" x2="6.5" y2="6.5" />
-            <line x1="5.5" y1="9.5" x2="6.5" y2="9.5" />
-          </svg>
-        )}
-        {slug === "moradas-do-gabriel" && (
-          <svg
-            viewBox="0 0 20 20"
-            className="h-3.5 w-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-          >
-            <path d="M3 10.5L10 4l7 6.5" />
-            <path d="M5.5 9.5V16h9V9.5" />
-          </svg>
-        )}
-        {slug === "dailycheckout" && (
-          <svg
-            viewBox="0 0 20 20"
-            className="h-3.5 w-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-          >
-            <rect x="3.5" y="3.5" width="13" height="13" />
-            <path d="M6.8 10.2l2.2 2.2 4.4-4.6" />
-          </svg>
-        )}
-        {slug !== "condonot" &&
-          slug !== "moradas-do-gabriel" &&
-          slug !== "dailycheckout" && (
-            <span className="font-mono text-[10px] font-semibold">
-              {name.slice(0, 2).toUpperCase()}
-            </span>
-          )}
-      </span>
+      <ProjectMark slug={slug} name={name} logo={logo} size={size} />
       <span
         className={`${textSize} font-medium tracking-tight text-[var(--text-primary)]`}
       >

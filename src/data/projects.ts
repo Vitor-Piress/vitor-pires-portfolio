@@ -68,6 +68,7 @@ export interface FeaturedProject {
   previewImage: string | null;
   demoUrl: string | null;
   appDomain?: string;
+  mobileFirst?: boolean;
   gallery?: ProjectGalleryItem[];
   /** Editorial headline (serif) shown on the Home showcase. */
   headline: Localized;
@@ -399,6 +400,7 @@ export const featuredProjects: FeaturedProject[] = [
     previewImage: "/projects/moradas-do-gabriel/moradas-lading-hero.webp",
     demoUrl: null,
     appDomain: "moradasdogabriel.com.br",
+    mobileFirst: true,
     headline: {
       pt: "Moradas do Gabriel é um portal digital que transforma a experiência do hóspede e a gestão da hospedagem.",
       en: "Moradas do Gabriel is a digital portal that transforms the guest experience and property management.",
@@ -656,6 +658,7 @@ export const featuredProjects: FeaturedProject[] = [
       "/projects/dailycheckout/dailycheckout-desktop-management.png",
     demoUrl: null,
     appDomain: "dailycheckout.app",
+    mobileFirst: true,
     gallery: [
       {
         id: "desktop-management",

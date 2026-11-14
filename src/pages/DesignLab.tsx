@@ -8,8 +8,10 @@ import {
   Columns2,
   Columns3,
   ExternalLink,
+  GalleryHorizontal,
   Layers,
   LayoutGrid,
+  LayoutList,
   LayoutPanelTop,
   Maximize,
   Moon,
@@ -38,8 +40,12 @@ import {
   TechStackPrototypeStage,
   type StackVariantId,
 } from "../components/lab/TechStackPrototypes";
+import {
+  ProjectCarouselPrototypeStage,
+  type ProjectCarouselVariantId,
+} from "../components/lab/ProjectCarouselPrototypes";
 
-type LabScope = "stack" | "hero" | "projects";
+type LabScope = "carousel" | "stack" | "hero" | "projects";
 
 type HeroVariantId = "typographic-balance" | "grid-7-5" | "compact-split";
 
@@ -52,6 +58,57 @@ type VariantId =
   | "bento";
 
 type ProjectFilter = "all" | "condonot" | "moradas-do-gabriel" | "dailycheckout";
+
+interface CarouselVariantOption {
+  id: ProjectCarouselVariantId;
+  label: string;
+  subtitle: string;
+  icon: typeof LayoutGrid;
+  tag: string;
+}
+
+const CAROUSEL_VARIANTS: CarouselVariantOption[] = [
+  {
+    id: "carousel-peek-fade",
+    label: "Ideia 4 · Peek Fade + Setas",
+    subtitle:
+      "Projeto ativo centralizado com os vizinhos (anterior e próximo) em fade nas extremidades + setas laterais de navegação",
+    icon: GalleryHorizontal,
+    tag: "Alternativa",
+  },
+  {
+    id: "carousel-tabs",
+    label: "Ideia 1 · Barra de Projetos + Setas",
+    subtitle:
+      "1 projeto por vez no mesmo design com abas numeradas visíveis no topo, setas ← → e barra de progresso na base",
+    icon: SlidersHorizontal,
+    tag: "Ativo na Home",
+  },
+  {
+    id: "carousel-cards",
+    label: "Ideia 2 · Palco + Mini-Cards",
+    subtitle:
+      "Palco completo acima + grade compacta de cards na base mostrando todos os projetos publicados para troca instantânea",
+    icon: LayoutGrid,
+    tag: "Visual",
+  },
+  {
+    id: "carousel-dual",
+    label: "Ideia 3 · Modo Duplo (Carrossel / Lista)",
+    subtitle:
+      "Começa compacto em carrossel de 1 projeto, mas deixa o visitante alternar para 'Ver todos' em lista vertical",
+    icon: Columns2,
+    tag: "Flexível",
+  },
+  {
+    id: "stacked-current",
+    label: "Lista Vertical (Legado)",
+    subtitle:
+      "Todos os 3 projetos empilhados verticalmente para comparar a redução de scroll",
+    icon: LayoutList,
+    tag: "Legado",
+  },
+];
 
 interface StackVariantOption {
   id: StackVariantId;
@@ -195,7 +252,9 @@ const PROJECT_FILTERS: { id: ProjectFilter; label: string }[] = [
 ];
 
 export function DesignLab() {
-  const [labScope, setLabScope] = useState<LabScope>("stack");
+  const [labScope, setLabScope] = useState<LabScope>("carousel");
+  const [carouselVariant, setCarouselVariant] =
+    useState<ProjectCarouselVariantId>("carousel-tabs");
   const [stackVariant, setStackVariant] = useState<StackVariantId>("columns-3");
   const [heroVariant, setHeroVariant] = useState<HeroVariantId>(
     "typographic-balance",
@@ -214,6 +273,39 @@ export function DesignLab() {
       : featuredProjects.filter((p) => p.slug === projectFilter);
 
   const singleProject = visibleProjects[0] ?? featuredProjects[0];
+
+  const scopeVariantMap = {
+    carousel: {
+      options: CAROUSEL_VARIANTS,
+      selectedId: carouselVariant,
+      onSelect: (id: string) =>
+        setCarouselVariant(id as ProjectCarouselVariantId),
+    },
+    stack: {
+      options: STACK_VARIANTS,
+      selectedId: stackVariant,
+      onSelect: (id: string) => setStackVariant(id as StackVariantId),
+    },
+    hero: {
+      options: HERO_VARIANTS,
+      selectedId: heroVariant,
+      onSelect: (id: string) => setHeroVariant(id as HeroVariantId),
+    },
+    projects: {
+      options: VARIANTS,
+      selectedId: activeVariant,
+      onSelect: (id: string) => setActiveVariant(id as VariantId),
+    },
+  } as const;
+
+  const currentScopeConfig = scopeVariantMap[labScope];
+  const currentSelectedVariant =
+    currentScopeConfig.options.find(
+      (v) => v.id === currentScopeConfig.selectedId,
+    ) ?? currentScopeConfig.options[0];
+  const showAlternatingToggle =
+    labScope === "carousel" ||
+    (labScope === "projects" && activeVariant === "editorial-bento");
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-200">
@@ -252,9 +344,10 @@ export function DesignLab() {
             >
               {(
                 [
-                  { id: "stack", label: "Tech Stack (3 opções)" },
+                  { id: "carousel", label: "Carrossel Projetos" },
+                  { id: "stack", label: "Tech Stack" },
                   { id: "hero", label: "Hero Section" },
-                  { id: "projects", label: "Projetos" },
+                  { id: "projects", label: "Layouts Bento" },
                 ] as const
               ).map((item) => {
                 const isActive = labScope === item.id;
@@ -348,33 +441,14 @@ export function DesignLab() {
         {/* Variant Switcher Pills */}
         <div className="mx-auto max-w-7xl overflow-x-auto px-4 pb-3 sm:px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-center gap-2 min-w-max">
-            {(labScope === "stack"
-              ? STACK_VARIANTS
-              : labScope === "hero"
-                ? HERO_VARIANTS
-                : VARIANTS
-            ).map((variant) => {
+            {currentScopeConfig.options.map((variant) => {
               const Icon = variant.icon;
-              const isSelected =
-                labScope === "stack"
-                  ? stackVariant === variant.id
-                  : labScope === "hero"
-                    ? heroVariant === variant.id
-                    : activeVariant === variant.id;
-              const handleSelect = () => {
-                if (labScope === "stack") {
-                  setStackVariant(variant.id as StackVariantId);
-                } else if (labScope === "hero") {
-                  setHeroVariant(variant.id as HeroVariantId);
-                } else {
-                  setActiveVariant(variant.id as VariantId);
-                }
-              };
+              const isSelected = currentScopeConfig.selectedId === variant.id;
               return (
                 <button
                   key={variant.id}
                   type="button"
-                  onClick={handleSelect}
+                  onClick={() => currentScopeConfig.onSelect(variant.id)}
                   className={`cursor-pointer inline-flex items-center gap-2 rounded-[4px] border px-3 py-1.5 text-xs font-mono transition-all duration-200 ${
                     isSelected
                       ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm"
@@ -403,77 +477,60 @@ export function DesignLab() {
       {/* Explanatory Banner */}
       <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-bento)]/40 px-4 py-3 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
-          {labScope === "stack" ? (
-            <>
-              <p className="text-xs text-[var(--text-secondary)]">
-                <span className="font-semibold text-[var(--text-primary)]">
-                  {STACK_VARIANTS.find((v) => v.id === stackVariant)?.label}:
-                </span>{" "}
-                {STACK_VARIANTS.find((v) => v.id === stackVariant)?.subtitle}
-              </p>
+          <p className="text-xs text-[var(--text-secondary)]">
+            <span className="font-semibold text-[var(--text-primary)]">
+              {currentSelectedVariant.label}:
+            </span>{" "}
+            {currentSelectedVariant.subtitle}
+          </p>
 
-              <span className="text-[10px] font-mono text-[var(--text-muted)]">
-                3 camadas × 4 tecnologias (PT/EN & Dark/Light)
+          {showAlternatingToggle ? (
+            <button
+              type="button"
+              onClick={() => setAlternatingRhythm((prev) => !prev)}
+              className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              <span>
+                Ritmo Bento:{" "}
+                <strong className="text-[var(--text-primary)]">
+                  {alternatingRhythm
+                    ? "Alternado (8+4 / 4+8)"
+                    : "Uniforme (8+4)"}
+                </strong>
               </span>
-            </>
+            </button>
           ) : labScope === "hero" ? (
-            <>
-              <p className="text-xs text-[var(--text-secondary)]">
-                <span className="font-semibold text-[var(--text-primary)]">
-                  {HERO_VARIANTS.find((v) => v.id === heroVariant)?.label}:
-                </span>{" "}
-                {HERO_VARIANTS.find((v) => v.id === heroVariant)?.subtitle}
-              </p>
-
-              <button
-                type="button"
-                onClick={() => setShowTransitionPreview((prev) => !prev)}
-                className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-              >
-                <span>
-                  Contexto abaixo:{" "}
-                  <strong className="text-[var(--text-primary)]">
-                    {showTransitionPreview ? "Hero + Projetos" : "Só Hero"}
-                  </strong>
-                </span>
-              </button>
-            </>
+            <button
+              type="button"
+              onClick={() => setShowTransitionPreview((prev) => !prev)}
+              className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              <span>
+                Contexto abaixo:{" "}
+                <strong className="text-[var(--text-primary)]">
+                  {showTransitionPreview ? "Hero + Projetos" : "Só Hero"}
+                </strong>
+              </span>
+            </button>
           ) : (
-            <>
-              <p className="text-xs text-[var(--text-secondary)]">
-                <span className="font-semibold text-[var(--text-primary)]">
-                  {VARIANTS.find((v) => v.id === activeVariant)?.label}:
-                </span>{" "}
-                {VARIANTS.find((v) => v.id === activeVariant)?.subtitle}
-              </p>
-
-              {activeVariant === "editorial-bento" ? (
-                <button
-                  type="button"
-                  onClick={() => setAlternatingRhythm((prev) => !prev)}
-                  className="cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-                >
-                  <span>
-                    Ritmo Bento:{" "}
-                    <strong className="text-[var(--text-primary)]">
-                      {alternatingRhythm
-                        ? "Alternado (8+4 / 4+8)"
-                        : "Uniforme (8+4)"}
-                    </strong>
-                  </span>
-                </button>
-              ) : (
-                <span className="text-[10px] font-mono text-[var(--text-muted)]">
-                  Testando no layout real da página inicial
-                </span>
-              )}
-            </>
+            <span className="text-[10px] font-mono text-[var(--text-muted)]">
+              {labScope === "stack"
+                ? "3 camadas × 4 tecnologias (PT/EN & Dark/Light)"
+                : "Testando no layout real da página inicial"}
+            </span>
           )}
         </div>
       </div>
 
       {/* Main Preview Stage */}
-      {labScope === "stack" ? (
+      {labScope === "carousel" ? (
+        <main className="pb-20">
+          <ProjectCarouselPrototypeStage
+            variant={carouselVariant}
+            alternatingRhythm={alternatingRhythm}
+          />
+        </main>
+      ) : labScope === "stack" ? (
         <main className="pb-20">
           <TechStackPrototypeStage variant={stackVariant} />
         </main>
