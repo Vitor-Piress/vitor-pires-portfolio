@@ -26,6 +26,7 @@ export interface StackGroup {
 
 export interface TestimonialItem {
   id: string;
+  projectSlug: string;
   quote: string;
   author: string;
   role: string;
@@ -340,6 +341,7 @@ export const translations: Record<Language, TranslationSchema> = {
       items: [
         {
           id: "condonot-validation",
+          projectSlug: "condonot",
           quote:
             "O Condonot substituiu controles manuais em planilhas e editores de texto por um fluxo único: da identificação da infração à geração do PDF formal e envio rastreado por e-mail em segundos.",
           author: "Operação Comercial Licenciada",
@@ -349,6 +351,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           id: "moradas-validation",
+          projectSlug: "moradas-do-gabriel",
           quote:
             "Hóspedes passaram a acessar painéis digitais, trazendo maior facilidade, modernidade e profissionalismo para o negócio, enquanto a administração gerencia tudo em tempo real pelo painel.",
           author: "Gestão de Hospedagem",
@@ -358,6 +361,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           id: "dailycheckout-validation",
+          projectSlug: "dailycheckout",
           quote:
             "O sistema simplificou completamente a nossa rotina de caixa. Hoje fazemos qualquer lançamento em poucos segundos e temos controle e rastreabilidade total de cada centavo, tudo de forma clara e imediata.",
           author: "Arquitetura Full-Stack em Produção",
@@ -538,6 +542,7 @@ export const translations: Record<Language, TranslationSchema> = {
       items: [
         {
           id: "condonot-validation",
+          projectSlug: "condonot",
           quote:
             "Condonot replaced fragmented spreadsheets and manual word processors with a single unified pipeline: from infraction logging to formal PDF generation and tracked email delivery in seconds.",
           author: "Licensed Commercial Operation",
@@ -547,6 +552,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           id: "moradas-validation",
+          projectSlug: "moradas-do-gabriel",
           quote:
             "Guests now access instant Wi-Fi onboarding, curated local guides, and house rules directly from their phones, while property managers update every module in real time via the admin dashboard.",
           author: "Hospitality Management",
@@ -556,6 +562,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           id: "dailycheckout-validation",
+          projectSlug: "dailycheckout",
           quote:
             "Decoupling the reactive frontend from the dedicated Fastify + PostgreSQL API brought complete auditability to daily checkout routines and multi-shift task verification.",
           author: "Production Full-Stack Architecture",

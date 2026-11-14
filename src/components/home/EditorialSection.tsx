@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import { ArrowUpRight } from 'lucide-react'
 import type { TimelineItem } from '../../i18n/translations'
 import { useLanguage } from '../../context/LanguageContext'
 import { BlurReveal } from '../ui/BlurReveal'
@@ -87,10 +89,17 @@ export function EditorialSection() {
 
                 {/* Attribution */}
                 <div className="mt-8 pt-2">
-                  <div className="text-xs font-medium text-[var(--text-primary)]">
-                    {item.project}
-                  </div>
-                  <div className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+                  <Link
+                    to={`/project/${item.projectSlug}`}
+                    className="group inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-primary)] underline underline-offset-4 decoration-[var(--border-subtle)] hover:decoration-[var(--text-primary)] transition-colors"
+                  >
+                    <span>{item.project}</span>
+                    <ArrowUpRight
+                      className="h-3 w-3 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      strokeWidth={1.8}
+                    />
+                  </Link>
+                  <div className="mt-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                     {item.author} · {item.role}
                   </div>
                 </div>
