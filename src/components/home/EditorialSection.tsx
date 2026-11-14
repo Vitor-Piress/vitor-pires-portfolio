@@ -1,9 +1,10 @@
-import type { TimelineItem } from '../../i18n/translations'
-import { useLanguage } from '../../context/LanguageContext'
-import { BlurReveal } from '../ui/BlurReveal'
+import type { TimelineItem } from "../../i18n/translations";
+import { useLanguage } from "../../context/LanguageContext";
+import { BlurReveal } from "../ui/BlurReveal";
+import { TechStackColumns } from "./TechStackColumns";
 
 export function EditorialSection() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   return (
     <section
@@ -39,28 +40,7 @@ export function EditorialSection() {
           </span>
         </BlurReveal>
 
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
-          {t.editorial.stackItems.map((item, idx) => (
-            <BlurReveal key={item.name} delay={(idx % 4) * 0.05}>
-              <div className="bento-card flex flex-col justify-between p-4 sm:p-5 h-full border border-transparent hover:border-[var(--border-subtle)] transition-colors">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-sm sm:text-[15px] font-medium text-[var(--text-primary)]">
-                    {item.name}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="font-mono text-[10px] text-[var(--text-muted)] opacity-55 tabular-nums pt-0.5"
-                  >
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <span className="mt-4 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-                  {item.category}
-                </span>
-              </div>
-            </BlurReveal>
-          ))}
-        </div>
+        <TechStackColumns className="mt-10" />
       </div>
 
       {/* 3. Goals & Strategic Direction */}
@@ -120,24 +100,27 @@ export function EditorialSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function TimelineList({ items }: { items: TimelineItem[] }) {
   return (
     <div className="relative space-y-10">
       {items.map((item, index) => {
-        const isLast = index === items.length - 1
+        const isLast = index === items.length - 1;
 
         return (
-          <div key={`${item.role}-${item.period}`} className="relative flex gap-5">
+          <div
+            key={`${item.role}-${item.period}`}
+            className="relative flex gap-5"
+          >
             {/* Circular Marker (● current / ○ past) + subtle vertical connector */}
             <div className="relative flex flex-col items-center pt-1">
               <span
                 aria-hidden="true"
                 className="font-mono text-xs leading-none text-[var(--text-primary)] select-none"
               >
-                {item.isCurrent ? '●' : '○'}
+                {item.isCurrent ? "●" : "○"}
               </span>
               {!isLast && (
                 <span
@@ -148,7 +131,7 @@ function TimelineList({ items }: { items: TimelineItem[] }) {
             </div>
 
             {/* Content */}
-            <div className={isLast ? 'pb-0' : 'pb-2'}>
+            <div className={isLast ? "pb-0" : "pb-2"}>
               <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {item.period}
               </span>
@@ -163,8 +146,8 @@ function TimelineList({ items }: { items: TimelineItem[] }) {
               </p>
             </div>
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

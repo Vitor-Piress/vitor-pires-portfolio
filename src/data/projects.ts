@@ -1013,7 +1013,7 @@ export const secondaryProjects: SecondaryProject[] = [
     },
     category: { pt: "Inteligência Artificial", en: "Artificial Intelligence" },
     stack: ["Python", "Groq API", "Llama"],
-    repoUrl: GITHUB,
+    repoUrl: null,
   },
   {
     tier: "secondary",
@@ -1026,7 +1026,7 @@ export const secondaryProjects: SecondaryProject[] = [
     },
     category: { pt: "Gestão & Produtividade", en: "Management & Productivity" },
     stack: ["React", "TypeScript", "Tailwind CSS"],
-    repoUrl: GITHUB,
+    repoUrl: null,
   },
 ];
 

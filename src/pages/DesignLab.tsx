@@ -6,6 +6,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Columns2,
+  Columns3,
   ExternalLink,
   Layers,
   LayoutGrid,
@@ -13,6 +14,7 @@ import {
   Maximize,
   Moon,
   PanelTop,
+  Rows3,
   SlidersHorizontal,
   Sparkles,
   Sun,
@@ -32,8 +34,12 @@ import {
   HeroCompactSplitPrototype,
   HeroGridEditorialPrototype,
 } from "../components/lab/HeroPrototypes";
+import {
+  TechStackPrototypeStage,
+  type StackVariantId,
+} from "../components/lab/TechStackPrototypes";
 
-type LabScope = "hero" | "projects";
+type LabScope = "stack" | "hero" | "projects";
 
 type HeroVariantId = "typographic-balance" | "grid-7-5" | "compact-split";
 
@@ -45,7 +51,54 @@ type VariantId =
   | "fullwidth"
   | "bento";
 
-type ProjectFilter = "all" | "condonot" | "moradas-do-gabriel" | "dailycheckout";
+type ProjectFilter =
+  | "all"
+  | "condonot"
+  | "moradas-do-gabriel"
+  | "dailycheckout";
+
+interface StackVariantOption {
+  id: StackVariantId;
+  label: string;
+  subtitle: string;
+  icon: typeof LayoutGrid;
+  tag: string;
+}
+
+const STACK_VARIANTS: StackVariantOption[] = [
+  {
+    id: "columns-3",
+    label: "Opção 1 · 3 Colunas Arquiteturais",
+    subtitle:
+      "3 blocos verticais lado a lado (Front-end, Back-end & Dados, Infra & Ambiente) no mesmo grid de 3 colunas da seção Credibilidade",
+    icon: Columns3,
+    tag: "Ativo na Home",
+  },
+  {
+    id: "editorial-rows",
+    label: "Opção 2 · Ficha Editorial 4+8",
+    subtitle:
+      "3 faixas horizontais com contexto da camada na esquerda (4 cols) e os 4 cards Bento da área na direita (8 cols)",
+    icon: Rows3,
+    tag: "Alternativa",
+  },
+  {
+    id: "grouped-bento",
+    label: "Opção 3 · Grade Agrupada",
+    subtitle:
+      "Mantém os cards Bento atuais em grid de 4 colunas divididos em 3 blocos com subtítulo monoespaçado por camada",
+    icon: LayoutGrid,
+    tag: "Alternativa",
+  },
+  {
+    id: "current",
+    label: "Grade Anterior (Legado)",
+    subtitle:
+      "Grade única anterior de 12 cards (01 a 12) preservada para comparação direta",
+    icon: SlidersHorizontal,
+    tag: "Legado",
+  },
+];
 
 interface HeroVariantOption {
   id: HeroVariantId;
@@ -132,7 +185,8 @@ const VARIANTS: VariantOption[] = [
   {
     id: "bento",
     label: "Bento Grid Anterior",
-    subtitle: "O layout Bento anterior espremido em 7 cols para comparação direta",
+    subtitle:
+      "O layout Bento anterior espremido em 7 cols para comparação direta",
     icon: LayoutGrid,
     tag: "Legado",
   },
@@ -146,7 +200,8 @@ const PROJECT_FILTERS: { id: ProjectFilter; label: string }[] = [
 ];
 
 export function DesignLab() {
-  const [labScope, setLabScope] = useState<LabScope>("hero");
+  const [labScope, setLabScope] = useState<LabScope>("stack");
+  const [stackVariant, setStackVariant] = useState<StackVariantId>("columns-3");
   const [heroVariant, setHeroVariant] = useState<HeroVariantId>(
     "typographic-balance",
   );
@@ -194,7 +249,7 @@ export function DesignLab() {
 
           {/* Right Controls: Scope Toggle + Project Switcher + Lang + Theme */}
           <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
-            {/* Lab Section Scope Switcher: Hero vs Projects */}
+            {/* Lab Section Scope Switcher: Tech Stack vs Hero vs Projects */}
             <div
               role="group"
               aria-label="Seção em prototipação"
@@ -202,7 +257,8 @@ export function DesignLab() {
             >
               {(
                 [
-                  { id: "hero", label: "Hero Section (3 opções)" },
+                  { id: "stack", label: "Tech Stack (3 opções)" },
+                  { id: "hero", label: "Hero Section" },
                   { id: "projects", label: "Projetos" },
                 ] as const
               ).map((item) => {
@@ -297,65 +353,54 @@ export function DesignLab() {
         {/* Variant Switcher Pills */}
         <div className="mx-auto max-w-7xl overflow-x-auto px-4 pb-3 sm:px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-center gap-2 min-w-max">
-            {labScope === "hero"
-              ? HERO_VARIANTS.map((variant) => {
-                  const Icon = variant.icon;
-                  const isSelected = heroVariant === variant.id;
-                  return (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      onClick={() => setHeroVariant(variant.id)}
-                      className={`cursor-pointer inline-flex items-center gap-2 rounded-[4px] border px-3 py-1.5 text-xs font-mono transition-all duration-200 ${
-                        isSelected
-                          ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm"
-                          : "border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]"
-                      }`}
-                    >
-                      <Icon className="h-3.5 w-3.5" />
-                      <span className="font-medium">{variant.label}</span>
-                      {isSelected && <Check className="h-3 w-3 ml-0.5" />}
-                      <span
-                        className={`ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full ${
-                          isSelected
-                            ? "bg-[var(--bg-primary)] text-[var(--text-primary)]"
-                            : "bg-[var(--bg-primary)] text-[var(--text-muted)]"
-                        }`}
-                      >
-                        {variant.tag}
-                      </span>
-                    </button>
-                  );
-                })
-              : VARIANTS.map((variant) => {
-                  const Icon = variant.icon;
-                  const isSelected = activeVariant === variant.id;
-                  return (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      onClick={() => setActiveVariant(variant.id)}
-                      className={`cursor-pointer inline-flex items-center gap-2 rounded-[4px] border px-3 py-1.5 text-xs font-mono transition-all duration-200 ${
-                        isSelected
-                          ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm"
-                          : "border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]"
-                      }`}
-                    >
-                      <Icon className="h-3.5 w-3.5" />
-                      <span className="font-medium">{variant.label}</span>
-                      {isSelected && <Check className="h-3 w-3 ml-0.5" />}
-                      <span
-                        className={`ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full ${
-                          isSelected
-                            ? "bg-[var(--bg-primary)] text-[var(--text-primary)]"
-                            : "bg-[var(--bg-primary)] text-[var(--text-muted)]"
-                        }`}
-                      >
-                        {variant.tag}
-                      </span>
-                    </button>
-                  );
-                })}
+            {(labScope === "stack"
+              ? STACK_VARIANTS
+              : labScope === "hero"
+                ? HERO_VARIANTS
+                : VARIANTS
+            ).map((variant) => {
+              const Icon = variant.icon;
+              const isSelected =
+                labScope === "stack"
+                  ? stackVariant === variant.id
+                  : labScope === "hero"
+                    ? heroVariant === variant.id
+                    : activeVariant === variant.id;
+              const handleSelect = () => {
+                if (labScope === "stack") {
+                  setStackVariant(variant.id as StackVariantId);
+                } else if (labScope === "hero") {
+                  setHeroVariant(variant.id as HeroVariantId);
+                } else {
+                  setActiveVariant(variant.id as VariantId);
+                }
+              };
+              return (
+                <button
+                  key={variant.id}
+                  type="button"
+                  onClick={handleSelect}
+                  className={`cursor-pointer inline-flex items-center gap-2 rounded-[4px] border px-3 py-1.5 text-xs font-mono transition-all duration-200 ${
+                    isSelected
+                      ? "border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm"
+                      : "border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]"
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  <span className="font-medium">{variant.label}</span>
+                  {isSelected && <Check className="h-3 w-3 ml-0.5" />}
+                  <span
+                    className={`ml-1 text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full ${
+                      isSelected
+                        ? "bg-[var(--bg-primary)] text-[var(--text-primary)]"
+                        : "bg-[var(--bg-primary)] text-[var(--text-muted)]"
+                    }`}
+                  >
+                    {variant.tag}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </header>
@@ -363,7 +408,20 @@ export function DesignLab() {
       {/* Explanatory Banner */}
       <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-bento)]/40 px-4 py-3 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
-          {labScope === "hero" ? (
+          {labScope === "stack" ? (
+            <>
+              <p className="text-xs text-[var(--text-secondary)]">
+                <span className="font-semibold text-[var(--text-primary)]">
+                  {STACK_VARIANTS.find((v) => v.id === stackVariant)?.label}:
+                </span>{" "}
+                {STACK_VARIANTS.find((v) => v.id === stackVariant)?.subtitle}
+              </p>
+
+              <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                3 camadas × 4 tecnologias (PT/EN & Dark/Light)
+              </span>
+            </>
+          ) : labScope === "hero" ? (
             <>
               <p className="text-xs text-[var(--text-secondary)]">
                 <span className="font-semibold text-[var(--text-primary)]">
@@ -420,7 +478,11 @@ export function DesignLab() {
       </div>
 
       {/* Main Preview Stage */}
-      {labScope === "hero" ? (
+      {labScope === "stack" ? (
+        <main className="pb-20">
+          <TechStackPrototypeStage variant={stackVariant} />
+        </main>
+      ) : labScope === "hero" ? (
         <main className="pb-20">
           {heroVariant === "typographic-balance" && (
             <HeroSection compactTop projectsTargetId="lab-projects-preview" />
@@ -442,10 +504,7 @@ export function DesignLab() {
                 </span>
               </div>
 
-              <EditorialBentoShowcase
-                project={featuredProjects[0]}
-                index={0}
-              />
+              <EditorialBentoShowcase project={featuredProjects[0]} index={0} />
             </section>
           )}
         </main>
@@ -575,10 +634,9 @@ export function DesignLab() {
                     )}
                   </div>
                 </article>
-              ),
-            )}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
         </main>
       )}
     </div>
@@ -650,10 +708,7 @@ function VariantHeroTabs({
 
   if (screens.length === 0) {
     return (
-      <ProjectBentoShowcase
-        projectSlug={project.slug}
-        blocks={project.bento}
-      />
+      <ProjectBentoShowcase projectSlug={project.slug} blocks={project.bento} />
     );
   }
 
@@ -928,10 +983,7 @@ function VariantPeekSlider({
 
   if (screens.length === 0) {
     return (
-      <ProjectBentoShowcase
-        projectSlug={project.slug}
-        blocks={project.bento}
-      />
+      <ProjectBentoShowcase projectSlug={project.slug} blocks={project.bento} />
     );
   }
 

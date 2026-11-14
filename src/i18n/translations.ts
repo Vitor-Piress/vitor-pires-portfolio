@@ -13,6 +13,17 @@ export interface StackItem {
   category: string;
 }
 
+export type StackLayerId = "frontend" | "backend" | "infra";
+
+export interface StackGroup {
+  id: StackLayerId;
+  indexLabel: string;
+  layerCode: string;
+  title: string;
+  subtitle: string;
+  items: StackItem[];
+}
+
 export interface TestimonialItem {
   id: string;
   quote: string;
@@ -96,6 +107,7 @@ export interface TranslationSchema {
     experienceItems: TimelineItem[];
     educationItems: TimelineItem[];
     stackItems: StackItem[];
+    stackGroups: StackGroup[];
     goalsTitle: string;
     goalsParagraphs: string[];
   };
@@ -131,11 +143,56 @@ const SHARED_STACK_ITEMS: StackItem[] = [
   { name: "Fastify", category: "API Framework" },
   { name: "Supabase", category: "BaaS / Auth / DB" },
   { name: "PostgreSQL", category: "Database" },
-  { name: "Python", category: "AI & Automation" },
+  { name: "GitHub Actions", category: "CI / CD" },
   { name: "Cloudflare", category: "Edge & Infra" },
   { name: "Linux Ubuntu", category: "Environment" },
   { name: "Git", category: "Version Control" },
 ];
+
+const STACK_ITEMS_BY_NAME = new Map(
+  SHARED_STACK_ITEMS.map((item) => [item.name, item]),
+);
+
+const STACK_GROUP_DEFS: {
+  id: StackLayerId;
+  indexLabel: string;
+  layerCode: string;
+  itemNames: string[];
+}[] = [
+  {
+    id: "frontend",
+    indexLabel: "01",
+    layerCode: "CLIENT",
+    itemNames: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+  },
+  {
+    id: "backend",
+    indexLabel: "02",
+    layerCode: "SERVER & SQL",
+    itemNames: ["Node.js", "Fastify", "PostgreSQL", "Supabase"],
+  },
+  {
+    id: "infra",
+    indexLabel: "03",
+    layerCode: "EDGE & OPS",
+    itemNames: ["Cloudflare", "GitHub Actions", "Linux Ubuntu", "Git"],
+  },
+];
+
+function buildStackGroups(
+  copy: Record<StackLayerId, { title: string; subtitle: string }>,
+): StackGroup[] {
+  return STACK_GROUP_DEFS.map((def) => ({
+    id: def.id,
+    indexLabel: def.indexLabel,
+    layerCode: def.layerCode,
+    title: copy[def.id].title,
+    subtitle: copy[def.id].subtitle,
+    items: def.itemNames
+      .map((name) => STACK_ITEMS_BY_NAME.get(name))
+      .filter((item): item is StackItem => Boolean(item)),
+  }));
+}
 
 export const translations: Record<Language, TranslationSchema> = {
   pt: {
@@ -253,6 +310,23 @@ export const translations: Record<Language, TranslationSchema> = {
         },
       ],
       stackItems: SHARED_STACK_ITEMS,
+      stackGroups: buildStackGroups({
+        frontend: {
+          title: "Front-end & Interfaces",
+          subtitle:
+            "Interfaces reativas, tipagem estrita, design systems e build rápido.",
+        },
+        backend: {
+          title: "Back-end, APIs & Dados",
+          subtitle:
+            "APIs REST dedicadas, modelagem relacional, regras de negócio e RLS.",
+        },
+        infra: {
+          title: "Infra, Automação & Ambiente",
+          subtitle:
+            "Deploy na borda, pipelines CI/CD automatizados e operação diária em Linux/Git.",
+        },
+      }),
       goalsTitle:
         "Engenharia orientada a produto: software que combina rigor técnico, velocidade operacional e estética intencional.",
       goalsParagraphs: [
@@ -434,6 +508,23 @@ export const translations: Record<Language, TranslationSchema> = {
         },
       ],
       stackItems: SHARED_STACK_ITEMS,
+      stackGroups: buildStackGroups({
+        frontend: {
+          title: "Frontend & Interfaces",
+          subtitle:
+            "Reactive UIs, strict typing, design systems, and fast build pipelines.",
+        },
+        backend: {
+          title: "Backend, APIs & Data",
+          subtitle:
+            "Dedicated REST APIs, relational modeling, business logic, and RLS.",
+        },
+        infra: {
+          title: "Infra, Automation & Tooling",
+          subtitle:
+            "Edge delivery, automated CI/CD pipelines, and Linux/Git workflows.",
+        },
+      }),
       goalsTitle:
         "Product-driven engineering: software that combines technical rigor, operational speed, and intentional aesthetics.",
       goalsParagraphs: [
