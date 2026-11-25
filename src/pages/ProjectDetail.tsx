@@ -33,7 +33,6 @@ import { ProjectLogo, ScreenVisual } from '../components/ui/ProjectVisuals'
 import { ResponsiveProjectArchitecture } from '../components/project/ProjectArchitectureFlow'
 import { InteractiveDemoWindow } from '../components/project/InteractiveDemoWindow'
 import { FooterBottomBar } from '../components/layout/Footer'
-import { WipBanner } from '../components/layout/WipBanner'
 import { scrollToElement, scrollToTopSmooth } from '../utils/scroll'
 import {
   clearReturnOrigin,
@@ -146,7 +145,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
     if (!el) return
 
     const rafId = window.requestAnimationFrame(() => {
-      const stickyOffset = window.innerWidth >= 640 ? 156 : 172
+      const stickyOffset = window.innerWidth >= 640 ? 128 : 144
       const targetTop = Math.max(
         0,
         el.getBoundingClientRect().top + window.scrollY - stickyOffset,
@@ -180,7 +179,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         return
       }
 
-      const triggerOffset = 188
+      const triggerOffset = 160
       let current: SectionId = 'overview'
 
       for (const id of SECTION_IDS) {
@@ -219,7 +218,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
     if (id === 'overview') {
       scrollToTopSmooth(unlockScrollSpy)
     } else {
-      scrollToElement(id, 152, unlockScrollSpy)
+      scrollToElement(id, 124, unlockScrollSpy)
     }
   }
 
@@ -257,9 +256,8 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
       </a>
 
       {/* 1. Project Page Header: Back | Official Logo | PT/EN + Theme + Access System */}
-      <header className="sticky top-0 z-40">
-        <div className="bg-[var(--bg-primary)]/80 backdrop-blur-md">
-          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 sm:gap-4 px-6 md:px-10">
+      <header className="sticky top-0 z-40 bg-[var(--bg-primary)]/85 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 sm:gap-4 px-6 md:px-10">
           <Link
             to={returnOrigin?.returnPath ?? '/'}
             onClick={handleBackClick}
@@ -343,7 +341,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
             ) : (
               <button
                 type="button"
-                onClick={() => scrollToElement('commercial-cta', 124)}
+                onClick={() => scrollToElement('commercial-cta', 96)}
                 className="cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-3.5 sm:px-4 py-2 sm:py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
               >
                 <span>{t.projectDetail.accessSystem}</span>
@@ -351,9 +349,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
               </button>
             )}
           </div>
-          </div>
         </div>
-        <WipBanner />
       </header>
 
       <main
@@ -373,7 +369,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         {/* 2. Quick Navigation Index (Single-row horizontal TOC on mobile) */}
         <nav
           aria-label="Project Sections"
-          className="sticky top-[92px] z-30 -mx-2 mb-10 sm:mb-16 flex flex-nowrap sm:flex-wrap items-center gap-x-5 sm:gap-x-6 gap-y-2.5 overflow-x-auto bg-[var(--bg-primary)]/85 px-2 py-2 sm:py-3.5 backdrop-blur-md [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="sticky top-16 z-30 -mx-2 mb-10 sm:mb-16 flex flex-nowrap sm:flex-wrap items-center gap-x-5 sm:gap-x-6 gap-y-2.5 overflow-x-auto bg-[var(--bg-primary)]/85 px-2 py-2 sm:py-3.5 backdrop-blur-md [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
           {tocItems.map((item, idx) => {
             const isActive = activeSection === item.id
@@ -398,7 +394,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         </nav>
 
         {/* Section 01: Overview */}
-        <section id="overview" className="scroll-mt-44 sm:scroll-mt-40">
+        <section id="overview" className="scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="max-w-4xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               01 / {t.projectDetail.toc.overview}
@@ -496,7 +492,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         </section>
 
         {/* Section 02: Full-width system preview + core modules */}
-        <section id="flows" className="mt-20 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
+        <section id="flows" className="mt-20 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               02 / {t.projectDetail.toc.flows}
@@ -517,7 +513,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                 demo={interactiveDemo}
                 language={language}
                 variant="detail"
-                onCommercialCtaClick={() => scrollToElement('commercial-cta', 124)}
+                onCommercialCtaClick={() => scrollToElement('commercial-cta', 96)}
               />
             ) : (
             <div className="rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] shadow-sm overflow-hidden">
@@ -563,7 +559,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => scrollToElement('commercial-cta', 124)}
+                      onClick={() => scrollToElement('commercial-cta', 96)}
                       className="cursor-pointer inline-flex items-center gap-1.5 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 py-1.5 text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-all"
                     >
                       <span>{t.projectDetail.sections.demoOnRequest}</span>
@@ -731,7 +727,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         </section>
 
         {/* Section 03: Technical architecture */}
-        <section id="architecture" className="mt-20 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
+        <section id="architecture" className="mt-20 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               03 / {t.projectDetail.toc.architecture}
@@ -750,7 +746,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         </section>
 
         {/* Section 04: Production results & next project */}
-        <section id="results" className="mt-20 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
+        <section id="results" className="mt-20 sm:mt-36 scroll-mt-36 sm:scroll-mt-32">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               04 / {t.projectDetail.toc.results}
@@ -806,7 +802,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
       {/* 5. Commercial closing footer (cagd.as aesthetic) */}
       <footer
         id="commercial-cta"
-        className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 pt-20 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:pt-36 sm:pb-28 md:px-10"
+        className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 pt-20 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:pt-36 sm:pb-28 md:px-10"
       >
         <BlurReveal className="mx-auto max-w-3xl text-center">
           <span className="font-mono-meta text-[10px] text-[var(--text-muted)]">

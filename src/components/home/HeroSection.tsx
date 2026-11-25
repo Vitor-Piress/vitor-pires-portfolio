@@ -28,7 +28,7 @@ export function HeroSection({
       className={`relative mx-auto w-full max-w-6xl px-6 md:px-10 ${
         compactTop
           ? "pt-16 pb-14 sm:pt-22 sm:pb-20"
-          : "flex min-h-svh flex-col justify-between pt-24 pb-4 sm:pt-32 sm:pb-8"
+          : "flex min-h-svh flex-col justify-between pt-20 pb-4 sm:pt-24 sm:pb-8"
       }`}
     >
       <div className={compactTop ? undefined : "my-auto py-2 sm:py-8"}>
@@ -110,7 +110,7 @@ export function HeroSection({
             {/* Primary Pill: White on Black in dark mode / Black on White in light mode */}
             <button
               type="button"
-              onClick={() => scrollToElement("contact", 106)}
+              onClick={() => scrollToElement("contact", 78)}
               className="cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-full bg-[var(--text-primary)] px-6 py-3 sm:py-2.5 text-sm font-medium text-[var(--bg-primary)] transition-opacity hover:opacity-85"
             >
               <span>{t.hero.ctaContact}</span>
@@ -120,7 +120,7 @@ export function HeroSection({
             {/* Secondary Action: Clean subtle pill */}
             <button
               type="button"
-              onClick={() => scrollToElement(projectsTargetId, 106)}
+              onClick={() => scrollToElement(projectsTargetId, 78)}
               className="cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-full bg-[var(--bg-bento)] px-6 py-3 sm:py-2.5 text-sm font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-bento-elevated)]"
             >
               <span>{t.hero.ctaProjects}</span>
@@ -143,7 +143,7 @@ export function HeroSection({
         <motion.div style={{ opacity: scrollCueOpacity }} className="pt-2">
           <button
             type="button"
-            onClick={() => scrollToElement(projectsTargetId, 106)}
+            onClick={() => scrollToElement(projectsTargetId, 78)}
             aria-label={t.hero.scrollHintAria}
             className="group inline-flex min-h-[44px] items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
           >

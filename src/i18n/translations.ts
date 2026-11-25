@@ -44,10 +44,6 @@ export interface TranslationSchema {
     accessSystem: string;
     skipToContent: string;
   };
-  wipBanner: {
-    short: string;
-    full: string;
-  };
   hero: {
     name: string;
     headline: string;
@@ -240,10 +236,6 @@ export const translations: Record<Language, TranslationSchema> = {
       backToHome: "Voltar",
       accessSystem: "Acessar Sistema",
       skipToContent: "Pular para o conteúdo principal",
-    },
-    wipBanner: {
-      short: "Portfólio ainda em desenvolvimento",
-      full: "Portfólio ainda em desenvolvimento, visualização prévia em construção",
     },
     hero: {
       name: "VITOR PIRES",
@@ -481,10 +473,6 @@ export const translations: Record<Language, TranslationSchema> = {
       backToHome: "Back",
       accessSystem: "Live System",
       skipToContent: "Skip to main content",
-    },
-    wipBanner: {
-      short: "Portfolio still in development",
-      full: "Portfolio still in development, preview build in progress",
     },
     hero: {
       name: "VITOR PIRES",

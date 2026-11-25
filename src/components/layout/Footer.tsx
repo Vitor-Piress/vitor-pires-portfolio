@@ -22,7 +22,7 @@ export function Footer() {
   return (
     <footer
       id="contact"
-      className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 pt-20 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:pt-40 sm:pb-28 md:px-10"
+      className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 pt-20 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:pt-40 sm:pb-28 md:px-10"
     >
       {/* Centered Editorial Conversion Statement (cagd.as inspired) */}
       <BlurReveal className="mx-auto max-w-3xl text-center">

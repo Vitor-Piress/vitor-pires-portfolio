@@ -166,7 +166,7 @@ export function FeaturedProjectsSection() {
   return (
     <section
       id="projects"
-      className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 py-12 sm:py-24 md:px-10"
+      className="mx-auto w-full max-w-6xl scroll-mt-24 px-6 py-12 sm:py-24 md:px-10"
     >
       {/* Header Row: Section Label + Circular Arrows + Project Tabs */}
       <BlurReveal className="mb-8 sm:mb-12 flex flex-col gap-4 sm:gap-5 border-b border-[var(--border-subtle)]/70 pb-5 sm:pb-6">
