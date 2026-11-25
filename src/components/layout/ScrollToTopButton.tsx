@@ -69,7 +69,7 @@ export function ScrollToTopButton() {
           animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
           exit={{ opacity: 0, y: 12, scale: 0.9, filter: 'blur(4px)' }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          className="group fixed bottom-5 right-4 sm:bottom-6 sm:right-8 z-40 flex h-8 w-8 sm:h-9 sm:w-auto items-center justify-center sm:px-3.5 gap-2 rounded-full border border-[var(--border-subtle)] bg-[#F0F0F2]/90 dark:bg-[#0D0D0D]/90 text-[var(--text-secondary)] shadow-sm backdrop-blur-md hover:border-[var(--text-primary)] hover:text-[var(--text-primary)] hover:shadow-md transition-colors duration-200 cursor-pointer active:scale-95 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--text-primary)]"
+          className="group fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-4 sm:bottom-6 sm:right-8 z-40 flex h-11 w-11 sm:h-9 sm:w-auto items-center justify-center sm:px-3.5 gap-2 rounded-full border border-[var(--border-subtle)] bg-[#F0F0F2]/90 dark:bg-[#0D0D0D]/90 text-[var(--text-secondary)] shadow-sm backdrop-blur-md hover:border-[var(--text-primary)] hover:text-[var(--text-primary)] hover:shadow-md transition-colors duration-200 cursor-pointer active:scale-95 select-none"
         >
           <ArrowUp
             className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5"

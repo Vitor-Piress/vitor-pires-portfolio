@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { Pause, Play, Volume2, VolumeX, X } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
 interface SynthSession {
@@ -17,7 +17,8 @@ interface SynthSession {
  *   fallback if `/audio/ambient.mp3` has not been placed in `public/audio/` yet.
  */
 export function MiniAudioPlayer() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
+  const prefersReducedMotion = Boolean(useReducedMotion())
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const synthRef = useRef<SynthSession | null>(null)
   const usingFallbackRef = useRef(false)
@@ -135,7 +136,7 @@ export function MiniAudioPlayer() {
 
   return (
     <div
-      className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50"
+      className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-50 max-w-[calc(100vw-2rem)]"
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
@@ -149,56 +150,104 @@ export function MiniAudioPlayer() {
         }}
       />
 
-      <motion.div
-        layout
-        onClick={() => {
-          if (!isExpanded) setIsExpanded(true)
-        }}
-        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        className={`flex items-center gap-3 rounded-full border border-[var(--border-subtle)] bg-[#F0F0F2]/90 dark:bg-[#0D0D0D]/90 backdrop-blur-md shadow-sm select-none ${
-          isExpanded ? 'h-9 px-3.5' : 'h-6 px-3 cursor-pointer'
-        }`}
-      >
-        {/* Minimalist B&W Soundwave Bars */}
-        <div
-          className="flex h-3 items-center gap-[2.5px]"
-          aria-hidden="true"
+      {!isExpanded ? (
+        <button
+          type="button"
+          onClick={() => setIsExpanded(true)}
+          aria-label={
+            language === 'pt'
+              ? 'Expandir player de áudio ambiente'
+              : 'Expand ambient audio player'
+          }
+          className="cursor-pointer flex min-h-[44px] sm:min-h-0 items-center justify-center rounded-full"
         >
-          {waveDelays.map((delay, idx) => (
-            <motion.span
-              key={idx}
-              animate={
-                isPlaying && !isMuted
-                  ? { height: ['3px', idx % 2 === 0 ? '11px' : '8px', '4px', '10px', '3px'] }
-                  : { height: '3px' }
-              }
-              transition={
-                isPlaying && !isMuted
-                  ? {
-                      duration: 1.1,
-                      repeat: Infinity,
-                      delay,
-                      ease: 'easeInOut',
-                    }
-                  : { duration: 0.2 }
-              }
-              className="w-[1.5px] rounded-full bg-[var(--text-primary)] opacity-85"
-            />
-          ))}
-        </div>
+          <motion.span
+            layout
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="flex h-6 items-center gap-3 rounded-full border border-[var(--border-subtle)] bg-[#F0F0F2]/90 dark:bg-[#0D0D0D]/90 px-3 backdrop-blur-md shadow-sm select-none"
+          >
+            <span className="flex h-3 items-center gap-[2.5px]" aria-hidden="true">
+              {waveDelays.map((delay, idx) => (
+                <motion.span
+                  key={idx}
+                  animate={
+                    isPlaying && !isMuted && !prefersReducedMotion
+                      ? {
+                          height: [
+                            '3px',
+                            idx % 2 === 0 ? '11px' : '8px',
+                            '4px',
+                            '10px',
+                            '3px',
+                          ],
+                        }
+                      : { height: isPlaying && !isMuted ? '7px' : '3px' }
+                  }
+                  transition={
+                    isPlaying && !isMuted && !prefersReducedMotion
+                      ? {
+                          duration: 1.1,
+                          repeat: Infinity,
+                          delay,
+                          ease: 'easeInOut',
+                        }
+                      : { duration: 0.2 }
+                  }
+                  className="w-[1.5px] rounded-full bg-[var(--text-primary)] opacity-85"
+                />
+              ))}
+            </span>
+          </motion.span>
+        </button>
+      ) : (
+        <motion.div
+          layout
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          className="flex min-h-[44px] sm:min-h-0 sm:h-9 items-center gap-2 sm:gap-3 rounded-full border border-[var(--border-subtle)] bg-[#F0F0F2]/95 dark:bg-[#0D0D0D]/95 px-3.5 backdrop-blur-md shadow-sm select-none"
+        >
+          {/* Minimalist B&W Soundwave Bars */}
+          <div className="flex h-3 items-center gap-[2.5px]" aria-hidden="true">
+            {waveDelays.map((delay, idx) => (
+              <motion.span
+                key={idx}
+                animate={
+                  isPlaying && !isMuted && !prefersReducedMotion
+                    ? {
+                        height: [
+                          '3px',
+                          idx % 2 === 0 ? '11px' : '8px',
+                          '4px',
+                          '10px',
+                          '3px',
+                        ],
+                      }
+                    : { height: isPlaying && !isMuted ? '7px' : '3px' }
+                }
+                transition={
+                  isPlaying && !isMuted && !prefersReducedMotion
+                    ? {
+                        duration: 1.1,
+                        repeat: Infinity,
+                        delay,
+                        ease: 'easeInOut',
+                      }
+                    : { duration: 0.2 }
+                }
+                className="w-[1.5px] rounded-full bg-[var(--text-primary)] opacity-85"
+              />
+            ))}
+          </div>
 
-        {/* Expandable Controls & Mono Caption */}
-        <AnimatePresence initial={false}>
-          {isExpanded && (
+          <AnimatePresence initial={false}>
             <motion.div
               key="player-controls"
               initial={{ opacity: 0, width: 0, filter: 'blur(4px)' }}
               animate={{ opacity: 1, width: 'auto', filter: 'blur(0px)' }}
               exit={{ opacity: 0, width: 0, filter: 'blur(4px)' }}
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center gap-2.5 overflow-hidden whitespace-nowrap"
+              className="flex items-center gap-1.5 sm:gap-2.5 overflow-hidden whitespace-nowrap"
             >
-              <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
+              <span className="max-w-[140px] sm:max-w-none truncate font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {t.audioPlayer.label} ·{' '}
                 <span className="text-[var(--text-secondary)]">
                   {isPlaying ? t.audioPlayer.playing : t.audioPlayer.paused}
@@ -209,12 +258,12 @@ export function MiniAudioPlayer() {
                 type="button"
                 onClick={handleTogglePlay}
                 aria-label={isPlaying ? t.audioPlayer.paused : t.audioPlayer.playing}
-                className="cursor-pointer inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-80 transition-opacity"
+                className="cursor-pointer inline-flex h-10 w-10 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-80 transition-opacity"
               >
                 {isPlaying ? (
-                  <Pause className="h-2.5 w-2.5" strokeWidth={2.2} />
+                  <Pause className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" strokeWidth={2.2} />
                 ) : (
-                  <Play className="h-2.5 w-2.5 translate-x-[0.5px]" strokeWidth={2.2} />
+                  <Play className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5 translate-x-[0.5px]" strokeWidth={2.2} />
                 )}
               </button>
 
@@ -222,18 +271,34 @@ export function MiniAudioPlayer() {
                 type="button"
                 onClick={handleToggleMute}
                 aria-label={isMuted ? t.audioPlayer.unmute : t.audioPlayer.mute}
-                className="cursor-pointer inline-flex h-5 w-5 items-center justify-center rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                className="cursor-pointer inline-flex h-10 w-10 sm:h-5 sm:w-5 items-center justify-center rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
               >
                 {isMuted ? (
-                  <VolumeX className="h-3 w-3" strokeWidth={1.9} />
+                  <VolumeX className="h-3.5 w-3.5 sm:h-3 sm:w-3" strokeWidth={1.9} />
                 ) : (
-                  <Volume2 className="h-3 w-3" strokeWidth={1.9} />
+                  <Volume2 className="h-3.5 w-3.5 sm:h-3 sm:w-3" strokeWidth={1.9} />
                 )}
               </button>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsExpanded(false)
+                }}
+                aria-label={
+                  language === 'pt'
+                    ? 'Recolher player de áudio'
+                    : 'Minimize audio player'
+                }
+                className="sm:hidden cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                <X className="h-3.5 w-3.5" strokeWidth={1.9} />
+              </button>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+          </AnimatePresence>
+        </motion.div>
+      )}
     </div>
   )
 }

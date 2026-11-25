@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -20,6 +20,9 @@ export function Header() {
     () => typeof window !== "undefined" && window.scrollY > 130,
   );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const triggerBtnRef = useRef<HTMLButtonElement | null>(null);
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const skipFocusRestoreRef = useRef(false);
 
   useEffect(() => {
     const rafId = window.requestAnimationFrame(() => {
@@ -39,11 +42,41 @@ export function Header() {
     if (!mobileMenuOpen) return;
 
     const prevOverflow = document.body.style.overflow;
+    const triggerEl = triggerBtnRef.current;
     document.body.style.overflow = "hidden";
+
+    const getFocusable = () => {
+      if (!drawerRef.current) return [];
+      return Array.from(
+        drawerRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => !el.hasAttribute("disabled"));
+    };
+
+    const rafFocus = window.requestAnimationFrame(() => {
+      const focusable = getFocusable();
+      focusable[0]?.focus();
+    });
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMobileMenuOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
     };
 
@@ -57,9 +90,14 @@ export function Header() {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      window.cancelAnimationFrame(rafFocus);
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("resize", handleResize);
+      if (!skipFocusRestoreRef.current) {
+        triggerEl?.focus();
+      }
+      skipFocusRestoreRef.current = false;
     };
   }, [mobileMenuOpen]);
 
@@ -77,6 +115,7 @@ export function Header() {
   const handleMobileNavigate = (id: string, offset: number) => {
     // Release body lock before scheduling smooth scroll so mobile Safari/Chrome
     // never blocks programmatic scrolling when closing the drawer.
+    skipFocusRestoreRef.current = true;
     document.body.style.overflow = "";
     setMobileMenuOpen(false);
     window.requestAnimationFrame(() => {
@@ -134,16 +173,16 @@ export function Header() {
             </div>
 
             {/* Controls: Language PT/EN & Theme toggle */}
-            <div className="flex items-center gap-2.5 sm:gap-3 sm:pl-1">
+            <div className="flex items-center gap-1.5 sm:gap-3 sm:pl-1">
               <div
                 role="group"
                 aria-label="Language selector"
-                className="inline-flex items-center gap-1 font-mono text-[11px] tracking-wider"
+                className="inline-flex items-center gap-0.5 sm:gap-1 font-mono text-[11px] tracking-wider"
               >
                 <button
                   type="button"
                   onClick={() => setLanguage("pt")}
-                  className={`cursor-pointer px-1 py-0.5 transition-colors ${
+                  className={`cursor-pointer inline-flex min-h-[44px] min-w-[32px] sm:min-h-0 sm:min-w-0 items-center justify-center px-1.5 sm:px-1 py-1 sm:py-0.5 transition-colors ${
                     language === "pt"
                       ? "font-medium text-[var(--text-primary)]"
                       : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
@@ -155,7 +194,7 @@ export function Header() {
                 <button
                   type="button"
                   onClick={() => setLanguage("en")}
-                  className={`cursor-pointer px-1 py-0.5 transition-colors ${
+                  className={`cursor-pointer inline-flex min-h-[44px] min-w-[32px] sm:min-h-0 sm:min-w-0 items-center justify-center px-1.5 sm:px-1 py-1 sm:py-0.5 transition-colors ${
                     language === "en"
                       ? "font-medium text-[var(--text-primary)]"
                       : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
@@ -173,17 +212,18 @@ export function Header() {
                     ? "Switch to light mode"
                     : "Switch to dark mode"
                 }
-                className="cursor-pointer inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-bento)] transition-colors"
+                className="cursor-pointer inline-flex h-11 w-11 sm:h-7 sm:w-7 items-center justify-center rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-bento)] transition-colors"
               >
                 {theme === "dark" ? (
-                  <Sun className="h-3.5 w-3.5" strokeWidth={1.75} />
+                  <Sun className="h-4 w-4 sm:h-3.5 sm:w-3.5" strokeWidth={1.75} />
                 ) : (
-                  <Moon className="h-3.5 w-3.5" strokeWidth={1.75} />
+                  <Moon className="h-4 w-4 sm:h-3.5 sm:w-3.5" strokeWidth={1.75} />
                 )}
               </button>
 
               {/* Mobile Hamburger Drawer Trigger (< 640px) */}
               <button
+                ref={triggerBtnRef}
                 type="button"
                 onClick={() => setMobileMenuOpen((prev) => !prev)}
                 aria-expanded={mobileMenuOpen}
@@ -197,7 +237,7 @@ export function Header() {
                       ? "Abrir menu de navegação"
                       : "Open navigation menu"
                 }
-                className="sm:hidden cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-[var(--text-primary)] hover:bg-[var(--bg-bento-elevated)] transition-colors"
+                className="sm:hidden cursor-pointer inline-flex h-11 w-11 items-center justify-center rounded-[3px] text-[var(--text-primary)] hover:bg-[var(--bg-bento-elevated)] transition-colors"
               >
                 {mobileMenuOpen ? (
                   <X className="h-4 w-4" strokeWidth={1.75} />
@@ -212,7 +252,7 @@ export function Header() {
         <WipBanner />
       </header>
 
-      {/* Mobile Side Navigation Drawer (< 640px) — outside <header> so backdrop-blur doesn't clip fixed inset */}
+      {/* Mobile side navigation drawer (< 640px) outside <header> so backdrop-blur does not clip fixed inset */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -225,6 +265,7 @@ export function Header() {
             className="fixed inset-0 z-50 flex justify-end bg-black/65 backdrop-blur-xs sm:hidden"
           >
             <motion.aside
+              ref={drawerRef}
               id="mobile-nav-drawer"
               role="dialog"
               aria-modal="true"
@@ -247,7 +288,7 @@ export function Header() {
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
                   aria-label={language === "pt" ? "Fechar menu" : "Close menu"}
-                  className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="cursor-pointer inline-flex h-11 w-11 items-center justify-center rounded-[3px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
                 >
                   <X className="h-4 w-4" strokeWidth={1.75} />
                 </button>

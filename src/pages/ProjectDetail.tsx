@@ -252,14 +252,18 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
 
   return (
     <div className="min-h-svh bg-[var(--bg-primary)] text-[var(--text-primary)]">
-      {/* 1. Project Page Header: ← Back | Official Logo | PT/EN + Theme + Access System ↗ */}
+      <a href="#main-content" className="skip-link">
+        {t.nav.skipToContent}
+      </a>
+
+      {/* 1. Project Page Header: Back | Official Logo | PT/EN + Theme + Access System */}
       <header className="sticky top-0 z-40">
         <div className="bg-[var(--bg-primary)]/80 backdrop-blur-md">
-          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6 md:px-10">
+          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 sm:gap-4 px-6 md:px-10">
           <Link
             to={returnOrigin?.returnPath ?? '/'}
             onClick={handleBackClick}
-            className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="group inline-flex min-h-[44px] sm:min-h-0 items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <ArrowLeft
               className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-x-0.5"
@@ -281,17 +285,17 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
             />
           </button>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-4">
             {/* Discrete Language & Theme controls for direct case-study links */}
             <div
               role="group"
               aria-label="Language selector"
-              className="inline-flex items-center gap-1 font-mono text-[11px] tracking-wider"
+              className="inline-flex items-center gap-0.5 sm:gap-1 font-mono text-[11px] tracking-wider"
             >
               <button
                 type="button"
                 onClick={() => setLanguage('pt')}
-                className={`cursor-pointer px-1 py-0.5 transition-colors ${
+                className={`cursor-pointer inline-flex min-h-[44px] min-w-[32px] sm:min-h-0 sm:min-w-0 items-center justify-center px-1.5 sm:px-1 py-1 sm:py-0.5 transition-colors ${
                   language === 'pt'
                     ? 'font-medium text-[var(--text-primary)]'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
@@ -303,7 +307,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
               <button
                 type="button"
                 onClick={() => setLanguage('en')}
-                className={`cursor-pointer px-1 py-0.5 transition-colors ${
+                className={`cursor-pointer inline-flex min-h-[44px] min-w-[32px] sm:min-h-0 sm:min-w-0 items-center justify-center px-1.5 sm:px-1 py-1 sm:py-0.5 transition-colors ${
                   language === 'en'
                     ? 'font-medium text-[var(--text-primary)]'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
@@ -317,12 +321,12 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
               type="button"
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="cursor-pointer inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-bento)] transition-colors"
+              className="cursor-pointer inline-flex h-11 w-11 sm:h-7 sm:w-7 items-center justify-center rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-bento)] transition-colors"
             >
               {theme === 'dark' ? (
-                <Sun className="h-3.5 w-3.5" strokeWidth={1.75} />
+                <Sun className="h-4 w-4 sm:h-3.5 sm:w-3.5" strokeWidth={1.75} />
               ) : (
-                <Moon className="h-3.5 w-3.5" strokeWidth={1.75} />
+                <Moon className="h-4 w-4 sm:h-3.5 sm:w-3.5" strokeWidth={1.75} />
               )}
             </button>
 
@@ -331,7 +335,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                 href={externalSystemUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-4 py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
+                className="inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-3.5 sm:px-4 py-2 sm:py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
               >
                 <span>{project.liveUrl ? t.projectsSection.liveWebsite : t.projectDetail.accessSystem}</span>
                 <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -340,7 +344,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
               <button
                 type="button"
                 onClick={() => scrollToElement('commercial-cta', 124)}
-                className="cursor-pointer inline-flex items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-4 py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
+                className="cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-3.5 sm:px-4 py-2 sm:py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
               >
                 <span>{t.projectDetail.accessSystem}</span>
                 <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -352,7 +356,11 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         <WipBanner />
       </header>
 
-      <main className="mx-auto w-full max-w-6xl px-6 pt-8 pb-16 sm:pt-12 md:px-10">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="mx-auto w-full max-w-6xl px-6 pt-8 pb-16 sm:pt-12 md:px-10 focus:outline-none"
+      >
         {/* Mobile Project Identity */}
         <div className="mb-6 sm:hidden">
           <ProjectLogo
@@ -362,10 +370,10 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
           />
         </div>
 
-        {/* 2. Quick Navigation Index (Sticky Minimalist TOC) */}
+        {/* 2. Quick Navigation Index (Single-row horizontal TOC on mobile) */}
         <nav
           aria-label="Project Sections"
-          className="sticky top-[92px] z-30 -mx-2 mb-12 sm:mb-16 flex flex-wrap items-center gap-x-6 gap-y-2.5 bg-[var(--bg-primary)]/85 px-2 py-3.5 backdrop-blur-md"
+          className="sticky top-[92px] z-30 -mx-2 mb-10 sm:mb-16 flex flex-nowrap sm:flex-wrap items-center gap-x-5 sm:gap-x-6 gap-y-2.5 overflow-x-auto bg-[var(--bg-primary)]/85 px-2 py-2 sm:py-3.5 backdrop-blur-md [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
           {tocItems.map((item, idx) => {
             const isActive = activeSection === item.id
@@ -374,7 +382,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                 key={item.id}
                 type="button"
                 onClick={() => handleSelectSection(item.id)}
-                className={`cursor-pointer inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors ${
+                className={`cursor-pointer shrink-0 whitespace-nowrap inline-flex min-h-[44px] sm:min-h-0 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors ${
                   isActive
                     ? 'text-[var(--text-primary)]'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
@@ -389,9 +397,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
           })}
         </nav>
 
-        {/* ================================================================ */}
-        {/* SECTION 01: OVERVIEW                                             */}
-        {/* ================================================================ */}
+        {/* Section 01: Overview */}
         <section id="overview" className="scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="max-w-4xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
@@ -489,10 +495,8 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
           </BlurReveal>
         </section>
 
-        {/* ================================================================ */}
-        {/* SECTION 02: FULL-WIDTH SYSTEM PREVIEW + CORE MODULES             */}
-        {/* ================================================================ */}
-        <section id="flows" className="mt-28 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
+        {/* Section 02: Full-width system preview + core modules */}
+        <section id="flows" className="mt-20 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               02 / {t.projectDetail.toc.flows}
@@ -634,7 +638,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                           type="button"
                           onClick={handlePrevGallery}
                           aria-label="Previous screen"
-                          className="cursor-pointer absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-0 group-hover/gallery:opacity-100 transition-all duration-200"
+                          className="cursor-pointer absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 inline-flex h-11 w-11 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-90 sm:opacity-0 sm:group-hover/gallery:opacity-100 transition-all duration-200"
                         >
                           <ChevronLeft className="h-4 w-4" strokeWidth={2} />
                         </button>
@@ -643,7 +647,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                           type="button"
                           onClick={handleNextGallery}
                           aria-label="Next screen"
-                          className="cursor-pointer absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-0 group-hover/gallery:opacity-100 transition-all duration-200"
+                          className="cursor-pointer absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 inline-flex h-11 w-11 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-90 sm:opacity-0 sm:group-hover/gallery:opacity-100 transition-all duration-200"
                         >
                           <ChevronRight className="h-4 w-4" strokeWidth={2} />
                         </button>
@@ -726,10 +730,8 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
           </div>
         </section>
 
-        {/* ================================================================ */}
-        {/* SECTION 03: TECHNICAL ARCHITECTURE                               */}
-        {/* ================================================================ */}
-        <section id="architecture" className="mt-28 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
+        {/* Section 03: Technical architecture */}
+        <section id="architecture" className="mt-20 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               03 / {t.projectDetail.toc.architecture}
@@ -747,10 +749,8 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
           </BlurReveal>
         </section>
 
-        {/* ================================================================ */}
-        {/* SECTION 04: PRODUCTION RESULTS & NEXT PROJECT                    */}
-        {/* ================================================================ */}
-        <section id="results" className="mt-28 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
+        {/* Section 04: Production results & next project */}
+        <section id="results" className="mt-20 sm:mt-36 scroll-mt-44 sm:scroll-mt-40">
           <BlurReveal className="mb-10 max-w-2xl">
             <span className="font-mono-meta text-[11px] text-[var(--text-muted)]">
               04 / {t.projectDetail.toc.results}
@@ -803,12 +803,10 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
         </section>
       </main>
 
-      {/* ================================================================ */}
-      {/* 5. COMMERCIAL CLOSING FOOTER (SPEC §5.4 — cagd.as aesthetic)     */}
-      {/* ================================================================ */}
+      {/* 5. Commercial closing footer (cagd.as aesthetic) */}
       <footer
         id="commercial-cta"
-        className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 pt-24 pb-24 sm:pt-36 sm:pb-28 md:px-10"
+        className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 pt-20 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:pt-36 sm:pb-28 md:px-10"
       >
         <BlurReveal className="mx-auto max-w-3xl text-center">
           <span className="font-mono-meta text-[10px] text-[var(--text-muted)]">
@@ -823,12 +821,12 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
             {t.projectDetail.commercialCta.subtext}
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10">
             <a
               href={whatsappCommercialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-sm sm:text-base text-[var(--text-primary)] underline underline-offset-8 decoration-[var(--text-muted)] hover:decoration-[var(--text-primary)] transition-colors"
+              className="group inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 text-sm sm:text-base text-[var(--text-primary)] underline underline-offset-8 decoration-[var(--text-muted)] hover:decoration-[var(--text-primary)] transition-colors"
             >
               <span>{t.projectDetail.commercialCta.licenseAction}</span>
               <ArrowUpRight
@@ -840,7 +838,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
             <button
               type="button"
               onClick={handleCopyEmail}
-              className="group cursor-pointer inline-flex items-center gap-2 text-sm sm:text-base text-[var(--text-primary)] underline underline-offset-8 decoration-[var(--text-muted)] hover:decoration-[var(--text-primary)] transition-colors"
+              className="group cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-2 text-sm sm:text-base text-[var(--text-primary)] underline underline-offset-8 decoration-[var(--text-muted)] hover:decoration-[var(--text-primary)] transition-colors"
             >
               <span>
                 {copiedEmail
