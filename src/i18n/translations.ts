@@ -313,7 +313,8 @@ export const translations: Record<Language, TranslationSchema> = {
       pause: "Pausar",
       play: "Reproduzir",
       interactHint: "Interaja ou role dentro da interface",
-      videoInteractHint: "Em loop automático · Clique para pausar ou reproduzir",
+      videoInteractHint:
+        "Em loop automático · Clique para pausar ou reproduzir",
       mobileNotice: "Tour interativo HTML otimizado para desktop",
       openFullscreen: "Abrir demo em tela cheia",
       pendingNotice:
@@ -424,11 +425,11 @@ export const translations: Record<Language, TranslationSchema> = {
           id: "fixflow-validation",
           projectSlug: "fixflow",
           quote:
-            "Substituiu orçamentos soltos no WhatsApp e controles paralelos por um único PWA mobile: o técnico monta a proposta com preços congelados, envia o PDF com QR Code Pix e vê a parcela cair automaticamente no Livro-Caixa.",
+            "Aumentou o controle e diminuiu a inconsistência e informalidade na geração de orçamentos e no acompanhamento de pagamentos. O sistema trouxe clareza, velocidade e confiabilidade para a nossas operações.",
           author: "FixFlow",
           role: "PWA Operacional & Financeiro · Serviços Técnicos",
           project: "FixFlow",
-          metric: "100% em centavos inteiros · Pix EMV + A4 offline + RLS",
+          metric: "Facilidade e controle na palma da mão",
         },
       ],
     },
