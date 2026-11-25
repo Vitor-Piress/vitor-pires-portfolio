@@ -6,6 +6,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import { Link } from "react-router-dom";
+import { useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -61,8 +62,8 @@ interface InteractiveDemoWindowProps {
 
 /**
  * Shared editorial window showcasing an interactive HTML demo (Supademo, 0px padding)
- * on desktop (>= 768px) and an editorial step-card fallback on mobile (< 768px) or when
- * the demo embed URL is still pending — never mounting the desktop iframe on mobile.
+ * on desktop (>= 768px) and a concise Desktop-only notice on mobile (< 768px),
+ * while native MP4 video walkthroughs stay playable on both desktop and mobile.
  */
 export function InteractiveDemoWindow({
   project,
@@ -75,9 +76,10 @@ export function InteractiveDemoWindow({
 }: InteractiveDemoWindowProps) {
   const { t } = useLanguage();
   const isDesktop = useIsDesktop();
+  const prefersReducedMotion = Boolean(useReducedMotion());
   const [reloadKey, setReloadKey] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(() => !prefersReducedMotion);
 
   const isNativeVideo = Boolean(demo.videoSrc);
   const hasEmbed = Boolean(demo.embedUrl);
@@ -90,7 +92,10 @@ export function InteractiveDemoWindow({
   useEffect(() => {
     if (!isNativeVideo || !videoRef.current) return;
     videoRef.current.playbackRate = playbackRate;
-  }, [isNativeVideo, playbackRate]);
+    if (prefersReducedMotion && !videoRef.current.paused) {
+      videoRef.current.pause();
+    }
+  }, [isNativeVideo, playbackRate, prefersReducedMotion]);
   const isPortrait = demo.orientation === "portrait" || numericAspectRatio < 1;
   const aspectRatio = String(numericAspectRatio);
   const verticalPadding = demo.embedPaddingPx
@@ -128,8 +133,8 @@ export function InteractiveDemoWindow({
       <div
         className={`flex items-center justify-between gap-3 border-b border-[var(--border-subtle)] ${
           variant === "home"
-            ? "h-8 shrink-0 bg-[var(--bg-bento)] px-3"
-            : "bg-[var(--bg-primary)]/80 px-4 py-3 backdrop-blur-xs"
+            ? "min-h-[44px] sm:min-h-0 sm:h-8 shrink-0 bg-[var(--bg-bento)] px-3 py-1.5 sm:py-0"
+            : "bg-[var(--bg-primary)]/80 px-4 py-2.5 sm:py-3 backdrop-blur-xs"
         }`}
       >
         <div className="flex items-center gap-1.5 shrink-0" aria-hidden="true">
@@ -179,12 +184,12 @@ export function InteractiveDemoWindow({
               title={
                 isPlaying ? t.interactiveDemo.pause : t.interactiveDemo.play
               }
-              className="cursor-pointer inline-flex items-center gap-1 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
+              className="cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-1 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 sm:px-2 py-2 sm:py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
             >
               {isPlaying ? (
-                <Pause className="h-3 w-3" strokeWidth={1.8} />
+                <Pause className="h-3.5 w-3.5 sm:h-3 sm:w-3" strokeWidth={1.8} />
               ) : (
-                <Play className="h-3 w-3 fill-current" strokeWidth={1.8} />
+                <Play className="h-3.5 w-3.5 sm:h-3 sm:w-3 fill-current" strokeWidth={1.8} />
               )}
               <span className="hidden sm:inline">
                 {isPlaying ? t.interactiveDemo.pause : t.interactiveDemo.play}
@@ -198,9 +203,9 @@ export function InteractiveDemoWindow({
               onClick={handleRestart}
               aria-label={t.interactiveDemo.restart}
               title={t.interactiveDemo.restart}
-              className="cursor-pointer inline-flex items-center gap-1 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
+              className="cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-1 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 sm:px-2 py-2 sm:py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
             >
-              <RotateCcw className="h-3 w-3" strokeWidth={1.8} />
+              <RotateCcw className="h-3.5 w-3.5 sm:h-3 sm:w-3" strokeWidth={1.8} />
               <span className="hidden sm:inline">
                 {t.interactiveDemo.restart}
               </span>
@@ -213,10 +218,10 @@ export function InteractiveDemoWindow({
                 className={`h-1.5 w-1.5 rounded-full ${
                   isNativeVideo
                     ? isPlaying
-                      ? "bg-emerald-500 animate-pulse"
+                      ? "bg-emerald-500"
                       : "bg-[var(--text-muted)]"
-                    : hasMedia
-                      ? "bg-emerald-500 animate-pulse"
+                    : showDesktopIframe && hasMedia
+                      ? "bg-emerald-500"
                       : "bg-[var(--text-muted)]"
                 }`}
               />
@@ -225,17 +230,24 @@ export function InteractiveDemoWindow({
                   ? isPlaying
                     ? t.interactiveDemo.liveTag
                     : t.interactiveDemo.pausedTag
-                  : hasMedia
-                    ? t.interactiveDemo.liveTag
-                    : t.interactiveDemo.comingSoonTag}
+                  : !isDesktop
+                    ? t.interactiveDemo.desktopOnlyBadge
+                    : hasMedia
+                      ? t.interactiveDemo.liveTag
+                      : t.interactiveDemo.comingSoonTag}
               </span>
+            </span>
+          ) : !isDesktop && !isNativeVideo ? (
+            <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+              <Monitor className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />
+              <span>{t.interactiveDemo.desktopOnlyBadge}</span>
             </span>
           ) : project.liveUrl ? (
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-[3px] bg-[var(--text-primary)] px-3.5 py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
+              className="inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-[3px] bg-[var(--text-primary)] px-3.5 py-2 sm:py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
             >
               <span>{t.projectsSection.liveWebsite}</span>
               <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -245,7 +257,7 @@ export function InteractiveDemoWindow({
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-[3px] bg-[var(--text-primary)] px-3.5 py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
+              className="inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-[3px] bg-[var(--text-primary)] px-3.5 py-2 sm:py-1.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
             >
               <span>{t.projectDetail.sections.demoAction}</span>
               <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -254,7 +266,7 @@ export function InteractiveDemoWindow({
             <button
               type="button"
               onClick={onCommercialCtaClick}
-              className="cursor-pointer inline-flex items-center gap-1.5 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 py-1.5 text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-all"
+              className="cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 py-2 sm:py-1.5 text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-all"
             >
               <span>{t.projectDetail.sections.demoOnRequest}</span>
               <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -263,7 +275,7 @@ export function InteractiveDemoWindow({
         </div>
       </div>
 
-      {/* Viewport Body: Native Video Loop, Desktop Iframe, OR Mobile/Pending Editorial Steps Card */}
+      {/* Viewport Body: Native Video Loop, Desktop Iframe, OR Mobile Desktop-Only Notice */}
       {isNativeVideo && demo.videoSrc ? (
         <div className="group/video relative w-full bg-[var(--bg-primary)]">
           <div
@@ -281,7 +293,7 @@ export function InteractiveDemoWindow({
               ref={videoRef}
               src={demo.videoSrc}
               poster={demo.posterSrc}
-              autoPlay
+              autoPlay={!prefersReducedMotion}
               loop
               muted
               playsInline
@@ -304,7 +316,7 @@ export function InteractiveDemoWindow({
                 type="button"
                 onClick={handleToggleVideo}
                 aria-label={t.interactiveDemo.play}
-                className="cursor-pointer absolute inset-0 m-auto h-fit w-fit inline-flex items-center gap-2 rounded-full border border-white/20 bg-neutral-950/80 px-4 py-2 text-xs font-medium text-white shadow-lg backdrop-blur-md transition-transform duration-200 hover:scale-105"
+                className="cursor-pointer absolute inset-0 m-auto h-fit min-h-[44px] sm:min-h-0 w-fit inline-flex items-center gap-2 rounded-full border border-white/20 bg-neutral-950/80 px-4 py-2.5 sm:py-2 text-xs font-medium text-white shadow-lg backdrop-blur-md transition-transform duration-200 hover:scale-105"
               >
                 <Play className="h-3.5 w-3.5 fill-current" />
                 <span>{t.interactiveDemo.play}</span>
@@ -317,7 +329,7 @@ export function InteractiveDemoWindow({
               aria-label={
                 isPlaying ? t.interactiveDemo.pause : t.interactiveDemo.play
               }
-              className={`cursor-pointer absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/75 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-white shadow-md backdrop-blur-md transition-opacity duration-200 hover:bg-neutral-950 ${
+              className={`cursor-pointer absolute bottom-3 right-3 inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-full border border-white/15 bg-neutral-950/75 px-3.5 sm:px-3 py-2 sm:py-1.5 font-mono text-[10px] uppercase tracking-wider text-white shadow-md backdrop-blur-md transition-opacity duration-200 hover:bg-neutral-950 ${
                 isPlaying
                   ? "opacity-100 sm:opacity-0 sm:group-hover/video:opacity-100"
                   : "opacity-100"
@@ -492,95 +504,69 @@ export function InteractiveDemoWindow({
       ) : (
         <div className="flex flex-1 flex-col justify-between bg-[var(--bg-primary)] p-5 sm:p-7">
           <div>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)]">
-                {t.interactiveDemo.stepsHeading}
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--text-secondary)]">
-                <span
-                  className={`h-1.5 w-1.5 rounded-full ${
-                    hasEmbed ? "bg-emerald-500" : "bg-[var(--text-muted)]"
-                  }`}
-                />
-                <span>
-                  {hasEmbed
-                    ? t.interactiveDemo.mobileNotice
-                    : t.interactiveDemo.comingSoonTag}
-                </span>
-              </span>
-            </div>
+            <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+              <Monitor className="h-3.5 w-3.5 shrink-0" strokeWidth={1.75} aria-hidden="true" />
+              <span>{t.interactiveDemo.desktopOnlyBadge}</span>
+            </span>
 
-            <h3 className="mt-3 font-editorial text-2xl sm:text-3xl leading-[1.15] text-[var(--text-primary)]">
-              {demo.title[language]}
+            <h3 className="mt-4 font-editorial text-2xl sm:text-[26px] leading-[1.15] text-[var(--text-primary)]">
+              {t.interactiveDemo.desktopOnlyTitle}
             </h3>
 
-            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)]">
+            <p className="mt-2.5 max-w-md text-sm leading-relaxed text-[var(--text-secondary)]">
               {hasEmbed
-                ? demo.caption[language]
+                ? t.interactiveDemo.desktopOnlyDescription
                 : t.interactiveDemo.pendingNotice}
             </p>
           </div>
 
-          {steps.length > 0 && (
-            <div
-              className={`grid grid-cols-1 sm:grid-cols-2 ${
-                variant === "home" ? "mt-5 gap-2" : "mt-6 gap-2.5"
-              }`}
-            >
-              {steps.map((step) => (
-                <div
-                  key={step.code}
-                  className={`rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 ${
-                    variant === "home" ? "px-3 py-2.5" : "p-3.5"
-                  }`}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            {variant === "home" ? (
+              <>
+                <Link
+                  to={flowsUrl ?? `/project/${project.slug}`}
+                  onClick={onFlowsClick}
+                  className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[var(--text-primary)] px-5 py-2.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
-                      {step.code}
-                    </span>
-                    <span className="text-xs sm:text-[13px] font-medium text-[var(--text-primary)]">
-                      {step.title[language]}
-                    </span>
-                  </div>
-                  {variant !== "home" && (
-                    <p className="mt-1.5 text-[11px] leading-relaxed text-[var(--text-secondary)]">
-                      {step.detail[language]}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+                  <span>{t.projectsSection.viewDetails}</span>
+                  <ArrowRight
+                    className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+                    strokeWidth={1.8}
+                  />
+                </Link>
 
-          {/* Action Row for Mobile Fallback / Pending Demo */}
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            {demo.embedUrl ? (
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-bento)] px-4 py-2.5 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-colors"
+                  >
+                    <span>{t.projectsSection.liveWebsite}</span>
+                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
+                  </a>
+                )}
+              </>
+            ) : project.liveUrl ? (
               <a
-                href={demo.embedUrl}
+                href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full bg-[var(--text-primary)] px-4 py-2 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-[var(--text-primary)] px-5 py-2.5 text-xs font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
               >
-                <Play className="h-3 w-3 fill-current" />
-                <span>{t.interactiveDemo.openFullscreen}</span>
-                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span>{t.projectsSection.liveWebsite}</span>
+                <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
               </a>
-            ) : null}
-
-            {variant === "home" && flowsUrl && (
-              <Link
-                to={flowsUrl}
-                onClick={onFlowsClick}
-                className="group inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] underline underline-offset-4 decoration-[var(--border-subtle)] hover:text-[var(--text-primary)] hover:decoration-[var(--text-primary)] transition-colors"
+            ) : onCommercialCtaClick ? (
+              <button
+                type="button"
+                onClick={onCommercialCtaClick}
+                className="cursor-pointer inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-bento)] px-5 py-2.5 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-colors"
               >
-                <span>
-                  {demo.embedUrl
-                    ? t.interactiveDemo.openFullWalkthrough
-                    : t.projectsSection.viewDetails}
-                </span>
-                <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </Link>
-            )}
+                <span>{t.projectDetail.sections.demoOnRequest}</span>
+                <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
+              </button>
+            ) : null}
           </div>
         </div>
       )}
@@ -638,7 +624,7 @@ export function InteractiveDemoWindow({
           <Link
             to={flowsUrl}
             onClick={onFlowsClick}
-            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+            className={`${isNativeVideo ? "inline-flex" : "hidden md:inline-flex"} items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors`}
           >
             <span>{t.interactiveDemo.openFullWalkthrough}</span>
             <ArrowUpRight className="h-3 w-3" />
@@ -658,7 +644,7 @@ export function InteractiveDemoWindow({
           <Link
             to={flowsUrl}
             onClick={onFlowsClick}
-            className="inline-flex items-center gap-1 text-[var(--text-primary)] hover:opacity-75 transition-opacity shrink-0"
+            className={`${isNativeVideo ? "inline-flex" : "hidden md:inline-flex"} items-center gap-1 text-[var(--text-primary)] hover:opacity-75 transition-opacity shrink-0`}
           >
             <span>{t.interactiveDemo.expandInCase}</span>
             <ArrowRight className="h-3 w-3" />

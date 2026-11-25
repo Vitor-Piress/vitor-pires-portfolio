@@ -122,13 +122,11 @@ export function EditorialBentoShowcase({
     : {};
 
   return (
-    <article className="flex flex-col gap-7 sm:gap-9">
-      {/* =================================================================== */}
-      {/* LAYER 1: EDITORIAL SPLIT (7 cols Presentation + 5 cols Spec Aside)  */}
-      {/* =================================================================== */}
+    <article className="flex flex-col gap-6 sm:gap-9">
+      {/* Layer 1: Editorial split (7 cols presentation + 5 cols spec aside) */}
       <motion.div
         {...headerMotionProps}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-stretch"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch"
       >
         {/* Left (7 cols): Identity, Serif Headline, Summary, Primary Actions */}
         <div className="lg:col-span-7 flex flex-col justify-between">
@@ -145,7 +143,7 @@ export function EditorialBentoShowcase({
                     className={`h-1.5 w-1.5 rounded-full ${
                       project.interactiveDemo?.embedUrl ||
                       project.interactiveDemo?.videoSrc
-                        ? "bg-emerald-500 animate-pulse"
+                        ? "bg-emerald-500"
                         : "bg-[var(--text-muted)]"
                     }`}
                   />
@@ -175,11 +173,11 @@ export function EditorialBentoShowcase({
           </div>
 
           {/* Action Links */}
-          <div className="mt-6 flex flex-wrap items-center gap-5">
+          <div className="mt-6 flex flex-wrap items-center gap-4 sm:gap-5">
             <Link
               to={`/project/${project.slug}`}
               onClick={getProjectClick(`/project/${project.slug}`)}
-              className="group inline-flex items-center gap-2 rounded-full bg-[var(--text-primary)] px-4 py-2 text-xs sm:text-[13px] font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
+              className="group inline-flex min-h-[44px] sm:min-h-0 items-center gap-2 rounded-full bg-[var(--text-primary)] px-4 py-2.5 sm:py-2 text-xs sm:text-[13px] font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
             >
               <span>{t.projectsSection.viewDetails}</span>
               <ArrowRight
@@ -193,7 +191,7 @@ export function EditorialBentoShowcase({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                className="group inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
               >
                 <span>{t.projectsSection.liveWebsite}</span>
                 <ArrowUpRight
@@ -206,7 +204,7 @@ export function EditorialBentoShowcase({
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                className="group inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
               >
                 <span>{t.projectsSection.repository}</span>
                 <ArrowUpRight
@@ -226,9 +224,7 @@ export function EditorialBentoShowcase({
         />
       </motion.div>
 
-      {/* =================================================================== */}
-      {/* LAYER 2: HYBRID BENTO SHOWCASE (8 cols + 4 cols, mobile-first leads)*/}
-      {/* =================================================================== */}
+      {/* Layer 2: Hybrid Bento showcase (8 cols + 4 cols) */}
       <motion.div
         {...bentoMotionProps}
         className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-stretch"
@@ -265,9 +261,7 @@ export function EditorialBentoShowcase({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* 8-COL CARD: WIDESCREEN INTERACTIVE STAGE (REAL SCREENSHOTS OR WIREFRAMES)  */
-/* -------------------------------------------------------------------------- */
+/* 8-col card: Widescreen interactive stage (real screenshots or wireframes) */
 
 function isPortraitGalleryItem(item: ProjectGalleryItem): boolean {
   return Boolean(
@@ -378,7 +372,7 @@ function WidescreenStageCard({
                   setIsZoomed(false);
                   setActiveIndex(idx);
                 }}
-                className={`cursor-pointer shrink-0 rounded-[3px] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 ${
+                className={`cursor-pointer shrink-0 min-h-[44px] sm:min-h-0 rounded-[3px] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 ${
                   idx === activeIndex
                     ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold shadow-2xs"
                     : "text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--border-subtle)]/40"
@@ -466,17 +460,17 @@ function WidescreenStageCard({
                     type="button"
                     onClick={handlePrev}
                     aria-label={language === "pt" ? "Tela anterior" : "Previous screen"}
-                    className="cursor-pointer absolute left-2.5 top-1/2 -translate-y-1/2 z-20 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-0 group-hover/stage:opacity-100 transition-opacity duration-200"
+                    className="cursor-pointer absolute left-2.5 top-1/2 -translate-y-1/2 z-20 inline-flex h-11 w-11 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-90 sm:opacity-0 sm:group-hover/stage:opacity-100 transition-opacity duration-200"
                   >
-                    <ChevronLeft className="h-3.5 w-3.5" />
+                    <ChevronLeft className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={handleNext}
                     aria-label={language === "pt" ? "Próxima tela" : "Next screen"}
-                    className="cursor-pointer absolute right-2.5 top-1/2 -translate-y-1/2 z-20 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-0 group-hover/stage:opacity-100 transition-opacity duration-200"
+                    className="cursor-pointer absolute right-2.5 top-1/2 -translate-y-1/2 z-20 inline-flex h-11 w-11 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-[var(--bg-primary)]/85 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] shadow-md backdrop-blur-md opacity-90 sm:opacity-0 sm:group-hover/stage:opacity-100 transition-opacity duration-200"
                   >
-                    <ChevronRight className="h-3.5 w-3.5" />
+                    <ChevronRight className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                   </button>
                 </>
               )}
@@ -559,9 +553,7 @@ function WidescreenStageCard({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* 4-COL CARD: PORTRAIT/MOBILE VIEW + INTERACTIVE ARCHITECTURE PIPELINE       */
-/* -------------------------------------------------------------------------- */
+/* 4-col card: Portrait/mobile view + interactive architecture pipeline */
 
 type CompanionMode = "portrait" | "architecture";
 
@@ -625,7 +617,7 @@ function CompanionPanelCard({
     <div
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="bento-card flex h-full min-h-[430px] lg:min-h-0 flex-col justify-between overflow-hidden p-3 sm:p-4"
+      className="bento-card flex h-full min-h-[300px] sm:min-h-[400px] lg:min-h-0 flex-col justify-between overflow-hidden p-3 sm:p-4"
     >
       {/* Top Mode Switcher: [ Mobile/Portrait | Arquitetura ] */}
       <div className="mb-3 flex items-center justify-between gap-2">
@@ -639,7 +631,7 @@ function CompanionPanelCard({
             role="tab"
             aria-selected={mode === "portrait"}
             onClick={() => setMode("portrait")}
-            className={`cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 ${
+            className={`cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-[2px] px-2.5 sm:px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 ${
               mode === "portrait"
                 ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
                 : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
@@ -657,7 +649,7 @@ function CompanionPanelCard({
             role="tab"
             aria-selected={mode === "architecture"}
             onClick={() => setMode("architecture")}
-            className={`cursor-pointer inline-flex items-center gap-1.5 rounded-[2px] px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 ${
+            className={`cursor-pointer inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 rounded-[2px] px-2.5 sm:px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-all duration-200 ${
               mode === "architecture"
                 ? "bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
                 : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
@@ -679,9 +671,9 @@ function CompanionPanelCard({
                 )
               }
               aria-label={language === "pt" ? "Tela anterior" : "Previous"}
-              className="cursor-pointer inline-flex h-6 w-6 items-center justify-center rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="cursor-pointer inline-flex h-11 w-11 sm:h-6 sm:w-6 items-center justify-center rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
-              <ChevronLeft className="h-3.5 w-3.5" />
+              <ChevronLeft className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
             </button>
             <button
               type="button"
@@ -689,9 +681,9 @@ function CompanionPanelCard({
                 setPortraitIndex((prev) => (prev + 1) % portraitCount)
               }
               aria-label={language === "pt" ? "Próxima tela" : "Next"}
-              className="cursor-pointer inline-flex h-6 w-6 items-center justify-center rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="cursor-pointer inline-flex h-11 w-11 sm:h-6 sm:w-6 items-center justify-center rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
-              <ChevronRight className="h-3.5 w-3.5" />
+              <ChevronRight className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
             </button>
           </div>
         ) : mode === "architecture" ? (
@@ -703,7 +695,7 @@ function CompanionPanelCard({
       </div>
 
       {/* Main Content Area (Synchronized Height with 8-col Widescreen Card) */}
-      <div className="relative flex flex-1 min-h-[360px] lg:min-h-0 flex-col w-full overflow-hidden rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-primary)]">
+      <div className="relative flex flex-1 min-h-[240px] sm:min-h-[340px] lg:min-h-0 flex-col w-full overflow-hidden rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-primary)]">
         <AnimatePresence mode="wait">
           {mode === "portrait" ? (
             <motion.div
@@ -818,7 +810,7 @@ function ArchitectureOnlyCompanionCard({
   language: Language;
 }) {
   return (
-    <div className="bento-card flex h-full min-h-[420px] lg:min-h-0 flex-col justify-between overflow-hidden p-3 sm:p-4">
+    <div className="bento-card flex h-full min-h-[300px] sm:min-h-[400px] lg:min-h-0 flex-col justify-between overflow-hidden p-3 sm:p-4">
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)]">
           <GitFork className="h-3 w-3 text-[var(--text-muted)]" strokeWidth={1.75} />
@@ -830,7 +822,7 @@ function ArchitectureOnlyCompanionCard({
         </span>
       </div>
 
-      <div className="relative flex flex-1 min-h-[350px] lg:min-h-0 flex-col w-full overflow-hidden rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-primary)]">
+      <div className="relative flex flex-1 min-h-[240px] sm:min-h-[340px] lg:min-h-0 flex-col w-full overflow-hidden rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-primary)]">
         <div className="flex h-full flex-1 w-full flex-col lg:absolute lg:inset-0">
           <CompanionArchitectureView project={project} language={language} />
         </div>
@@ -847,9 +839,7 @@ function ArchitectureOnlyCompanionCard({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* INTERACTIVE ARCHITECTURE TOPOLOGY PIPELINE (IDEA 3 COMPACT RAIL)           */
-/* -------------------------------------------------------------------------- */
+/* Interactive architecture topology pipeline (compact rail) */
 
 function CompanionArchitectureView({
   project,
