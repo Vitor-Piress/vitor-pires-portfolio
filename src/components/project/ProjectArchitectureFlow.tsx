@@ -217,7 +217,8 @@ export function TopologyNodeCard({
           ) : (
             node.item.provider && (
               <span
-                className={`rounded-[2px] px-1.5 py-0.5 font-mono text-[8.5px] uppercase tracking-wider border ${
+                title={node.item.provider}
+                className={`max-w-full truncate rounded-[2px] px-1.5 py-0.5 font-mono text-[8.5px] uppercase tracking-wider border ${
                   isSelected
                     ? "border-[var(--text-primary)]/30 bg-[var(--text-primary)] text-[var(--bg-primary)] font-semibold"
                     : "border-[var(--border-subtle)] bg-[var(--bg-bento)] text-[var(--text-secondary)]"
@@ -275,19 +276,27 @@ export function CompactExpandableLayerButton({
   showAllTechChips?: boolean;
   onSelect: () => void;
 }) {
+  const visibleTechs = showAllTechChips
+    ? node.item.technologies
+    : node.item.technologies.slice(0, 3);
+  const hiddenTechCount = Math.max(
+    0,
+    node.item.technologies.length - visibleTechs.length,
+  );
+
   return (
     <button
       type="button"
       onClick={onSelect}
-      className={`cursor-pointer w-full text-left rounded-[3px] border px-3 py-2 transition-all duration-200 ${
+      className={`cursor-pointer w-full overflow-hidden text-left rounded-[3px] border px-3 py-2 transition-all duration-200 ${
         isSelected
           ? "border-[var(--text-primary)]/50 bg-[var(--bg-bento)] shadow-2xs opacity-100"
           : "border-[var(--border-subtle)] bg-transparent opacity-65 hover:opacity-95 hover:border-[var(--text-muted)]"
       }`}
     >
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex min-w-0 items-center justify-between gap-2">
         <span className="flex items-center gap-2 min-w-0">
-          <span className="font-mono text-[9px] tabular-nums font-semibold text-[var(--text-primary)]">
+          <span className="shrink-0 font-mono text-[9px] tabular-nums font-semibold text-[var(--text-primary)]">
             0{index + 1}
           </span>
           <span className="truncate text-xs font-medium text-[var(--text-primary)]">
@@ -295,7 +304,10 @@ export function CompactExpandableLayerButton({
           </span>
         </span>
         {node.item.provider && (
-          <span className="shrink-0 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-1.5 py-0.5 font-mono text-[8px] uppercase text-[var(--text-secondary)]">
+          <span
+            title={node.item.provider}
+            className="max-w-[44%] shrink-0 truncate rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-1.5 py-0.5 font-mono text-[8px] uppercase text-[var(--text-secondary)]"
+          >
             {node.item.provider}
           </span>
         )}
@@ -313,14 +325,11 @@ export function CompactExpandableLayerButton({
             }}
             className="overflow-hidden"
           >
-            <p className="mt-1.5 text-[11px] leading-relaxed text-[var(--text-secondary)]">
+            <p className="mt-1.5 line-clamp-3 text-[11px] leading-relaxed text-[var(--text-secondary)]">
               {node.item.description[language]}
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
-              {(showAllTechChips
-                ? node.item.technologies
-                : node.item.technologies.slice(0, 3)
-              ).map((tech) => (
+              {visibleTechs.map((tech) => (
                 <span
                   key={tech}
                   className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-primary)]"
@@ -328,6 +337,11 @@ export function CompactExpandableLayerButton({
                   {tech}
                 </span>
               ))}
+              {hiddenTechCount > 0 && (
+                <span className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-muted)] tabular-nums">
+                  +{hiddenTechCount}
+                </span>
+              )}
             </div>
           </motion.div>
         )}
@@ -674,7 +688,7 @@ export function CompactArchitecturePipeline({
 
       {/* Scroll-safe Continuous Vertical Trace Line + Nodes */}
       <div className="flex flex-1 min-h-0 flex-col overflow-y-auto pr-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        <div className="relative my-auto py-0.5 pl-5">
+        <div className="relative my-auto w-full min-w-0 py-0.5 pl-5">
           <div
             aria-hidden="true"
             className="absolute left-[9px] top-4 bottom-4 w-px overflow-hidden bg-[var(--border-subtle)]"
@@ -690,7 +704,7 @@ export function CompactArchitecturePipeline({
             {nodes.map((node, idx) => {
               const isSelected = node.id === selectedNode?.id;
               return (
-                <div key={node.id} className="relative">
+                <div key={node.id} className="relative min-w-0">
                   {/* Node Dot on Vertical Rail */}
                   <span
                     aria-hidden="true"
@@ -721,6 +735,7 @@ export function CompactArchitecturePipeline({
                     index={idx}
                     isSelected={isSelected}
                     language={language}
+                    showAllTechChips={showSecurityNote}
                     onSelect={() => onSelect(node.id)}
                   />
                 </div>
