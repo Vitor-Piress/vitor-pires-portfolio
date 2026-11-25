@@ -476,7 +476,10 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
           </div>
 
           {/* Architectural Context Summary */}
-          <BlurReveal delay={0.2} className="mt-8 max-w-3xl">
+          <BlurReveal
+            delay={0.2}
+            className="mt-8 max-w-3xl border-l-2 border-[var(--border-subtle)] pl-4 sm:pl-5"
+          >
             <span className="font-mono-meta text-[10px] text-[var(--text-muted)]">
               {t.projectsSection.meta.details}
             </span>

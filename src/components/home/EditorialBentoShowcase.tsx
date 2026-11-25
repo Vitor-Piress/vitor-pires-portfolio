@@ -31,6 +31,7 @@ import {
   getOrderedArchitectureNodes,
   useDirectionalLayer,
 } from "../project/architectureFlow";
+import { ProjectMetaAside } from "./ProjectMetaAside";
 
 interface EditorialBentoShowcaseProps {
   project: FeaturedProject;
@@ -42,8 +43,8 @@ interface EditorialBentoShowcaseProps {
 }
 
 /**
- * Editorial Featured Project Showcase (`7+5` Narrative + `8+4` Hybrid Bento):
- * 1. Top Editorial Split (7 cols narrative/CTA + 5 cols 2x2 metadata & details).
+ * Editorial Featured Project Showcase (`7+5` Presentation + Spec Aside, `8+4` Hybrid Bento):
+ * 1. Top Editorial Split (7 cols narrative/CTA + 5 cols compact `ProjectMetaAside` without long-form details).
  * 2. Bottom Full-Width Hybrid Bento (8 + 4 cols; `mobileFirst` projects or odd alternating items place the 4-col companion first on lg+, and `mobileFirst` also leads with it on small screens):
  *    - 8 cols: Widescreen interactive browser stage with Pan & Zoom (or desktop wireframes).
  *    - 4 cols: Dual-mode companion [ Mobile / Screen | Interactive Architecture Flow ].
@@ -121,62 +122,64 @@ export function EditorialBentoShowcase({
     : {};
 
   return (
-    <article className="flex flex-col gap-9 sm:gap-11">
+    <article className="flex flex-col gap-7 sm:gap-9">
       {/* =================================================================== */}
-      {/* LAYER 1: EDITORIAL HEADER SPLIT (7 cols Left + 5 cols Right)        */}
+      {/* LAYER 1: EDITORIAL SPLIT (7 cols Presentation + 5 cols Spec Aside)  */}
       {/* =================================================================== */}
       <motion.div
         {...headerMotionProps}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-stretch"
       >
         {/* Left (7 cols): Identity, Serif Headline, Summary, Primary Actions */}
-        <div className="lg:col-span-7 flex flex-col">
-          <div className="mb-5 flex flex-wrap items-center gap-3">
-            <ProjectLogo
-              slug={project.slug}
-              name={project.name}
-              logo={project.logo}
-            />
-            {hasInteractiveDemo && (
-              <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
-                <span
-                  className={`h-1.5 w-1.5 rounded-full ${
-                    project.interactiveDemo?.embedUrl ||
-                    project.interactiveDemo?.videoSrc
-                      ? "bg-emerald-500 animate-pulse"
-                      : "bg-[var(--text-muted)]"
-                  }`}
-                />
-                <span>
-                  {project.interactiveDemo?.kind === "video"
-                    ? t.interactiveDemo.videoBadge
-                    : t.interactiveDemo.badge}
+        <div className="lg:col-span-7 flex flex-col justify-between">
+          <div className="flex flex-col">
+            <div className="mb-4 flex flex-wrap items-center gap-3">
+              <ProjectLogo
+                slug={project.slug}
+                name={project.name}
+                logo={project.logo}
+              />
+              {hasInteractiveDemo && (
+                <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      project.interactiveDemo?.embedUrl ||
+                      project.interactiveDemo?.videoSrc
+                        ? "bg-emerald-500 animate-pulse"
+                        : "bg-[var(--text-muted)]"
+                    }`}
+                  />
+                  <span>
+                    {project.interactiveDemo?.kind === "video"
+                      ? t.interactiveDemo.videoBadge
+                      : t.interactiveDemo.badge}
+                  </span>
                 </span>
-              </span>
-            )}
-            {project.mobileFirst && (
-              <span className="hidden sm:inline-flex items-center rounded-[2px] border border-[var(--border-subtle)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
-                {language === "pt"
-                  ? "Experiência Mobile-First"
-                  : "Mobile-First Experience"}
-              </span>
-            )}
+              )}
+              {project.mobileFirst && (
+                <span className="hidden sm:inline-flex items-center rounded-[2px] border border-[var(--border-subtle)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
+                  {language === "pt"
+                    ? "Experiência Mobile-First"
+                    : "Mobile-First Experience"}
+                </span>
+              )}
+            </div>
+
+            <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[40px] leading-[1.1] tracking-[-0.015em] text-[var(--text-primary)]">
+              {project.headline[language]}
+            </h2>
+
+            <p className="mt-3.5 max-w-2xl text-sm sm:text-[15px] leading-relaxed text-[var(--text-secondary)]">
+              {project.summary[language]}
+            </p>
           </div>
 
-          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[42px] leading-[1.1] tracking-[-0.015em] text-[var(--text-primary)]">
-            {project.headline[language]}
-          </h2>
-
-          <p className="mt-4 max-w-2xl text-sm sm:text-[15px] leading-relaxed text-[var(--text-secondary)]">
-            {project.summary[language]}
-          </p>
-
           {/* Action Links */}
-          <div className="mt-6 flex flex-wrap items-center gap-6">
+          <div className="mt-6 flex flex-wrap items-center gap-5">
             <Link
               to={`/project/${project.slug}`}
               onClick={getProjectClick(`/project/${project.slug}`)}
-              className="group inline-flex items-center gap-2 text-sm font-medium text-[var(--text-primary)] underline underline-offset-4 decoration-[var(--border-subtle)] hover:decoration-[var(--text-primary)] transition-colors"
+              className="group inline-flex items-center gap-2 rounded-full bg-[var(--text-primary)] px-4 py-2 text-xs sm:text-[13px] font-medium text-[var(--bg-primary)] hover:opacity-85 transition-opacity"
             >
               <span>{t.projectsSection.viewDetails}</span>
               <ArrowRight
@@ -211,71 +214,16 @@ export function EditorialBentoShowcase({
                   strokeWidth={1.8}
                 />
               </a>
-            ) : (
-              <Link
-                to={`/project/${project.slug}`}
-                onClick={getProjectClick(`/project/${project.slug}`)}
-                className="group inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-              >
-                <span>{t.projectsSection.liveWebsite}</span>
-                <ArrowUpRight
-                  className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  strokeWidth={1.8}
-                />
-              </Link>
-            )}
+            ) : null}
           </div>
         </div>
 
-        {/* Right (5 cols): Borderless 2x2 Metadata + Details */}
-        <div className="lg:col-span-5 flex flex-col gap-6 pt-1">
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-5">
-            <div>
-              <dt className="font-mono-meta text-[10px] text-[var(--text-muted)]">
-                {t.projectsSection.meta.categoryClient}
-              </dt>
-              <dd className="mt-1.5 text-xs sm:text-[13px] leading-snug text-[var(--text-primary)]">
-                {project.category[language]}
-              </dd>
-            </div>
-
-            <div>
-              <dt className="font-mono-meta text-[10px] text-[var(--text-muted)]">
-                {t.projectsSection.meta.role}
-              </dt>
-              <dd className="mt-1.5 text-xs sm:text-[13px] leading-snug text-[var(--text-primary)]">
-                {project.role[language]}
-              </dd>
-            </div>
-
-            <div>
-              <dt className="font-mono-meta text-[10px] text-[var(--text-muted)]">
-                {t.projectsSection.meta.year}
-              </dt>
-              <dd className="mt-1.5 font-mono text-xs sm:text-[13px] text-[var(--text-primary)]">
-                {project.year}
-              </dd>
-            </div>
-
-            <div>
-              <dt className="font-mono-meta text-[10px] text-[var(--text-muted)]">
-                {t.projectsSection.meta.stack}
-              </dt>
-              <dd className="mt-1.5 text-xs sm:text-[13px] leading-snug text-[var(--text-primary)]">
-                {project.stack.join(" · ")}
-              </dd>
-            </div>
-          </dl>
-
-          <div>
-            <h3 className="font-mono-meta text-[10px] text-[var(--text-muted)]">
-              {t.projectsSection.meta.details}
-            </h3>
-            <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[var(--text-secondary)]">
-              {project.details[language]}
-            </p>
-          </div>
-        </div>
+        {/* Right (5 cols): Dedicated Specification Aside */}
+        <ProjectMetaAside
+          project={project}
+          index={index}
+          className="lg:col-span-5"
+        />
       </motion.div>
 
       {/* =================================================================== */}

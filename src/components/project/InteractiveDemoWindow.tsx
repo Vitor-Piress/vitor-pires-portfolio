@@ -415,7 +415,7 @@ export function InteractiveDemoWindow({
                       <div
                         key={step.code}
                         className={`rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-bento)]/55 ${
-                          variant === "home" ? "px-3 py-2.5" : "p-3.5"
+                          variant === "home" ? "px-3 py-2" : "p-3.5"
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -426,13 +426,11 @@ export function InteractiveDemoWindow({
                             {step.title[language]}
                           </span>
                         </div>
-                        <p
-                          className={`mt-1 text-[11px] leading-relaxed text-[var(--text-secondary)] ${
-                            variant === "home" ? "line-clamp-2" : ""
-                          }`}
-                        >
-                          {step.detail[language]}
-                        </p>
+                        {variant !== "home" && (
+                          <p className="mt-1 text-[11px] leading-relaxed text-[var(--text-secondary)]">
+                            {step.detail[language]}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -524,21 +522,31 @@ export function InteractiveDemoWindow({
           </div>
 
           {steps.length > 0 && (
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 ${
+                variant === "home" ? "mt-5 gap-2" : "mt-6 gap-2.5"
+              }`}
+            >
               {steps.map((step) => (
                 <div
                   key={step.code}
-                  className="rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 p-3.5"
+                  className={`rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-bento)]/60 ${
+                    variant === "home" ? "px-3 py-2.5" : "p-3.5"
+                  }`}
                 >
-                  <div className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
-                    {step.code}
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
+                      {step.code}
+                    </span>
+                    <span className="text-xs sm:text-[13px] font-medium text-[var(--text-primary)]">
+                      {step.title[language]}
+                    </span>
                   </div>
-                  <div className="mt-1.5 text-xs sm:text-[13px] font-medium text-[var(--text-primary)]">
-                    {step.title[language]}
-                  </div>
-                  <p className="mt-1 text-[11px] leading-relaxed text-[var(--text-secondary)]">
-                    {step.detail[language]}
-                  </p>
+                  {variant !== "home" && (
+                    <p className="mt-1.5 text-[11px] leading-relaxed text-[var(--text-secondary)]">
+                      {step.detail[language]}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
