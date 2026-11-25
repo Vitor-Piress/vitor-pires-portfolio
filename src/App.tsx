@@ -1,4 +1,5 @@
 import { lazy, Suspense, useLayoutEffect } from 'react'
+import { MotionConfig } from 'framer-motion'
 import {
   createBrowserRouter,
   Navigate,
@@ -103,7 +104,9 @@ export function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <RouterProvider router={router} />
+        <MotionConfig reducedMotion="user">
+          <RouterProvider router={router} />
+        </MotionConfig>
       </LanguageProvider>
     </ThemeProvider>
   )

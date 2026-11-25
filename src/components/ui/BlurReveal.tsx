@@ -1,4 +1,4 @@
-import { motion, type HTMLMotionProps } from 'framer-motion'
+import { motion, useReducedMotion, type HTMLMotionProps } from 'framer-motion'
 import type { ReactNode } from 'react'
 
 interface BlurRevealProps extends HTMLMotionProps<'div'> {
@@ -21,16 +21,30 @@ export function BlurReveal({
   className,
   ...rest
 }: BlurRevealProps) {
+  const prefersReducedMotion = useReducedMotion()
+
   return (
     <motion.div
-      initial={{ opacity: 0, filter: 'blur(10px)', y: yOffset }}
-      whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{
-        duration,
-        delay,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+      initial={
+        prefersReducedMotion
+          ? { opacity: 0 }
+          : { opacity: 0, filter: 'blur(10px)', y: yOffset }
+      }
+      whileInView={
+        prefersReducedMotion
+          ? { opacity: 1 }
+          : { opacity: 1, filter: 'blur(0px)', y: 0 }
+      }
+      viewport={{ once: true, amount: 0.08, margin: '0px 0px -64px 0px' }}
+      transition={
+        prefersReducedMotion
+          ? { duration: 0.15 }
+          : {
+              duration,
+              delay,
+              ease: [0.22, 1, 0.36, 1],
+            }
+      }
       className={className}
       {...rest}
     >

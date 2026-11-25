@@ -65,7 +65,7 @@ export function ProfileQuickLinks({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 hover:text-[var(--text-primary)] transition-colors"
+          className="inline-flex min-h-[44px] sm:min-h-0 items-center gap-1.5 hover:text-[var(--text-primary)] transition-colors"
         >
           <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={1.75} />
           <span>{label}</span>

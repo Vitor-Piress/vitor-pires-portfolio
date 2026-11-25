@@ -13,14 +13,14 @@
   --color-bento-dark-hover: #111111;
   --color-text-primary-dark: #FAFAFA;
   --color-text-secondary-dark: #A1A1AA;
-  --color-text-muted-dark: #52525B;
+  --color-text-muted-dark: #85858F;
 
   --color-bg-light: #FAFAFA;
   --color-bento-light: #F0F0F2;
   --color-bento-light-card: #FFFFFF;
   --color-text-primary-light: #09090B;
   --color-text-secondary-light: #52525B;
-  --color-text-muted-light: #71717A;
+  --color-text-muted-light: #5E5E68;
 }
 
 @layer base {
@@ -30,7 +30,7 @@
     --bg-bento-elevated: #FFFFFF;
     --text-primary: #09090B;
     --text-secondary: #52525B;
-    --text-muted: #71717A;
+    --text-muted: #5E5E68;
     --border-subtle: rgba(9, 9, 11, 0.08);
     color-scheme: light;
   }
@@ -41,7 +41,7 @@
     --bg-bento-elevated: #111111;
     --text-primary: #FAFAFA;
     --text-secondary: #A1A1AA;
-    --text-muted: #52525B;
+    --text-muted: #85858F;
     --border-subtle: rgba(250, 250, 250, 0.08);
     color-scheme: dark;
   }
@@ -69,6 +69,59 @@
     display: flex;
     flex-direction: column;
   }
+
+  a[href],
+  button,
+  summary,
+  select,
+  label[for],
+  label:has(> input[type="checkbox"], > input[type="radio"]),
+  [role="button"],
+  [role="link"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="option"],
+  [role="switch"],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="file"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  input[type="range"],
+  input[type="color"] {
+    cursor: pointer;
+  }
+
+  :disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
+  }
+}
+
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 60;
+  border-radius: 3px;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 0.625rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus-visible {
+  top: 1rem;
 }
 
 /* Custom utility classes for consistent Bento Grid & Editorial typography */

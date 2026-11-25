@@ -1,5 +1,5 @@
 import { useId, type ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Activity, Check, Layers, ShieldCheck } from "lucide-react";
 import type { FeaturedProject } from "../../data/projects";
 import type { Language } from "../../i18n/translations";
@@ -25,6 +25,7 @@ export function ConnectorBridgeSVG({
   protocolLabel?: string;
   pulseDelay?: number;
 }) {
+  const prefersReducedMotion = Boolean(useReducedMotion());
   const railOpacity = active ? 0.85 : traversed ? 0.45 : 0.2;
 
   if (orientation === "vertical") {
@@ -53,21 +54,23 @@ export function ConnectorBridgeSVG({
             strokeLinejoin="round"
             opacity={active ? 0.9 : 0.4}
           />
-          <motion.circle
-            cx="12"
-            r={active ? 2.6 : 1.8}
-            fill="currentColor"
-            animate={{
-              cy: [3, 23],
-              opacity: active ? [0.2, 1, 1, 0.2] : [0, 0.55, 0.55, 0],
-            }}
-            transition={{
-              duration: active ? 1.15 : 2.1,
-              repeat: Infinity,
-              delay: pulseDelay,
-              ease: "easeInOut",
-            }}
-          />
+          {!prefersReducedMotion && (
+            <motion.circle
+              cx="12"
+              r={active ? 2.6 : 1.8}
+              fill="currentColor"
+              animate={{
+                cy: [3, 23],
+                opacity: active ? [0.2, 1, 1, 0.2] : [0, 0.55, 0.55, 0],
+              }}
+              transition={{
+                duration: active ? 1.15 : 2.1,
+                repeat: Infinity,
+                delay: pulseDelay,
+                ease: "easeInOut",
+              }}
+            />
+          )}
         </svg>
         {protocolLabel && (
           <span className="font-mono text-[8px] uppercase tracking-wider text-[var(--text-muted)] -mt-1 mb-0.5">
@@ -115,21 +118,23 @@ export function ConnectorBridgeSVG({
           strokeLinejoin="round"
           opacity={active ? 0.95 : 0.45}
         />
-        <motion.circle
-          cy="10"
-          r={active ? 2.7 : 1.9}
-          fill="currentColor"
-          animate={{
-            cx: [4, 49],
-            opacity: active ? [0.2, 1, 1, 0.2] : [0, 0.55, 0.55, 0],
-          }}
-          transition={{
-            duration: active ? 1.1 : 2.2,
-            repeat: Infinity,
-            delay: pulseDelay,
-            ease: "easeInOut",
-          }}
-        />
+        {!prefersReducedMotion && (
+          <motion.circle
+            cy="10"
+            r={active ? 2.7 : 1.9}
+            fill="currentColor"
+            animate={{
+              cx: [4, 49],
+              opacity: active ? [0.2, 1, 1, 0.2] : [0, 0.55, 0.55, 0],
+            }}
+            transition={{
+              duration: active ? 1.1 : 2.2,
+              repeat: Infinity,
+              delay: pulseDelay,
+              ease: "easeInOut",
+            }}
+          />
+        )}
       </svg>
     </div>
   );
@@ -664,6 +669,7 @@ export function CompactArchitecturePipeline({
   headerAction?: ReactNode;
 }) {
   const railId = useId();
+  const prefersReducedMotion = Boolean(useReducedMotion());
   const selectedIndex = Math.max(
     0,
     nodes.findIndex((n) => n.id === selectedId),
@@ -693,11 +699,13 @@ export function CompactArchitecturePipeline({
             aria-hidden="true"
             className="absolute left-[9px] top-4 bottom-4 w-px overflow-hidden bg-[var(--border-subtle)]"
           >
-            <motion.div
-              className="absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-[var(--text-primary)] to-transparent opacity-60"
-              animate={{ top: ["0%", "78%", "0%"] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-            />
+            {!prefersReducedMotion && (
+              <motion.div
+                className="absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-[var(--text-primary)] to-transparent opacity-60"
+                animate={{ top: ["0%", "78%", "0%"] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+            )}
           </div>
 
           <div className="flex flex-col gap-2">

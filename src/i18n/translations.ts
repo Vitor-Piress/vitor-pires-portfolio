@@ -42,6 +42,7 @@ export interface TranslationSchema {
     contact: string;
     backToHome: string;
     accessSystem: string;
+    skipToContent: string;
   };
   wipBanner: {
     short: string;
@@ -57,6 +58,8 @@ export interface TranslationSchema {
     ctaCv: string;
     availability: string;
     availabilityCompact: string;
+    scrollHint: string;
+    scrollHintAria: string;
   };
   projectsSection: {
     featuredLabel: string;
@@ -124,6 +127,13 @@ export interface TranslationSchema {
     openFullscreen: string;
     pendingNotice: string;
     stepsHeading: string;
+    desktopOnlyBadge: string;
+    desktopOnlyTitle: string;
+    desktopOnlyDescription: string;
+  };
+  mobileDeck: {
+    previousItem: string;
+    nextItem: string;
   };
   editorial: {
     experienceLabel: string;
@@ -229,10 +239,11 @@ export const translations: Record<Language, TranslationSchema> = {
       contact: "Contato",
       backToHome: "Voltar",
       accessSystem: "Acessar Sistema",
+      skipToContent: "Pular para o conteúdo principal",
     },
     wipBanner: {
       short: "Portfólio ainda em desenvolvimento",
-      full: "Portfólio ainda em desenvolvimento — visualização prévia em construção",
+      full: "Portfólio ainda em desenvolvimento, visualização prévia em construção",
     },
     hero: {
       name: "VITOR PIRES",
@@ -246,6 +257,8 @@ export const translations: Record<Language, TranslationSchema> = {
       ctaCv: "Currículo",
       availability: "Disponível para novos projetos & licenciamento SaaS",
       availabilityCompact: "Disponível para projetos & SaaS",
+      scrollHint: "Rolar",
+      scrollHintAria: "Rolar para a seção de projetos",
     },
     projectsSection: {
       featuredLabel: "/ PROJETOS PRINCIPAIS & PRODUTOS SAAS",
@@ -318,8 +331,16 @@ export const translations: Record<Language, TranslationSchema> = {
       mobileNotice: "Tour interativo HTML otimizado para desktop",
       openFullscreen: "Abrir demo em tela cheia",
       pendingNotice:
-        "Demonstração interativa em preparação — explore abaixo as etapas do fluxo principal.",
+        "Demonstração interativa em preparação. Explore abaixo as etapas do fluxo principal.",
       stepsHeading: "FLUXO INTERATIVO GUIADO",
+      desktopOnlyBadge: "Somente Desktop",
+      desktopOnlyTitle: "Demo interativa disponível apenas no Desktop/PC",
+      desktopOnlyDescription:
+        "O tour interativo em HTML deste sistema foi projetado para telas maiores. Acesse pelo computador para explorar a interface completa.",
+    },
+    mobileDeck: {
+      previousItem: "Item anterior",
+      nextItem: "Próximo item",
     },
     editorial: {
       experienceLabel: "/ EXPERIÊNCIA PROFISSIONAL",
@@ -328,7 +349,7 @@ export const translations: Record<Language, TranslationSchema> = {
       goalsLabel: "/ OBJETIVOS & DIRECIONAMENTO",
       experienceItems: [
         {
-          period: "2025 — ATUAL",
+          period: "2025 - ATUAL",
           role: "Desenvolvedor de Software Independente & SaaS Founder",
           organization: "Produtos Autorais & Desenvolvimento Full-Stack",
           description:
@@ -336,8 +357,8 @@ export const translations: Record<Language, TranslationSchema> = {
           isCurrent: true,
         },
         {
-          period: "2024 — ATUAL (2+ ANOS)",
-          role: "Técnico Administrativo em Gestão Condominial",
+          period: "2024 - ATUAL (2+ ANOS)",
+          role: "Analista Administrativo em Gestão Condominial",
           organization: "Administração & Operações Condominiais",
           description:
             "Vivência prática intensiva nas rotinas financeiras, jurídicas e operacionais de condomínios. Essa experiência real de domínio fundamentou a criação de softwares precisos para resolver gargalos de cobrança, emissão de notificações de infração e atendimento a moradores.",
@@ -346,9 +367,9 @@ export const translations: Record<Language, TranslationSchema> = {
       ],
       educationItems: [
         {
-          period: "EM ANDAMENTO — 5º SEMESTRE",
+          period: "EM ANDAMENTO · 5º SEMESTRE",
           role: "Bacharelado em Sistemas de Informação",
-          organization: "UNISUL — Universidade do Sul de Santa Catarina",
+          organization: "UNISUL · Universidade do Sul de Santa Catarina",
           description:
             "Foco em engenharia de software, arquitetura de sistemas distribuídos, estrutura de dados, bancos de dados relacionais e gestão de projetos tecnológicos.",
           isCurrent: true,
@@ -384,7 +405,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "Engenharia orientada a produto: software que combina rigor técnico, velocidade operacional e estética intencional.",
       goalsParagraphs: [
         "Meu direcionamento profissional une duas frentes complementares: a expansão contínua dos meus produtos SaaS no mercado B2B e a atuação em projetos desafiadores de engenharia Full-Stack onde performance, confiabilidade e experiência de uso são inegociáveis.",
-        "Por ter vivenciado na prática a dor operacional antes de escrever a primeira linha de código dos meus sistemas, projeto cada tela e cada endpoint com foco no resultado real — eliminando retrabalho manual, automatizando fluxos financeiros e entregando interfaces que transmitem autoridade imediata.",
+        "Por ter vivenciado na prática a dor operacional antes de escrever a primeira linha de código dos meus sistemas, projeto cada tela e cada endpoint com foco no resultado real: eliminando retrabalho manual, automatizando fluxos financeiros e entregando interfaces que transmitem autoridade imediata.",
       ],
     },
     credibility: {
@@ -439,7 +460,7 @@ export const translations: Record<Language, TranslationSchema> = {
       scheduleAction: "Agendar uma conversa / WhatsApp",
       copyEmailAction: "Enviar uma mensagem (Copiar E-mail)",
       emailCopied: "E-mail copiado para a área de transferência",
-      roleSignature: "VITOR PIRES — FULL-STACK DEVELOPER",
+      roleSignature: "VITOR PIRES · FULL-STACK DEVELOPER",
       rights: "© 2026 Vitor Pires. All rights reserved.",
       scrollToTop: "Voltar ao topo",
     },
@@ -459,10 +480,11 @@ export const translations: Record<Language, TranslationSchema> = {
       contact: "Contact",
       backToHome: "Back",
       accessSystem: "Live System",
+      skipToContent: "Skip to main content",
     },
     wipBanner: {
       short: "Portfolio still in development",
-      full: "Portfolio still in development — preview build in progress",
+      full: "Portfolio still in development, preview build in progress",
     },
     hero: {
       name: "VITOR PIRES",
@@ -476,6 +498,8 @@ export const translations: Record<Language, TranslationSchema> = {
       ctaCv: "Resume",
       availability: "Available for new projects & SaaS licensing",
       availabilityCompact: "Available for projects & SaaS",
+      scrollHint: "Scroll",
+      scrollHintAria: "Scroll to projects section",
     },
     projectsSection: {
       featuredLabel: "/ FEATURED PROJECTS & SAAS PRODUCTS",
@@ -547,8 +571,16 @@ export const translations: Record<Language, TranslationSchema> = {
       mobileNotice: "Interactive HTML tour optimized for desktop",
       openFullscreen: "Open fullscreen demo",
       pendingNotice:
-        "Interactive walkthrough in progress — explore the core system flow steps below.",
+        "Interactive walkthrough in progress. Explore the core system flow steps below.",
       stepsHeading: "GUIDED INTERACTIVE FLOW",
+      desktopOnlyBadge: "Desktop only",
+      desktopOnlyTitle: "Interactive demo available on Desktop only",
+      desktopOnlyDescription:
+        "This system's interactive HTML walkthrough is built for larger screens. Visit on a desktop computer to explore the full interface.",
+    },
+    mobileDeck: {
+      previousItem: "Previous item",
+      nextItem: "Next item",
     },
     editorial: {
       experienceLabel: "/ PROFESSIONAL EXPERIENCE",
@@ -557,7 +589,7 @@ export const translations: Record<Language, TranslationSchema> = {
       goalsLabel: "/ GOALS & DIRECTION",
       experienceItems: [
         {
-          period: "2024 — PRESENT",
+          period: "2024 - PRESENT",
           role: "Independent Software Developer & SaaS Founder",
           organization: "Proprietary SaaS Products & Full-Stack Engineering",
           description:
@@ -565,7 +597,7 @@ export const translations: Record<Language, TranslationSchema> = {
           isCurrent: true,
         },
         {
-          period: "2022 — 2024 (2+ YEARS)",
+          period: "2022 - 2024 (2+ YEARS)",
           role: "Condominium Management Administrative Technician",
           organization: "Property Administration & Operations",
           description:
@@ -575,9 +607,9 @@ export const translations: Record<Language, TranslationSchema> = {
       ],
       educationItems: [
         {
-          period: "IN PROGRESS — 5TH SEMESTER",
+          period: "IN PROGRESS · 5TH SEMESTER",
           role: "B.S. in Information Systems",
-          organization: "UNISUL — University of Southern Santa Catarina",
+          organization: "UNISUL · University of Southern Santa Catarina",
           description:
             "Focused on software engineering, distributed systems architecture, data structures, relational databases, and technology project management.",
           isCurrent: true,
@@ -585,7 +617,7 @@ export const translations: Record<Language, TranslationSchema> = {
         {
           period: "INTENSIVE TRACK",
           role: "Full-Stack Engineering Program (Carreira Tech)",
-          organization: "SCTEC — Santa Catarina Technology",
+          organization: "SCTEC · Santa Catarina Technology",
           description:
             "Practical specialization in modern Full-Stack web development, RESTful APIs, database design, and production-grade software practices.",
           isCurrent: false,
@@ -621,7 +653,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "Product-driven engineering: software that combines technical rigor, operational speed, and intentional aesthetics.",
       goalsParagraphs: [
         "My professional focus bridges two complementary tracks: scaling my proprietary B2B SaaS products in the market and contributing to high-impact Full-Stack engineering challenges where performance, reliability, and user experience are non-negotiable.",
-        "Having experienced operational friction firsthand before writing the first line of code for my platforms, I architect every interface and endpoint around measurable outcomes—eliminating manual rework, automating financial pipelines, and crafting interfaces that convey immediate authority.",
+        "Having experienced operational friction firsthand before writing the first line of code for my platforms, I architect every interface and endpoint around measurable outcomes: eliminating manual rework, automating financial pipelines, and crafting interfaces that convey immediate authority.",
       ],
     },
     credibility: {
@@ -675,7 +707,7 @@ export const translations: Record<Language, TranslationSchema> = {
       scheduleAction: "Schedule a call / WhatsApp",
       copyEmailAction: "Send a message (Copy Email)",
       emailCopied: "Email copied to clipboard",
-      roleSignature: "VITOR PIRES — FULL-STACK DEVELOPER",
+      roleSignature: "VITOR PIRES · FULL-STACK DEVELOPER",
       rights: "© 2026 Vitor Pires. All rights reserved.",
       scrollToTop: "Back to top",
     },
