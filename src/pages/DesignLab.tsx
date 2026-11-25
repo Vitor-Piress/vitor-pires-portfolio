@@ -15,11 +15,14 @@ import {
   LayoutList,
   LayoutPanelTop,
   Maximize,
+  MonitorPlay,
   Moon,
   PanelTop,
+  Play,
   Rows3,
   SlidersHorizontal,
   Sparkles,
+  SplitSquareHorizontal,
   Sun,
   Type,
   Workflow,
@@ -54,8 +57,18 @@ import {
   ArchitectureFlowPrototypeStage,
   type ArchitectureVariantId,
 } from "../components/lab/ArchitectureFlowPrototypes";
+import {
+  DemoShowcasePrototypeStage,
+  type DemoShowcaseVariantId,
+} from "../components/lab/DemoShowcasePrototypes";
 
-type LabScope = "architecture" | "carousel" | "stack" | "hero" | "projects";
+type LabScope =
+  | "demo"
+  | "architecture"
+  | "carousel"
+  | "stack"
+  | "hero"
+  | "projects";
 
 type HeroVariantId = "typographic-balance" | "grid-7-5" | "compact-split";
 
@@ -67,7 +80,55 @@ type VariantId =
   | "fullwidth"
   | "bento";
 
-type ProjectFilter = "all" | "condonot" | "moradas-do-gabriel" | "dailycheckout";
+type ProjectFilter =
+  | "all"
+  | "condonot"
+  | "moradas-do-gabriel"
+  | "dailycheckout"
+  | "fixflow";
+
+interface DemoVariantOption {
+  id: DemoShowcaseVariantId;
+  label: string;
+  subtitle: string;
+  icon: typeof LayoutGrid;
+  tag: string;
+}
+
+const DEMO_VARIANTS: DemoVariantOption[] = [
+  {
+    id: "home-supademo",
+    label: "Home (/) · Supademo Sem Screenshots",
+    subtitle:
+      "Remove completamente as screenshots da Home e coloca o embed interativo do Supademo direto na moldura (com opção de comparar 8+4 vs 12 cols ou card leve → rota)",
+    icon: LayoutPanelTop,
+    tag: "Novo Teste",
+  },
+  {
+    id: "supademo-framed",
+    label: "Case · Supademo na Moldura (0px)",
+    subtitle:
+      "Embed HTML interativo do Condonot encaixado dentro da moldura editorial de janela do /project/:slug com padding 0px por padrão",
+    icon: MonitorPlay,
+    tag: "Favorito Case",
+  },
+  {
+    id: "supademo-clean",
+    label: "Case · Supademo Direto (Sem Moldura)",
+    subtitle:
+      "Embed direto sem barra superior de janela duplicada, mantendo o aspect-ratio 1.79 do snippet",
+    icon: Play,
+    tag: "Alternativa",
+  },
+  {
+    id: "supademo-vs-gallery",
+    label: "Comparativo · Supademo vs Galeria Atual",
+    subtitle:
+      "Alterna instantaneamente entre o Tour Interativo em HTML (Supademo) e a galeria de capturas estáticas atual no mesmo bloco",
+    icon: SplitSquareHorizontal,
+    tag: "Antes / Depois",
+  },
+];
 
 interface ArchitectureVariantOption {
   id: ArchitectureVariantId;
@@ -298,16 +359,19 @@ const VARIANTS: VariantOption[] = [
 ];
 
 const PROJECT_FILTERS: { id: ProjectFilter; label: string }[] = [
-  { id: "all", label: "Todos (3)" },
+  { id: "all", label: "Todos (4)" },
   { id: "condonot", label: "Condonot" },
   { id: "moradas-do-gabriel", label: "Moradas" },
   { id: "dailycheckout", label: "Dailycheckout" },
+  { id: "fixflow", label: "FixFlow" },
 ];
 
 export function DesignLab() {
   useRestoreReturnScroll();
   const getLabProjectClick = useProjectLinkClickHandler(() => ({}));
-  const [labScope, setLabScope] = useState<LabScope>("architecture");
+  const [labScope, setLabScope] = useState<LabScope>("demo");
+  const [demoVariant, setDemoVariant] =
+    useState<DemoShowcaseVariantId>("home-supademo");
   const [architectureVariant, setArchitectureVariant] =
     useState<ArchitectureVariantId>("final-hybrid");
   const [carouselVariant, setCarouselVariant] =
@@ -332,6 +396,11 @@ export function DesignLab() {
   const singleProject = visibleProjects[0] ?? featuredProjects[0];
 
   const scopeVariantMap = {
+    demo: {
+      options: DEMO_VARIANTS,
+      selectedId: demoVariant,
+      onSelect: (id: string) => setDemoVariant(id as DemoShowcaseVariantId),
+    },
     architecture: {
       options: ARCHITECTURE_VARIANTS,
       selectedId: architectureVariant,
@@ -407,6 +476,7 @@ export function DesignLab() {
             >
               {(
                 [
+                  { id: "demo", label: "Demo Interativa" },
                   { id: "architecture", label: "Arquitetura" },
                   { id: "carousel", label: "Carrossel Projetos" },
                   { id: "stack", label: "Tech Stack" },
@@ -578,18 +648,27 @@ export function DesignLab() {
             </button>
           ) : (
             <span className="text-[10px] font-mono text-[var(--text-muted)]">
-              {labScope === "architecture"
-                ? "Condonot · Moradas · Dailycheckout (Neon, Render & Cloudflare)"
-                : labScope === "stack"
-                  ? "3 camadas × 4 tecnologias (PT/EN & Dark/Light)"
-                  : "Testando no layout real da página inicial"}
+              {labScope === "demo"
+                ? "Condonot · Supademo HTML Embed (teste desktop, tablet e mobile)"
+                : labScope === "architecture"
+                  ? "Condonot · Moradas · Dailycheckout (Neon, Render & Cloudflare)"
+                  : labScope === "stack"
+                    ? "3 camadas × 4 tecnologias (PT/EN & Dark/Light)"
+                    : "Testando no layout real da página inicial"}
             </span>
           )}
         </div>
       </div>
 
       {/* Main Preview Stage */}
-      {labScope === "architecture" ? (
+      {labScope === "demo" ? (
+        <main className="pb-20">
+          <DemoShowcasePrototypeStage
+            variant={demoVariant}
+            onSelectVariant={setDemoVariant}
+          />
+        </main>
+      ) : labScope === "architecture" ? (
         <main className="pb-20">
           <ArchitectureFlowPrototypeStage variant={architectureVariant} />
         </main>
@@ -755,7 +834,7 @@ export function DesignLab() {
                     {activeVariant === "bento" && (
                       <ProjectBentoShowcase
                         projectSlug={proj.slug}
-                        blocks={proj.bento}
+                        blocks={proj.bento ?? []}
                       />
                     )}
                   </div>
@@ -837,7 +916,7 @@ function VariantHeroTabs({
     return (
       <ProjectBentoShowcase
         projectSlug={project.slug}
-        blocks={project.bento}
+        blocks={project.bento ?? []}
       />
     );
   }
@@ -1115,7 +1194,7 @@ function VariantPeekSlider({
     return (
       <ProjectBentoShowcase
         projectSlug={project.slug}
-        blocks={project.bento}
+        blocks={project.bento ?? []}
       />
     );
   }
@@ -1246,7 +1325,7 @@ function VariantEditorialFullWidth({
       {screens.length === 0 ? (
         <ProjectBentoShowcase
           projectSlug={project.slug}
-          blocks={project.bento}
+          blocks={project.bento ?? []}
         />
       ) : (
         <div className="bento-card overflow-hidden p-4 sm:p-6 shadow-xl">
