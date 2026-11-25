@@ -105,6 +105,26 @@ export interface TranslationSchema {
       customAction: string;
     };
   };
+  interactiveDemo: {
+    badge: string;
+    videoBadge: string;
+    windowLabel: string;
+    videoWindowLabel: string;
+    liveTag: string;
+    pausedTag: string;
+    comingSoonTag: string;
+    openFullWalkthrough: string;
+    expandInCase: string;
+    restart: string;
+    pause: string;
+    play: string;
+    interactHint: string;
+    videoInteractHint: string;
+    mobileNotice: string;
+    openFullscreen: string;
+    pendingNotice: string;
+    stepsHeading: string;
+  };
   editorial: {
     experienceLabel: string;
     educationLabel: string;
@@ -279,6 +299,27 @@ export const translations: Record<Language, TranslationSchema> = {
         customAction: "Enviar proposta por E-mail",
       },
     },
+    interactiveDemo: {
+      badge: "Demo Interativa",
+      videoBadge: "Demo em Vídeo",
+      windowLabel: "Demonstração Interativa HTML",
+      videoWindowLabel: "Demonstração em Vídeo · Desktop",
+      liveTag: "Ao vivo",
+      pausedTag: "Pausado",
+      comingSoonTag: "Em gravação",
+      openFullWalkthrough: "Abrir em tela dedicada",
+      expandInCase: "Expandir no Case",
+      restart: "Reiniciar",
+      pause: "Pausar",
+      play: "Reproduzir",
+      interactHint: "Interaja ou role dentro da interface",
+      videoInteractHint: "Em loop automático · Clique para pausar ou reproduzir",
+      mobileNotice: "Tour interativo HTML otimizado para desktop",
+      openFullscreen: "Abrir demo em tela cheia",
+      pendingNotice:
+        "Demonstração interativa em preparação — explore abaixo as etapas do fluxo principal.",
+      stepsHeading: "FLUXO INTERATIVO GUIADO",
+    },
     editorial: {
       experienceLabel: "/ EXPERIÊNCIA PROFISSIONAL",
       educationLabel: "/ EDUCAÇÃO",
@@ -379,6 +420,16 @@ export const translations: Record<Language, TranslationSchema> = {
           project: "Dailycheckout",
           metric: "Rastreadibilidade TOTAL do caixa da Barbearia",
         },
+        {
+          id: "fixflow-validation",
+          projectSlug: "fixflow",
+          quote:
+            "Substituiu orçamentos soltos no WhatsApp e controles paralelos por um único PWA mobile: o técnico monta a proposta com preços congelados, envia o PDF com QR Code Pix e vê a parcela cair automaticamente no Livro-Caixa.",
+          author: "FixFlow",
+          role: "PWA Operacional & Financeiro · Serviços Técnicos",
+          project: "FixFlow",
+          metric: "100% em centavos inteiros · Pix EMV + A4 offline + RLS",
+        },
       ],
     },
     footer: {
@@ -476,6 +527,27 @@ export const translations: Record<Language, TranslationSchema> = {
         licenseAction: "Book a walkthrough / WhatsApp",
         customAction: "Send proposal via Email",
       },
+    },
+    interactiveDemo: {
+      badge: "Interactive Demo",
+      videoBadge: "Video Demo",
+      windowLabel: "Interactive HTML Demo",
+      videoWindowLabel: "Desktop Video Walkthrough",
+      liveTag: "Live",
+      pausedTag: "Paused",
+      comingSoonTag: "Coming soon",
+      openFullWalkthrough: "Open full walkthrough",
+      expandInCase: "Expand in Case Study",
+      restart: "Restart",
+      pause: "Pause",
+      play: "Play",
+      interactHint: "Interact or scroll inside the interface",
+      videoInteractHint: "Auto-looping · Click to pause or play",
+      mobileNotice: "Interactive HTML tour optimized for desktop",
+      openFullscreen: "Open fullscreen demo",
+      pendingNotice:
+        "Interactive walkthrough in progress — explore the core system flow steps below.",
+      stepsHeading: "GUIDED INTERACTIVE FLOW",
     },
     editorial: {
       experienceLabel: "/ PROFESSIONAL EXPERIENCE",
@@ -584,6 +656,16 @@ export const translations: Record<Language, TranslationSchema> = {
           role: "Operational Process Control",
           project: "Dailycheckout",
           metric: "Zero record loss across shift handovers",
+        },
+        {
+          id: "fixflow-validation",
+          projectSlug: "fixflow",
+          quote:
+            "Replaced ad-hoc WhatsApp quotes and scattered spreadsheets with a single mobile PWA: technicians build frozen-price proposals, share A4 PDFs with Pix QR codes, and reconcile settled installments automatically in the cashbook.",
+          author: "FixFlow",
+          role: "Operations & Finance PWA · Field Service Trades",
+          project: "FixFlow",
+          metric: "100% integer-cent ledger · EMV Pix + client-side A4 + RLS",
         },
       ],
     },

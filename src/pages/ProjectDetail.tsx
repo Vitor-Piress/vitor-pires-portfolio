@@ -31,6 +31,7 @@ import { useTheme } from '../context/ThemeContext'
 import { BlurReveal } from '../components/ui/BlurReveal'
 import { ProjectLogo, ScreenVisual } from '../components/ui/ProjectVisuals'
 import { ResponsiveProjectArchitecture } from '../components/project/ProjectArchitectureFlow'
+import { InteractiveDemoWindow } from '../components/project/InteractiveDemoWindow'
 import { FooterBottomBar } from '../components/layout/Footer'
 import { WipBanner } from '../components/layout/WipBanner'
 import { scrollToElement, scrollToTopSmooth } from '../utils/scroll'
@@ -108,17 +109,18 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
 
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [isGalleryPaused, setIsGalleryPaused] = useState(false)
+  const interactiveDemo = project.interactiveDemo ?? null
 
-  // Auto-cycle through project gallery screens every 4.5s (pausing on hover)
+  // Auto-cycle through project gallery screens every 4.5s (pausing on hover or when interactive demo is active)
   useEffect(() => {
-    if (galleryItems.length <= 1 || isGalleryPaused) return
+    if (interactiveDemo || galleryItems.length <= 1 || isGalleryPaused) return
 
     const timer = window.setInterval(() => {
       setActiveGalleryIndex((prev) => (prev + 1) % galleryItems.length)
     }, 4500)
 
     return () => window.clearInterval(timer)
-  }, [galleryItems.length, isGalleryPaused])
+  }, [interactiveDemo, galleryItems.length, isGalleryPaused])
 
   const currentGalleryItem = galleryItems[activeGalleryIndex] ?? galleryItems[0]
   const isPortrait = Boolean(
@@ -502,6 +504,15 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
 
           {/* Full-Width Interactive Window Showcase */}
           <BlurReveal delay={0.08}>
+            {interactiveDemo ? (
+              <InteractiveDemoWindow
+                project={project}
+                demo={interactiveDemo}
+                language={language}
+                variant="detail"
+                onCommercialCtaClick={() => scrollToElement('commercial-cta', 124)}
+              />
+            ) : (
             <div className="rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] shadow-sm overflow-hidden">
               {/* Window Top Chrome */}
               <div className="flex items-center justify-between gap-3 border-b border-[var(--border-subtle)] px-4 py-3 bg-[var(--bg-primary)]/80 backdrop-blur-xs">
@@ -669,7 +680,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                     )}
                   </div>
                 </div>
-              ) : project.bento[0]?.screens[0] ? (
+              ) : project.bento?.[0]?.screens[0] ? (
                 <div className="min-h-[380px] sm:min-h-[500px] w-full flex items-center justify-center p-4 sm:p-8 bg-[var(--bg-primary)]">
                   <ScreenVisual
                     projectSlug={project.slug}
@@ -679,6 +690,7 @@ function ProjectDetailContent({ project }: { project: FeaturedProject }) {
                 </div>
               ) : null}
             </div>
+            )}
           </BlurReveal>
 
           {/* Feature Explanation Bento Blocks (e.g., Pix Engine, PDF Generation, Resend) */}

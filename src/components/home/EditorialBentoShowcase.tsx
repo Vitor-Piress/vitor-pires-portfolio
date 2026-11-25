@@ -26,6 +26,7 @@ import {
 } from "../../utils/returnNavigation";
 import { ProjectLogo, ScreenVisual } from "../ui/ProjectVisuals";
 import { CompactArchitecturePipeline } from "../project/ProjectArchitectureFlow";
+import { InteractiveDemoWindow } from "../project/InteractiveDemoWindow";
 import {
   getOrderedArchitectureNodes,
   useDirectionalLayer,
@@ -59,19 +60,34 @@ export function EditorialBentoShowcase({
     sectionId: pathname === "/" ? "projects" : undefined,
     activeProjectSlug: project.slug,
   }));
+  const hasInteractiveDemo = Boolean(project.interactiveDemo);
+  const keepPortraitCompanion = Boolean(
+    project.interactiveDemo?.keepPortraitCompanion,
+  );
+  const useArchitectureOnlyCompanion =
+    hasInteractiveDemo && !keepPortraitCompanion;
   const isMobileFirst = Boolean(project.mobileFirst);
-  const isCompanionFirstDesktop =
-    isMobileFirst || (alternatingRhythm && index % 2 === 1);
-  const widescreenOrderClass = isMobileFirst
-    ? "order-2"
-    : isCompanionFirstDesktop
+  const isCompanionFirstDesktop = useArchitectureOnlyCompanion
+    ? alternatingRhythm && index % 2 === 1
+    : isMobileFirst || (alternatingRhythm && index % 2 === 1);
+  const widescreenOrderClass = useArchitectureOnlyCompanion
+    ? isCompanionFirstDesktop
       ? "order-1 lg:order-2"
-      : "order-1";
-  const companionOrderClass = isMobileFirst
-    ? "order-1"
-    : isCompanionFirstDesktop
+      : "order-1"
+    : isMobileFirst
+      ? "order-2"
+      : isCompanionFirstDesktop
+        ? "order-1 lg:order-2"
+        : "order-1";
+  const companionOrderClass = useArchitectureOnlyCompanion
+    ? isCompanionFirstDesktop
       ? "order-2 lg:order-1"
-      : "order-2";
+      : "order-2"
+    : isMobileFirst
+      ? "order-1"
+      : isCompanionFirstDesktop
+        ? "order-2 lg:order-1"
+        : "order-2";
 
   const headerMotionProps = staggerDirection
     ? {
@@ -115,12 +131,29 @@ export function EditorialBentoShowcase({
       >
         {/* Left (7 cols): Identity, Serif Headline, Summary, Primary Actions */}
         <div className="lg:col-span-7 flex flex-col">
-          <div className="mb-5 flex items-center gap-3">
+          <div className="mb-5 flex flex-wrap items-center gap-3">
             <ProjectLogo
               slug={project.slug}
               name={project.name}
               logo={project.logo}
             />
+            {hasInteractiveDemo && (
+              <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-bento)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    project.interactiveDemo?.embedUrl ||
+                    project.interactiveDemo?.videoSrc
+                      ? "bg-emerald-500 animate-pulse"
+                      : "bg-[var(--text-muted)]"
+                  }`}
+                />
+                <span>
+                  {project.interactiveDemo?.kind === "video"
+                    ? t.interactiveDemo.videoBadge
+                    : t.interactiveDemo.badge}
+                </span>
+              </span>
+            )}
             {project.mobileFirst && (
               <span className="hidden sm:inline-flex items-center rounded-[2px] border border-[var(--border-subtle)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {language === "pt"
@@ -254,12 +287,30 @@ export function EditorialBentoShowcase({
       >
         {/* 8-col Widescreen Stage */}
         <div className={`lg:col-span-8 flex flex-col ${widescreenOrderClass}`}>
-          <WidescreenStageCard project={project} language={language} />
+          {project.interactiveDemo ? (
+            <InteractiveDemoWindow
+              project={project}
+              demo={project.interactiveDemo}
+              language={language}
+              variant="home"
+              flowsUrl={`/project/${project.slug}#flows`}
+              onFlowsClick={getProjectClick(`/project/${project.slug}#flows`)}
+            />
+          ) : (
+            <WidescreenStageCard project={project} language={language} />
+          )}
         </div>
 
         {/* 4-col Companion Vertical / Architecture Stage */}
         <div className={`lg:col-span-4 flex flex-col ${companionOrderClass}`}>
-          <CompanionPanelCard project={project} language={language} />
+          {useArchitectureOnlyCompanion ? (
+            <ArchitectureOnlyCompanionCard
+              project={project}
+              language={language}
+            />
+          ) : (
+            <CompanionPanelCard project={project} language={language} />
+          )}
         </div>
       </motion.div>
     </article>
@@ -289,7 +340,7 @@ function WidescreenStageCard({
     (item) => !isPortraitGalleryItem(item),
   );
 
-  const wireframeScreens: ProjectScreen[] = project.bento
+  const wireframeScreens: ProjectScreen[] = (project.bento ?? [])
     .flatMap((block) => block.screens)
     .filter((screen) => screen.device === "desktop")
     .slice(0, 4);
@@ -574,7 +625,7 @@ function CompanionPanelCard({
   language: Language;
 }) {
   const portraitScreens = (project.gallery ?? []).filter(isPortraitGalleryItem);
-  const mobileWireframes = project.bento
+  const mobileWireframes = (project.bento ?? [])
     .flatMap((block) => block.screens)
     .filter((screen) => screen.device === "mobile");
 
@@ -806,6 +857,43 @@ function CompanionPanelCard({
             ))}
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function ArchitectureOnlyCompanionCard({
+  project,
+  language,
+}: {
+  project: FeaturedProject;
+  language: Language;
+}) {
+  return (
+    <div className="bento-card flex h-full min-h-[420px] lg:min-h-0 flex-col justify-between overflow-hidden p-3 sm:p-4">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)]">
+          <GitFork className="h-3 w-3 text-[var(--text-muted)]" strokeWidth={1.75} />
+          <span>{language === "pt" ? "Arquitetura" : "Architecture"}</span>
+        </span>
+        <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--text-muted)] tabular-nums">
+          {project.architecture.length}{" "}
+          {language === "pt" ? "camadas" : "layers"}
+        </span>
+      </div>
+
+      <div className="relative flex flex-1 min-h-[350px] lg:min-h-0 flex-col w-full overflow-hidden rounded-[4px] border border-[var(--border-subtle)] bg-[var(--bg-primary)]">
+        <div className="flex h-full flex-1 w-full flex-col lg:absolute lg:inset-0">
+          <CompanionArchitectureView project={project} language={language} />
+        </div>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between px-1">
+        <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)] truncate">
+          {language === "pt"
+            ? "Fluxo de Arquitetura · Clique p/ inspecionar"
+            : "Architecture Flow · Click node to inspect"}
+        </span>
       </div>
     </div>
   );

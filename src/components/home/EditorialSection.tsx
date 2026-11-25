@@ -75,7 +75,11 @@ export function EditorialSection() {
           </h2>
         </BlurReveal>
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+        <div
+          className={`mt-10 grid grid-cols-1 gap-4 sm:gap-5 ${
+            t.credibility.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'
+          }`}
+        >
           {t.credibility.items.map((item, idx) => (
             <BlurReveal key={item.id} delay={idx * 0.08}>
               <div className="bento-card flex h-full flex-col justify-between p-6 sm:p-7">

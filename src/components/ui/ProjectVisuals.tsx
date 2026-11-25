@@ -33,7 +33,7 @@ export function ProjectMark({
 
   if (logo) {
     // Circular self-contained badges (e.g. Dailycheckout SVG) render natively without a white square halo
-    const isNativeCircle = slug === "dailycheckout" || logo.endsWith(".svg");
+    const isNativeCircle = slug === "dailycheckout";
 
     const frameClasses = isCircleRing
       ? `rounded-full ${isNativeCircle ? "" : "bg-white"} shadow-xs ${
@@ -43,12 +43,14 @@ export function ProjectMark({
         }`
       : isNativeCircle
         ? `rounded-full ring-1 ${inverted ? "ring-[var(--bg-primary)]/25" : "ring-[var(--border-subtle)]"}`
-        : "rounded-[4px] bg-white p-0.5 shadow-sm ring-1 ring-black/5";
+        : `rounded-[4px] bg-white ${slug === "fixflow" ? "p-1" : "p-0.5"} shadow-sm ring-1 ring-black/5`;
 
     const imageFitClasses = isNativeCircle
       ? "object-cover"
       : isCircleRing
-        ? "object-contain scale-[1.08]"
+        ? slug === "fixflow"
+          ? "object-contain scale-[0.68]"
+          : "object-contain scale-[1.08]"
         : "object-contain";
 
     return (
@@ -120,9 +122,23 @@ export function ProjectMark({
           <path d="M6.8 10.2l2.2 2.2 4.4-4.6" />
         </svg>
       )}
+      {slug === "fixflow" && (
+        <svg
+          viewBox="0 0 20 20"
+          className="h-3.5 w-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.9"
+          strokeLinecap="square"
+        >
+          <path d="M6 16V4.5h8.5" />
+          <path d="M6 10.2h6.2" />
+        </svg>
+      )}
       {slug !== "condonot" &&
         slug !== "moradas-do-gabriel" &&
-        slug !== "dailycheckout" && (
+        slug !== "dailycheckout" &&
+        slug !== "fixflow" && (
           <span className="font-mono text-[10px] font-semibold">
             {name.slice(0, 2).toUpperCase()}
           </span>

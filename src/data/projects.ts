@@ -86,6 +86,34 @@ export interface ProjectGalleryItem {
   orientation?: "landscape" | "portrait";
 }
 
+export interface ProjectInteractiveDemoStep {
+  code: string;
+  title: Localized;
+  detail: Localized;
+}
+
+export interface ProjectInteractiveDemo {
+  provider: "supademo" | "video";
+  kind?: "interactive" | "video";
+  /** Keep the 4-col mobile screenshot + architecture companion card on Home (`/`). */
+  keepPortraitCompanion?: boolean;
+  /** Direct Supademo embed iframe URL, or null while demo recording is pending. */
+  embedUrl: string | null;
+  /** Local MP4/WebM source for native looping video walkthroughs. */
+  videoSrc?: string;
+  /** Optional poster image shown while video metadata loads. */
+  posterSrc?: string;
+  /** Playback speed multiplier for native video demos (e.g. 1.4). */
+  videoPlaybackRate?: number;
+  orientation?: "landscape" | "portrait";
+  title: Localized;
+  aspectRatio?: number;
+  appPath?: string;
+  caption: Localized;
+  embedPaddingPx?: number;
+  steps?: ProjectInteractiveDemoStep[];
+}
+
 export interface FeaturedProject {
   tier: "featured";
   slug: string;
@@ -95,6 +123,7 @@ export interface FeaturedProject {
   demoUrl: string | null;
   appDomain?: string;
   mobileFirst?: boolean;
+  interactiveDemo?: ProjectInteractiveDemo | null;
   gallery?: ProjectGalleryItem[];
   /** Editorial headline (serif) shown on the Home showcase. */
   headline: Localized;
@@ -106,7 +135,7 @@ export interface FeaturedProject {
   details: Localized;
   liveUrl: string | null;
   repoUrl: string | null;
-  bento: ProjectBentoBlock[];
+  bento?: ProjectBentoBlock[];
   overview: {
     problem: Localized;
     solution: Localized;
@@ -177,6 +206,68 @@ export const featuredProjects: FeaturedProject[] = [
     },
     liveUrl: "https://condonot.com.br/demo",
     repoUrl: null,
+    interactiveDemo: {
+      provider: "supademo",
+      embedUrl:
+        "https://app.supademo.com/embed/cmwuwhw840s29qmmgjni8rjk2?embed_v=2&utm_source=embed",
+      title: {
+        pt: "Registre e envie notificações de advertência no condomínio com a Condonot",
+        en: "Register and dispatch formal warning notices with Condonot",
+      },
+      aspectRatio: 1.79,
+      appPath: "/notificacoes/nova",
+      embedPaddingPx: 0,
+      caption: {
+        pt: "Tour Interativo HTML · Emissão de Notificação de Advertência",
+        en: "Interactive HTML Tour · Formal Warning Notice Flow",
+      },
+      steps: [
+        {
+          code: "01",
+          title: {
+            pt: "Painel & Ações",
+            en: "Action Center",
+          },
+          detail: {
+            pt: "Inicia nova notificação a partir do centro de operações.",
+            en: "Starts a new infraction notice from the main dashboard.",
+          },
+        },
+        {
+          code: "02",
+          title: {
+            pt: "Unidade & Regimento",
+            en: "Unit & Bylaws",
+          },
+          detail: {
+            pt: "Vincula morador, modelo e artigo do regimento interno.",
+            en: "Links resident, template and condominium bylaw article.",
+          },
+        },
+        {
+          code: "03",
+          title: {
+            pt: "Refinar com IA + A4",
+            en: "AI Refine + A4",
+          },
+          detail: {
+            pt: "Ajusta redação formal respeitando a ocupação da folha A4.",
+            en: "Refines formal text while respecting the A4 page budget.",
+          },
+        },
+        {
+          code: "04",
+          title: {
+            pt: "PDF & Disparo",
+            en: "PDF & Delivery",
+          },
+          detail: {
+            pt: "Gera carta oficial em PDF e envia e-mail rastreado.",
+            en: "Renders official PDF letter and dispatches tracked email.",
+          },
+        },
+      ],
+    },
     gallery: [
       {
         id: "dashboard",
@@ -658,6 +749,71 @@ export const featuredProjects: FeaturedProject[] = [
     },
     liveUrl: "https://moradasdogabriel.com.br",
     repoUrl: null,
+    interactiveDemo: {
+      provider: "video",
+      kind: "video",
+      embedUrl: null,
+      videoSrc: "/projects/moradas-do-gabriel/moradas-desktop-tour.mp4",
+      posterSrc: "/projects/moradas-do-gabriel/moradas-lading-hero.webp",
+      videoPlaybackRate: 1.4,
+      aspectRatio: 2880 / 1606,
+      appPath: "/",
+      embedPaddingPx: 0,
+      title: {
+        pt: "Tour pela landing page da Pousada Moradas do Gabriel",
+        en: "Pousada Moradas do Gabriel website tour",
+      },
+      caption: {
+        pt: "Demonstração em Vídeo · Landing Page & Reserva Direta",
+        en: "Video Walkthrough · Landing Page & Direct Booking",
+      },
+      steps: [
+        {
+          code: "01",
+          title: {
+            pt: "Apresentação & Proposta",
+            en: "Hero & Brand Showcase",
+          },
+          detail: {
+            pt: "Navegação pela landing page responsiva com foco em hospitalidade e reserva direta.",
+            en: "Walkthrough of the responsive landing page focused on hospitality and direct bookings.",
+          },
+        },
+        {
+          code: "02",
+          title: {
+            pt: "Estrutura & Acomodações",
+            en: "Property & Facilities",
+          },
+          detail: {
+            pt: "Apresentação das suítes, áreas comuns e diferenciais da pousada.",
+            en: "Highlights suites, common areas, and guesthouse amenities.",
+          },
+        },
+        {
+          code: "03",
+          title: {
+            pt: "Guia Digital do Hóspede",
+            en: "Digital Guest Guide",
+          },
+          detail: {
+            pt: "Integração com o portal mobile via QR Code para Wi-Fi, regras e mapa local.",
+            en: "Connects seamlessly with the QR-code mobile portal for Wi-Fi, rules, and local map.",
+          },
+        },
+        {
+          code: "04",
+          title: {
+            pt: "Reserva & Atendimento",
+            en: "Booking & Direct Support",
+          },
+          detail: {
+            pt: "Atalhos rápidos de contato e disponibilidade sem intermediários.",
+            en: "Direct contact and availability shortcuts with zero middlemen.",
+          },
+        },
+      ],
+    },
     gallery: [
       {
         id: "landing-hero",
@@ -984,6 +1140,69 @@ export const featuredProjects: FeaturedProject[] = [
     demoUrl: null,
     appDomain: "dailycheckout.app",
     mobileFirst: true,
+    interactiveDemo: {
+      provider: "supademo",
+      orientation: "portrait",
+      embedUrl:
+        "https://app.supademo.com/embed/cmwv8g0aq00dgqmn5ec12uiad?embed_v=2&utm_source=embed",
+      aspectRatio: 0.46,
+      appPath: "/operacao",
+      embedPaddingPx: 0,
+      title: {
+        pt: "Registrar atendimentos, pacotes e fechamento de caixa no Dailycheckout",
+        en: "Log services, packages, and daily cash closing in Dailycheckout",
+      },
+      caption: {
+        pt: "Tour Interativo Mobile · PDV na Bancada & Fechamento de Caixa",
+        en: "Interactive Mobile Tour · Chairside POS & Daily Closing",
+      },
+      steps: [
+        {
+          code: "01",
+          title: {
+            pt: "Catálogo & Atendimento",
+            en: "Service Catalog & POS",
+          },
+          detail: {
+            pt: "Seleciona o serviço na bancada em 2 toques com registro instantâneo.",
+            en: "Picks a chairside service in 2 taps for instant logging.",
+          },
+        },
+        {
+          code: "02",
+          title: {
+            pt: "Pagamento & Gorjeta",
+            en: "Payment & Tip Capture",
+          },
+          detail: {
+            pt: "Define Dinheiro, Pix, Crédito ou Débito com gorjeta separada.",
+            en: "Captures Cash, Pix, Credit, or Debit with pass-through tips.",
+          },
+        },
+        {
+          code: "03",
+          title: {
+            pt: "Pacotes & Rateio 50%",
+            en: "Packages & 50% Split",
+          },
+          detail: {
+            pt: "Aplica pacotes de serviços e calcula automaticamente a comissão do barbeiro.",
+            en: "Applies service packages and automatically splits barber 50% commissions.",
+          },
+        },
+        {
+          code: "04",
+          title: {
+            pt: "Fechamento & Caixa",
+            en: "Daily Closing & P&L",
+          },
+          detail: {
+            pt: "Consolida o caixa diário por operador, despesas e lucro líquido real.",
+            en: "Reconciles daily cash per operator, expenses, and true net profit.",
+          },
+        },
+      ],
+    },
     gallery: [
       {
         id: "desktop-management",
@@ -1488,6 +1707,467 @@ export const featuredProjects: FeaturedProject[] = [
         description: {
           pt: "Cálculo automático de comissões de 50%, repasse de gorjetas e lucro líquido mensal em tempo real.",
           en: "Real-time calculation of 50% operator commissions, tip payouts and monthly net profit.",
+        },
+      },
+    ],
+  },
+  {
+    tier: "featured",
+    slug: "fixflow",
+    name: "FixFlow",
+    logo: "/projects/fixflow/logo-black.svg",
+    previewImage: null,
+    demoUrl: null,
+    appDomain: "fixflow.app",
+    mobileFirst: true,
+    liveUrl: null,
+    repoUrl: null,
+    year: "2026",
+    headline: {
+      pt: "FixFlow é um PWA mobile-first para prestadores emitirem orçamentos com Pix, contratos e livro-caixa.",
+      en: "FixFlow is a mobile-first PWA for field technicians to issue Pix quotes, contracts, and cashbook closings.",
+    },
+    summary: {
+      pt: "Aplicação mobile-first para serviços em campo: orçamentos com snapshot de preços, PDF A4 com QR Code Pix, contratos privados e livro-caixa com alertas Web Push.",
+      en: "Mobile-first field operations app: frozen-price quotes, A4 PDFs with Pix QR codes, private contracts, and a monthly cashbook with scheduled Web Push alerts.",
+    },
+    category: {
+      pt: "PWA Mobile-First / Gestão Operacional & Financeira",
+      en: "Mobile-First PWA / Field Operations & Finance",
+    },
+    role: {
+      pt: "Autor & Engenheiro Full-Stack",
+      en: "Author & Full-Stack Engineer",
+    },
+    stack: [
+      "React",
+      "TypeScript",
+      "Vite PWA",
+      "Tailwind CSS",
+      "Supabase",
+      "PostgreSQL",
+    ],
+    details: {
+      pt: "PWA single-user sobre React 19, TypeScript e Supabase (PostgreSQL 17 + RLS em todas as 14 tabelas e bucket privado de PDFs). Toda a contabilidade opera em centavos inteiros, delegando recálculo de parcelas, conciliação do Livro-Caixa, recorrências idempotentes e Web Push agendado a RPCs e Edge Function.",
+      en: "Single-user PWA built on React 19, TypeScript, and Supabase (PostgreSQL 17 + RLS across all 14 tables and private PDF storage). All accounting runs strictly in integer cents, delegating installment recalculation, cashbook reconciliation, idempotent recurrences, and scheduled Web Push to PostgreSQL RPCs and an Edge Function.",
+    },
+    bento: [],
+    interactiveDemo: {
+      provider: "supademo",
+      embedUrl:
+        "https://app.supademo.com/embed/cmwv130uf01xyqmm1574j15ah?embed_v=2&utm_source=embed",
+      title: {
+        pt: "Do orçamento ao caixa: prévia A4 com Pix, baixa de parcela e Livro-Caixa",
+        en: "From quote to cashbook: A4 Pix preview, installment settlement, and ledger sync",
+      },
+      aspectRatio: 1.79,
+      appPath: "/quotes",
+      embedPaddingPx: 0,
+      caption: {
+        pt: "Tour Interativo HTML · Orçamento A4 com Pix & Livro-Caixa",
+        en: "Interactive HTML Tour · A4 Pix Quote & Cashbook Sync",
+      },
+      steps: [
+        {
+          code: "01",
+          title: {
+            pt: "Orçamento com preços congelados",
+            en: "Quote with frozen price snapshots",
+          },
+          detail: {
+            pt: "Abre o detalhe do orçamento com itens copiados do catálogo em snapshot imutável, taxa de adversidades e progresso de recebimento.",
+            en: "Opens the quote detail view with immutable catalog item snapshots, adversity fee adjustments, and payment progress.",
+          },
+        },
+        {
+          code: "02",
+          title: {
+            pt: "Prévia A4 com Pix EMV e exportação",
+            en: "A4 preview with EMV Pix and export",
+          },
+          detail: {
+            pt: "Gera a folha documental pronta para PDF/PNG com QR Code Pix calculado exatamente para a próxima parcela pendente e atalho para WhatsApp.",
+            en: "Renders the client-ready A4 sheet for PDF/PNG export with a static BACEN EMV Pix QR code targeting the next unpaid installment.",
+          },
+        },
+        {
+          code: "03",
+          title: {
+            pt: "Baixa da parcela e bloqueio automático",
+            en: "Installment settlement and auto-lock",
+          },
+          detail: {
+            pt: "Um toque em Receber liquida a parcela via RPC no PostgreSQL, marca o orçamento como pago (somente leitura) e registra a receita no caixa.",
+            en: "One tap settles the installment through a PostgreSQL RPC, transitions the quote to read-only paid status, and posts the cashbook entry.",
+          },
+        },
+        {
+          code: "04",
+          title: {
+            pt: "Livro-Caixa, contratos e alertas",
+            en: "Cashbook, contracts, and alerts",
+          },
+          detail: {
+            pt: "Navega para o saldo mensal conciliado com recorrências idempotentes, carteira de contratos com PDF privado e central de alertas sincronizada.",
+            en: "Switches to the reconciled monthly ledger with idempotent recurrences, active contracts with private PDFs, and the synced alerts center.",
+          },
+        },
+      ],
+    },
+    overview: {
+      problem: {
+        pt: "Prestadores de serviços autônomos multidisciplinares (climatização, elétrica, alvenaria e manutenção) costumam montar orçamentos manualmente no WhatsApp e planilhas, perdendo o histórico de preços quando peças sofrem reajuste. Sem vínculo entre proposta aprovada, parcelas, contratos mensais e despesas fixas, serviços concluídos ficam sem baixa e o caixa mensal exige conciliação manual.",
+        en: "Independent multidisciplinary field technicians (HVAC, electrical, masonry, general maintenance) typically draft quotes via ad-hoc WhatsApp messages and spreadsheets, losing historical price integrity whenever material costs change. Without a link between approved quotes, split installments, monthly retainers, and fixed bills, completed jobs go untracked and cash flow requires manual reconciliation.",
+      },
+      solution: {
+        pt: "O FixFlow consolida toda a rotina operacional em um PWA mobile-first de alto contraste operável com uma mão em campo (375px–430px). Serviços e materiais entram no orçamento como snapshots imutáveis em centavos inteiros, geram prévia A4 com QR Code Pix estático (EMV/CRC16) e exportação local em PDF/PNG, enquanto triggers e RPCs no PostgreSQL sincronizam automaticamente parcelas, contratos mensais, despesas fixas e notificações Web Push.",
+        en: "FixFlow unifies daily field operations into a high-contrast, one-handed mobile-first PWA (375px–430px). Catalog services and materials are copied into immutable integer-cent quote snapshots that generate single-page A4 PDF/PNG exports with static BACEN EMV/CRC16 Pix QR codes, while PostgreSQL triggers and RPCs automatically reconcile installments, monthly contracts, recurring expenses, and scheduled Web Push alerts.",
+      },
+    },
+    features: [
+      {
+        id: "snapshot-quotes",
+        title: {
+          pt: "Orçamentos com Snapshot Histórico e Controle de Exibição",
+          en: "Historical-Snapshot Quotes & Price Visibility Control",
+        },
+        description: {
+          pt: "Congela descrição, unidade e preço unitário em quote_items para que reajustes no catálogo não alterem propostas existentes, com opção explícita de atualizar o material no catálogo, taxa de adversidades, toggle show_item_prices e trava somente leitura após quitação.",
+          en: "Freezes item descriptions, units, and unit prices inside quote_items so catalog updates never mutate existing proposals, with opt-in catalog price sync on material edits, adversity fees, show_item_prices visibility toggle, and automatic read-only lock once paid.",
+        },
+      },
+      {
+        id: "payments-pix-export",
+        title: {
+          pt: "Parcelamento Estruturado, Pix EMV e Exportação A4",
+          en: "Structured Payment Plans, EMV Pix & A4 Export",
+        },
+        description: {
+          pt: "Configura planos à vista, entrada e saldo, parcelado (até 24x) ou personalizado via RPC atômica save_quote_payment_plan, gera BR Code Pix estático (EMV/CRC16-CCITT) direcionado à próxima parcela pendente e exporta PDF (jsPDF) ou PNG (html-to-image) com compartilhamento nativo e wa.me.",
+          en: "Configures cash, split deposit, installment (up to 24x), or custom schedules via the atomic save_quote_payment_plan RPC, builds a validated static BACEN EMV/CRC16-CCITT Pix payload targeting the next unpaid installment, and exports A4 PDF (jsPDF) or PNG (html-to-image) via navigator.share or wa.me.",
+        },
+      },
+      {
+        id: "cashbook-recurrences",
+        title: {
+          pt: "Livro-Caixa Mensal e Recorrências Idempotentes",
+          en: "Monthly Cashbook & Idempotent Recurrences",
+        },
+        description: {
+          pt: "Controla saldo realizado, previsto, entradas, saídas e atrasos por competência (YYYY-MM) em centavos inteiros, com baixa em um toque e geração idempotente de contratos ativos e despesas fixas pela RPC generate_monthly_recurring_transactions protegida por índices únicos parciais.",
+          en: "Tracks realized and projected balances, inflows, outflows, and overdue items per billing month (YYYY-MM) in integer cents, supporting one-tap settlement and idempotent monthly generation of active contracts and fixed expenses via generate_monthly_recurring_transactions backed by partial unique indexes.",
+        },
+      },
+      {
+        id: "contracts-private-pdf",
+        title: {
+          pt: "Contratos Mensais com Storage Privado de PDF",
+          en: "Monthly Contracts with Private PDF Storage",
+        },
+        description: {
+          pt: "Gerencia carteira de mensalistas com indicador de receita recorrente mensal, desativação sem perda histórica (is_active) e anexo de PDFs de até 10 MB no bucket privado contract-pdfs, acessados por URLs assinadas com expiração de 60 segundos.",
+          en: "Manages recurring retainers with a monthly recurring revenue summary, non-destructive archiving (is_active), and 10 MB PDF attachments stored in the private contract-pdfs bucket accessed via 60-second signed URLs.",
+        },
+      },
+      {
+        id: "unified-catalog",
+        title: {
+          pt: "Catálogo Integrado e Diretório Deduplicado de Clientes",
+          en: "Unified Catalog & Deduplicated Client Directory",
+        },
+        description: {
+          pt: "Centraliza serviços por categoria/unidade, materiais com fornecedor e data da última cotação (price_updated_at), fornecedores com atalho direto para WhatsApp e clientes deduplicados por telefone normalizado (normalize_br_phone_digits) no PostgreSQL.",
+          en: "Organizes services by category and unit, materials with supplier references and price_updated_at tracking, suppliers with one-tap WhatsApp links, and clients deduplicated via PostgreSQL generated Brazilian phone normalization (normalize_br_phone_digits).",
+        },
+      },
+      {
+        id: "alerts-web-push",
+        title: {
+          pt: "Central de Alertas e Web Push Agendado",
+          en: "Alerts Center & Scheduled Web Push",
+        },
+        description: {
+          pt: "Sincroniza vencimentos, atrasos, contratos, serviços concluídos sem baixa e propostas paradas na RPC sync_notifications, com adiamento (snooze), resolução automática e envio agendado às 08h e 18h BRT via pg_cron, pg_net e criptografia Web Push RFC 8291/8292.",
+          en: "Synchronizes upcoming/overdue bills, contracts, unpaid completed jobs, and stale quotes via the sync_notifications RPC with snooze and auto-resolution, paired with 08:00 and 18:00 BRT digests sent through pg_cron, pg_net, and RFC 8291/8292 Web Push encryption.",
+        },
+      },
+    ],
+    architecture: [
+      {
+        id: "frontend",
+        nodeRole: "frontend",
+        provider: "Cloudflare PWA",
+        protocol: "HTTPS · Service Worker",
+        securityNote: {
+          pt: "Acesso ao Supabase isolado em serviços tipados, validação Zod e zero HTML inline",
+          en: "Supabase access isolated in typed services, Zod validation, and zero inline HTML",
+        },
+        layer: {
+          pt: "Front-end PWA",
+          en: "Mobile-First PWA",
+        },
+        technologies: ["React 19", "TypeScript", "Vite PWA", "TanStack Query"],
+        description: {
+          pt: "Interface mobile-first instalável com 4 abas fixas, bottom sheets, cache offline e renderização A4 no navegador.",
+          en: "Installable mobile-first UI with 4 bottom tabs, touch sheets, offline font precache, and in-browser A4 rendering.",
+        },
+      },
+      {
+        id: "auth-data",
+        nodeRole: "data",
+        provider: "Supabase",
+        protocol: "TLS · RPC / RLS",
+        securityNote: {
+          pt: "RLS nas 14 tabelas e bucket privado com URLs assinadas de 60s e segredos no Vault",
+          en: "RLS across 14 tables, private PDF bucket with 60s signed URLs, and Vault secrets",
+        },
+        layer: {
+          pt: "Dados, Auth & Storage",
+          en: "Data, Auth & Storage",
+        },
+        technologies: ["Supabase", "PostgreSQL 17", "RLS", "PL/pgSQL"],
+        description: {
+          pt: "Autenticação single-user, storage privado de PDFs e regras críticas em PL/pgSQL com centavos inteiros e baixa idempotente.",
+          en: "Single-user auth, private contract PDF storage, and PL/pgSQL domain logic with integer cents and idempotent ledger sync.",
+        },
+      },
+      {
+        id: "edge-push",
+        nodeRole: "compute",
+        provider: "Edge · pg_cron",
+        protocol: "HTTPS · VAPID ES256",
+        securityNote: {
+          pt: "Validação JWT/x-cron-secret em tempo constante e limpeza automática de endpoints 404/410",
+          en: "Constant-time JWT/x-cron-secret checks and auto-deactivation of expired 404/410 endpoints",
+        },
+        layer: {
+          pt: "Edge & Web Push",
+          en: "Edge & Web Push",
+        },
+        technologies: ["Deno 2", "Edge Functions", "pg_cron", "Web Crypto"],
+        description: {
+          pt: "Jobs pg_cron (08h e 18h BRT) acionam a Edge Function que agrupa pendências e cifra alertas Web Push em aes128gcm.",
+          en: "Scheduled pg_cron jobs (08:00/18:00 BRT) invoke the Edge Function to batch pending alerts and encrypt Web Push payloads.",
+        },
+      },
+      {
+        id: "client-integrations",
+        nodeRole: "integration",
+        provider: "Pix · A4 · Share",
+        protocol: "EMV CRC16 · Web Share",
+        securityNote: {
+          pt: "Zero gateways externos: BR Code validado localmente e cliques de push restritos à origem",
+          en: "Zero external payment gateways: local BR Code validation and same-origin push routing",
+        },
+        layer: {
+          pt: "Pix & Exportação A4",
+          en: "Pix & A4 Export",
+        },
+        technologies: ["Pix EMV", "jsPDF", "html-to-image", "WhatsApp"],
+        description: {
+          pt: "Gera BR Code Pix estático para a próxima parcela, exporta folha A4 em PDF/PNG e compartilha direto no WhatsApp.",
+          en: "Builds static Pix QR codes for the next unpaid installment, exports A4 PDF/PNG locally, and hands off via WhatsApp.",
+        },
+      },
+    ],
+    architectureFlows: [
+      {
+        id: "single-user-auth",
+        title: {
+          pt: "01. Autenticação Single-User e Isolamento por RLS",
+          en: "01. Single-User Auth & RLS Isolation",
+        },
+        trigger: {
+          pt: "Prestador envia credenciais em /login ou acessa qualquer rota protegida do app.",
+          en: "Technician submits credentials on /login or navigates to any protected route.",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Validação Zod e submissão de login",
+              en: "Zod validation and sign-in request",
+            },
+            payload: "auth.service.ts → supabase.auth.signInWithPassword()",
+            detail: {
+              pt: "LoginPage valida e-mail/senha sem expor rota de cadastro público e delega a autenticação à camada de serviço.",
+              en: "LoginPage validates email/password with no public sign-up flow and delegates authentication to the service layer.",
+            },
+          },
+          {
+            layerId: "auth-data",
+            action: {
+              pt: "Emissão de sessão JWT e avaliação de RLS",
+              en: "JWT session issuance & RLS enforcement",
+            },
+            payload: "GoTrue JWT + RLS policies (to authenticated)",
+            detail: {
+              pt: "O Supabase Auth emite token com rotação de refresh token; todas as consultas REST, RPCs e leituras de Storage exigem papel authenticated.",
+              en: "Supabase Auth issues a JWT with refresh token rotation; every REST query, RPC call, and Storage operation requires the authenticated role.",
+            },
+          },
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Hidratação da sessão e limpeza no logout",
+              en: "Session hydration & cache teardown",
+            },
+            payload: "AuthProvider → ProtectedRoute → /quotes",
+            detail: {
+              pt: "AuthProvider libera as rotas protegidas no AppShell e limpa integralmente o cache do TanStack Query no evento SIGNED_OUT.",
+              en: "AuthProvider unlocks protected routes inside AppShell and flushes the entire TanStack Query cache on SIGNED_OUT.",
+            },
+          },
+        ],
+      },
+      {
+        id: "quote-to-cashbook",
+        title: {
+          pt: "02. Emissão de Orçamento, Pix e Conciliação no Livro-Caixa",
+          en: "02. Quote Issuance, Pix Export & Cashbook Reconciliation",
+        },
+        trigger: {
+          pt: "Prestador monta itens e parcelas em /quotes/:id, exporta a proposta e confirma o recebimento.",
+          en: "Technician adds snapshot items and installments on /quotes/:id, exports the proposal, and settles payment.",
+        },
+        steps: [
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Inserção de snapshots e plano de parcelas",
+              en: "Snapshot item insert & payment schedule save",
+            },
+            payload: "INSERT quote_items + RPC save_quote_payment_plan(...)",
+            detail: {
+              pt: "quotes.service.ts persiste itens congelados em centavos inteiros e salva o cronograma validado (à vista, entrada/saldo, até 24x ou customizado).",
+              en: "quotes.service.ts persists frozen integer-cent item snapshots and saves the validated schedule (cash, split, up to 24x, or custom).",
+            },
+          },
+          {
+            layerId: "auth-data",
+            action: {
+              pt: "Cálculo automático e recálculo de parcelas",
+              en: "Trigger totals & pending installment recalculation",
+            },
+            payload:
+              "trg_quote_items_sync_quote_subtotal → recalculate_quote_payments_for_total()",
+            detail: {
+              pt: "Triggers recalculam subtotal_cents, total_cents e redistribuem parcelas pendentes sem perder centavos nem alterar parcelas já pagas.",
+              en: "Database triggers recompute subtotal_cents and total_cents and rebalance pending installments without cent drift or touching paid entries.",
+            },
+          },
+          {
+            layerId: "client-integrations",
+            action: {
+              pt: "Prévia A4 com Pix EMV e exportação local",
+              en: "A4 preview with EMV Pix & local export",
+            },
+            payload:
+              "generateQuoteStaticPix() → html-to-image + jsPDF → navigator.share / wa.me",
+            detail: {
+              pt: "Calcula o BR Code Pix (CRC16-CCITT) para o total ou próxima parcela em aberto e gera PDF/PNG em folha A4 diretamente no navegador.",
+              en: "Computes the static Pix BR Code (CRC16-CCITT) for the quote total or next unpaid installment and exports a single-page A4 PDF/PNG in-browser.",
+            },
+          },
+          {
+            layerId: "auth-data",
+            action: {
+              pt: "Baixa da parcela e lançamento idempotente no caixa",
+              en: "Installment settlement & idempotent ledger sync",
+            },
+            payload:
+              "RPC set_quote_payment_status() → sync_quote_payments_to_cashbook()",
+            detail: {
+              pt: "Atualiza financial_transactions protegido pelo índice único parcial uq_financial_transactions_quote_payment_id e promove o orçamento a paid (bloqueado para edição) ao quitar todas as parcelas.",
+              en: "Upserts financial_transactions guarded by partial unique index uq_financial_transactions_quote_payment_id and transitions the quote to read-only paid once fully settled.",
+            },
+          },
+        ],
+      },
+      {
+        id: "scheduled-web-push",
+        title: {
+          pt: "03. Sincronização de Pendências e Web Push Agendado (08h / 18h BRT)",
+          en: "03. Pending Alerts Sync & Scheduled Web Push (08:00 / 18:00 BRT)",
+        },
+        trigger: {
+          pt: "Jobs pg_cron (0 11 * * * e 0 21 * * * UTC) disparam a rotina de resumo diário.",
+          en: "pg_cron jobs (0 11 * * * and 0 21 * * * UTC) trigger the daily digest routine.",
+        },
+        steps: [
+          {
+            layerId: "auth-data",
+            action: {
+              pt: "Disparo autenticado via Vault e pg_net",
+              en: "Vault-authenticated dispatch via pg_net",
+            },
+            payload:
+              "private.invoke_push_dispatch('morning' | 'evening') → net.http_post",
+            detail: {
+              pt: "Função SECURITY DEFINER no schema privado lê fixflow_project_url e fixflow_push_cron_secret do Supabase Vault e chama a Edge Function.",
+              en: "A SECURITY DEFINER function in the private schema reads fixflow_project_url and fixflow_push_cron_secret from Supabase Vault and calls the Edge Function.",
+            },
+          },
+          {
+            layerId: "edge-push",
+            action: {
+              pt: "Sincronização de regras e montagem do digest",
+              en: "Rule evaluation & digest assembly",
+            },
+            payload:
+              "POST /functions/v1/push-notifications → RPC sync_notifications()",
+            detail: {
+              pt: "Valida x-cron-secret, executa sync_notifications() (incluindo recorrências do mês), filtra alertas não lidos/não adiados e agrupa mensagens sem duplicidade no turno.",
+              en: "Validates x-cron-secret, runs sync_notifications() (including monthly recurrences), filters unread/unsnoozed alerts, and compiles slot-deduplicated messages.",
+            },
+          },
+          {
+            layerId: "client-integrations",
+            action: {
+              pt: "Criptografia RFC 8291/8292 e entrega aos endpoints",
+              en: "RFC 8291/8292 encryption & push delivery",
+            },
+            payload:
+              "VAPID ES256 + ECDH P-256 / AES-128-GCM → Web Push Endpoint",
+            detail: {
+              pt: "webPush.ts assina o token VAPID e cifra o JSON em aes128gcm via Web Crypto API nativa, desativando inscrições que retornam 404/410.",
+              en: "webPush.ts signs the VAPID JWT and encrypts the JSON payload as aes128gcm via native Web Crypto API, automatically deactivating 404/410 subscriptions.",
+            },
+          },
+          {
+            layerId: "frontend",
+            action: {
+              pt: "Exibição nativa, badge e deep link no PWA",
+              en: "Native notification, app badge & deep link",
+            },
+            payload: "src/sw.ts (push / notificationclick) → FIXFLOW_NAVIGATE",
+            detail: {
+              pt: "O Service Worker exibe a notificação, atualiza setAppBadge e ao clique foca o app abrindo diretamente a rota da pendência (com validação same-origin).",
+              en: "The Service Worker shows the notification, updates setAppBadge, and on click focuses the PWA directly on the pending item's same-origin route.",
+            },
+          },
+        ],
+      },
+    ],
+    results: [
+      {
+        metric: {
+          pt: "Zero erros de ponto flutuante · 14 tabelas sob RLS",
+          en: "Zero floating-point math · 14 RLS-protected tables",
+        },
+        description: {
+          pt: "Toda a contabilidade opera em centavos inteiros (INTEGER) com integridade imposta por triggers, índices únicos parciais e 7 migrations SQL versionadas.",
+          en: "All financial calculations run strictly in integer cents (INTEGER) with integrity enforced by PostgreSQL triggers, partial unique indexes, and 7 versioned SQL migrations.",
+        },
+      },
+      {
+        metric: {
+          pt: "41 testes unitários + 15 E2E mobile · WCAG AA",
+          en: "41 unit tests + 15 mobile E2E tests · WCAG AA",
+        },
+        description: {
+          pt: "Regras críticas (Pix EMV/CRC16, parcelamento, máscaras BR, paginação A4 e criptografia Web Push) cobertas em node --test, fluxos touch 390×844 validados no Playwright e 14 pares de cor auditados em contraste >= 4.5:1.",
+          en: "Core domain logic (EMV/CRC16 Pix, installments, BR masks, A4 layout, Web Push crypto) covered by node --test, 390×844 touch flows verified in Playwright, and 14 color pairs audited at >= 4.5:1 contrast.",
         },
       },
     ],
