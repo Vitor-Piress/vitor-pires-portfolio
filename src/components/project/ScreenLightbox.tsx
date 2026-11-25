@@ -59,7 +59,7 @@ export function ScreenLightbox({
           key="screen-lightbox"
           role="dialog"
           aria-modal="true"
-          aria-label={`${projectName} — ${activeScreen.label[language]}`}
+          aria-label={`${projectName}: ${activeScreen.label[language]}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

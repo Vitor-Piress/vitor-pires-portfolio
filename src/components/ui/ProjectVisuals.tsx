@@ -61,6 +61,8 @@ export function ProjectMark({
         <img
           src={logo}
           alt={name}
+          width={28}
+          height={28}
           className={`h-full w-full ${imageFitClasses}`}
         />
       </span>
@@ -388,7 +390,7 @@ function DesktopWireframe({
             <div className="mx-auto flex h-full w-4/5 flex-col justify-between rounded-[2px] border border-[var(--border-subtle)] p-3">
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2">
                 <span className="font-mono text-[9px] text-[var(--text-primary)]">
-                  DOC #0194 — PDF
+                  DOC #0194 · PDF
                 </span>
                 <span className="h-2 w-10 rounded-[1px] bg-[var(--text-primary)] opacity-80" />
               </div>

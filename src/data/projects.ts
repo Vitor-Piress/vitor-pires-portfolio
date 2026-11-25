@@ -174,7 +174,7 @@ export const featuredProjects: FeaturedProject[] = [
     logo: "/projects/condonot/logo_rbg.png",
     previewImage: "/projects/condonot/condonot-home.webp",
     demoUrl: "https://condonot.com.br/demo",
-    appDomain: "app.condonot.com.br",
+    appDomain: "condonot.com.br",
     headline: {
       pt: "Condonot é uma plataforma para automatizar a gestão e fiscalização de notificações formais em condomínios.",
       en: "Condonot is a SaaS platform that automates formal infraction notices and management for condominiums.",
@@ -595,7 +595,7 @@ export const featuredProjects: FeaturedProject[] = [
               pt: "Roteamento seguro na borda",
               en: "Secure edge routing",
             },
-            payload: "TLS 1.3 → app.condonot.com.br/notificacoes",
+            payload: "TLS 1.3 → condonot.com.br/notificacoes",
             detail: {
               pt: "Cloudflare entrega o bundle estático cacheado globalmente e protege a sessão sob HTTPS.",
               en: "Cloudflare serves the globally cached bundle and secures traffic under HTTPS.",
@@ -744,8 +744,8 @@ export const featuredProjects: FeaturedProject[] = [
     year: "2026",
     stack: ["React", "TypeScript", "Tailwind CSS", "Supabase"],
     details: {
-      pt: "Aplicação mobile-first acessada pelo hóspede via QR Code, sem instalação. Todo o conteúdo — guia local, pontos no mapa, regras da casa e credenciais de Wi-Fi — é gerenciado em tempo real pela administração através de um painel protegido sobre Supabase.",
-      en: "A mobile-first app accessed by guests via QR Code, no install required. All content — local guide, map points, house rules and Wi-Fi credentials — is managed in real time by the staff through a protected Supabase-backed dashboard.",
+      pt: "Aplicação mobile-first acessada pelo hóspede via QR Code, sem instalação. Todo o conteúdo (guia local, pontos no mapa, regras da casa e credenciais de Wi-Fi) é gerenciado em tempo real pela administração através de um painel protegido sobre Supabase.",
+      en: "A mobile-first app accessed by guests via QR Code, no install required. All content (local guide, map points, house rules, and Wi-Fi credentials) is managed in real time by the staff through a protected Supabase-backed dashboard.",
     },
     liveUrl: "https://moradasdogabriel.com.br",
     repoUrl: null,
@@ -1434,7 +1434,7 @@ export const featuredProjects: FeaturedProject[] = [
       },
       solution: {
         pt: "Um PDV mobile ultrarrápido conectado a uma API REST dedicada que separa receita de serviços, gorjetas, repasse de operadores (50%) e despesas fixas, entregando apuração diária e relatório periódico pronto para impressão.",
-        en: "A fast mobile POS backed by a dedicated REST API that separates service revenue, tips, 50% operator payouts and fixed bills—delivering instant daily closings and print-ready periodic P&L reports.",
+        en: "A fast mobile POS backed by a dedicated REST API that separates service revenue, tips, 50% operator payouts and fixed bills, delivering instant daily closings and print-ready periodic P&L reports.",
       },
     },
     features: [

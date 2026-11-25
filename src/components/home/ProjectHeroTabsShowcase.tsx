@@ -133,7 +133,7 @@ export function ProjectHeroTabsShowcase({
             <span className="h-2 w-2 rounded-full bg-[var(--border-subtle)]" />
           </div>
           <span className="truncate px-2 text-[10px] opacity-75">
-            https://{project.appDomain ?? "app.condonot.com.br"}
+            https://{project.appDomain ?? "condonot.com.br"}
             {currentScreen?.appPath}
           </span>
           <div className="flex items-center gap-2">

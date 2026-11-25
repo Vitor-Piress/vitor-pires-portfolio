@@ -352,7 +352,8 @@ const VARIANTS: VariantOption[] = [
   {
     id: "bento",
     label: "Bento Grid Anterior",
-    subtitle: "O layout Bento anterior espremido em 7 cols para comparação direta",
+    subtitle:
+      "O layout Bento anterior espremido em 7 cols para comparação direta",
     icon: LayoutGrid,
     tag: "Legado",
   },
@@ -705,10 +706,7 @@ export function DesignLab() {
                 </span>
               </div>
 
-              <EditorialBentoShowcase
-                project={featuredProjects[0]}
-                index={0}
-              />
+              <EditorialBentoShowcase project={featuredProjects[0]} index={0} />
             </section>
           )}
         </main>
@@ -839,10 +837,9 @@ export function DesignLab() {
                     )}
                   </div>
                 </article>
-              ),
-            )}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
         </main>
       )}
     </div>
@@ -1128,7 +1125,7 @@ function VariantStackedLayers({
           <span className="uppercase tracking-wider">
             Painel Administrativo B2B
           </span>
-          <span>https://app.condonot.com.br/dashboard</span>
+          <span>https://condonot.com.br/dashboard</span>
         </div>
         <div className="relative aspect-[16/9.5] w-full overflow-hidden rounded-[3px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] p-2">
           <img

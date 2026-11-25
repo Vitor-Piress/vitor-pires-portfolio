@@ -106,7 +106,7 @@ Uma seção limpa, focada em leitura e hierarquia tipográfica, apresentando sua
 
 - **`/ EXPERIÊNCIA PROFISSIONAL` & `/ EDUCAÇÃO`:**
   - Linha do tempo limpa (com marcadores circulares simples `●` e `○` conectando a evolução):
-  - **Profissional:** Desenvolvedor de Software Independente & SaaS Founder (Atual) + Técnico Administrativo em Gestão Condominial (2+ anos de experiência prática que fundamentam seus softwares de gestão).
+  - **Profissional:** Desenvolvedor de Software Independente & SaaS Founder (Atual) + Analista Administrativo em Gestão Condominial (2+ anos de experiência prática que fundamentam seus softwares de gestão).
   - **Acadêmico:** Bacharelado em Sistemas de Informação (UNISUL — 5º semestre) + Formação Full-Stack SCTEC Carreira Tech + Técnico em Desenvolvimento de Sistemas.
 - **`/ ARSENAL TÉCNICO (STACK)`:**
   - Apresentação elegante e direta das tecnologias que domina (React, Vite, TypeScript, Tailwind CSS, Node.js, Fastify, Python, Supabase, PostgreSQL, Linux Ubuntu, Cloudflare, Git) com indicadores visuais minimalistas de domínio.
