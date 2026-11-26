@@ -241,7 +241,7 @@ export const translations: Record<Language, TranslationSchema> = {
       name: "VITOR PIRES",
       headline: "Desenvolvedor Full-Stack & Criador de Produtos SaaS.",
       subheadline:
-        "Arquitetura limpa, sistemas escaláveis e interfaces de alta precisão.",
+        "Produtos próprios e sistemas sob medida em operação diária.",
       description:
         "Construo softwares reais, licenciados comercialmente e projetados para resolver dores operacionais complexas com estética refinada, performance e engenharia sólida de ponta a ponta.",
       ctaContact: "Entrar em contato",
